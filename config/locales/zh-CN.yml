@@ -1120,7 +1120,7 @@ zh-CN:
       total_votes:
         other: "%{count} 票"
       vote: 投票
-    show_more: 显示更多
+    show_more: 显示更多(若您是非登录用户，则仅显示8条)
     show_thread: 显示全部对话
     sign_in_to_participate: 登录以加入对话
     title: "%{name}：“%{quote}”"
@@ -1224,6 +1224,7 @@ zh-CN:
     contrast: Mastodon（高对比度）
     default: Mastodon（暗色主题）
     mastodon-light: Mastodon（亮色主题）
+    strawberry: 草莓象
   time:
     formats:
       default: "%Y年%-m月%d日 %H:%M"

@@ -17,7 +17,7 @@ module Mastodon
     end
 
     def flags
-      ''
+      '~B612~Kira!'
     end
 
     def suffix
