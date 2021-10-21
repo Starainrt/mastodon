@@ -3,8 +3,6 @@
 require 'sidekiq_unique_jobs/web'
 require 'sidekiq-scheduler/web'
 
-Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
-
 Rails.application.routes.draw do
   root 'home#index'
 
@@ -99,8 +97,6 @@ Rails.application.routes.draw do
   post '/interact/:id', to: 'remote_interaction#create'
 
   get '/explore', to: 'directories#index', as: :explore
-  get '/explore/:id', to: 'directories#show', as: :explore_hashtag
-
   get '/settings', to: redirect('/settings/profile')
 
   namespace :settings do
@@ -168,6 +164,7 @@ Rails.application.routes.draw do
     resources :aliases, only: [:index, :create, :destroy]
     resources :sessions, only: [:destroy]
     resources :featured_tags, only: [:index, :create, :destroy]
+    resources :login_activities, only: [:index]
   end
 
   resources :media, only: [:show] do
@@ -179,6 +176,7 @@ Rails.application.routes.draw do
   resources :invites, only: [:index, :create, :destroy]
   resources :filters, except: [:show]
   resource :relationships, only: [:show, :update]
+  resource :statuses_cleanup, controller: :statuses_cleanup, only: [:show, :update]
 
   get '/public', to: 'public_timelines#show', as: :public_timeline
   get '/media_proxy/:id/(*any)', to: 'media_proxy#show', as: :media_proxy
@@ -219,7 +217,14 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :instances, only: [:index, :show], constraints: { id: /[^\/]+/ }
+    resources :instances, only: [:index, :show], constraints: { id: /[^\/]+/ } do
+      member do
+        post :clear_delivery_errors
+        post :restart_delivery
+        post :stop_delivery
+      end
+    end
+
     resources :rules
 
     resources :reports, only: [:index, :show] do
@@ -279,6 +284,7 @@ Rails.application.routes.draw do
 
     resources :users, only: [] do
       resource :two_factor_authentication, only: [:destroy]
+      resource :sign_in_token_authentication, only: [:create, :destroy]
     end
 
     resources :custom_emojis, only: [:index, :new, :create] do
@@ -294,6 +300,7 @@ Rails.application.routes.draw do
     end
 
     resources :account_moderation_notes, only: [:create, :destroy]
+    resource :follow_recommendations, only: [:show, :update]
 
     resources :tags, only: [:index, :show, :update] do
       collection do
@@ -452,6 +459,7 @@ Rails.application.routes.draw do
         member do
           post :follow
           post :unfollow
+          post :remove_from_followers
           post :block
           post :unblock
           post :mute
@@ -503,12 +511,19 @@ Rails.application.routes.draw do
             post :resolve
           end
         end
+
+        resources :trends, only: [:index]
+
+        post :measures, to: 'measures#create'
+        post :dimensions, to: 'dimensions#create'
+        post :retention, to: 'retention#create'
       end
     end
 
     namespace :v2 do
       resources :media, only: [:create]
       get '/search', to: 'search#index', as: :search
+      resources :suggestions, only: [:index]
     end
 
     namespace :web do

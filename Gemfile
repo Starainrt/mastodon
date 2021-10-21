@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '>= 2.5.0', '< 3.0.0'
+ruby '>= 2.5.0', '< 3.1.0'
 
 gem 'pkg-config', '~> 1.4'
 
-gem 'puma', '~> 5.2'
-gem 'rails', '~> 6.1.3'
+gem 'puma', '~> 5.5'
+gem 'rails', '~> 6.1.4'
 gem 'sprockets', '~> 3.7.2'
 gem 'thor', '~> 1.1'
 gem 'rack', '~> 2.2.3'
@@ -17,24 +17,22 @@ gem 'makara', '~> 0.5'
 gem 'pghero', '~> 2.8'
 gem 'dotenv-rails', '~> 2.7'
 
-gem 'aws-sdk-s3', '~> 1.93', require: false
+gem 'aws-sdk-s3', '~> 1.103', require: false
 gem 'fog-core', '<= 2.1.0'
 gem 'fog-openstack', '~> 0.3', require: false
-gem 'paperclip', '~> 6.0'
-gem 'paperclip-av-transcoder', '~> 0.6'
-gem 'streamio-ffmpeg', '~> 3.0'
+gem 'kt-paperclip', '~> 7.0'
 gem 'blurhash', '~> 0.1'
 
 gem 'active_model_serializers', '~> 0.10'
-gem 'addressable', '~> 2.7'
-gem 'bootsnap', '~> 1.6.0', require: false
+gem 'addressable', '~> 2.8'
+gem 'bootsnap', '~> 1.9.1', require: false
 gem 'browser'
 gem 'charlock_holmes', '~> 0.7.7'
 gem 'iso-639'
 gem 'chewy', '~> 5.2'
-gem 'cld3', '~> 3.4.1'
-gem 'devise', '~> 4.7'
-gem 'devise-two-factor', git: 'https://github.com/ClearlyClaire/devise-two-factor', ref: '594bb8a32e6f94df7e5ba7c9399eaf9ff25bac0d'
+gem 'cld3', '~> 3.4.2'
+gem 'devise', '~> 4.8'
+gem 'devise-two-factor', '~> 4.0'
 
 group :pam_authentication, optional: true do
   gem 'devise_pam_authenticatable2', '~> 9.2'
@@ -55,20 +53,18 @@ gem 'fastimage'
 gem 'hiredis', '~> 0.6'
 gem 'redis-namespace', '~> 1.8'
 gem 'htmlentities', '~> 4.3'
-gem 'http', '~> 4.4'
+gem 'http', '~> 5.0'
 gem 'http_accept_language', '~> 2.1'
-gem 'httplog', '~> 1.4.3'
+gem 'httplog', '~> 1.5.0'
 gem 'idn-ruby', require: 'idn'
 gem 'kaminari', '~> 1.2'
 gem 'link_header', '~> 0.0'
 gem 'mime-types', '~> 3.3.1', require: 'mime/types/columnar'
-gem 'nilsimsa', git: 'https://github.com/witgo/nilsimsa', ref: 'fd184883048b922b176939f851338d0a4971a532'
-gem 'nokogiri', '~> 1.11'
-gem 'nsa', git: 'https://github.com/Gargron/nsa', ref: 'd1079e0cdafdfed7f9f35478d13b9bdaa65965c0'
-gem 'oj', '~> 3.11'
+gem 'nokogiri', '~> 1.12'
+gem 'nsa', '~> 0.2'
+gem 'oj', '~> 3.13'
 gem 'ox', '~> 2.14'
 gem 'parslet'
-gem 'parallel', '~> 1.20'
 gem 'posix-spawn'
 gem 'pundit', '~> 2.1'
 gem 'premailer-rails'
@@ -76,17 +72,17 @@ gem 'rack-attack', '~> 6.5'
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 gem 'rails-i18n', '~> 6.0'
 gem 'rails-settings-cached', '~> 0.6'
-gem 'redis', '~> 4.2', require: ['redis', 'redis/connection/hiredis']
+gem 'redis', '~> 4.5', require: ['redis', 'redis/connection/hiredis']
 gem 'mario-redis-lock', '~> 1.2', require: 'redis_lock'
-gem 'rqrcode', '~> 1.2'
+gem 'rqrcode', '~> 2.1'
 gem 'ruby-progressbar', '~> 1.11'
-gem 'sanitize', '~> 5.2'
+gem 'sanitize', '~> 6.0'
 gem 'scenic', '~> 1.5'
 gem 'sidekiq', '~> 6.2'
-gem 'sidekiq-scheduler', '~> 3.0'
-gem 'sidekiq-unique-jobs', '~> 7.0'
+gem 'sidekiq-scheduler', '~> 3.1'
+gem 'sidekiq-unique-jobs', '~> 7.1'
 gem 'sidekiq-bulk', '~>0.2.0'
-gem 'simple-navigation', '~> 4.1'
+gem 'simple-navigation', '~> 4.3'
 gem 'simple_form', '~> 5.1'
 gem 'sprockets-rails', '~> 3.2', require: 'sprockets/railtie'
 gem 'stoplight', '~> 2.2.1'
@@ -94,8 +90,8 @@ gem 'strong_migrations', '~> 0.7'
 gem 'tty-prompt', '~> 0.23', require: false
 gem 'twitter-text', '~> 3.1.0'
 gem 'tzinfo-data', '~> 1.2021'
-gem 'webpacker', '~> 5.2'
-gem 'webpush'
+gem 'webpacker', '~> 5.4'
+gem 'webpush', '~> 0.3'
 gem 'webauthn', '~> 3.0.0.alpha1'
 
 gem 'json-ld'
@@ -118,13 +114,12 @@ end
 group :test do
   gem 'capybara', '~> 3.35'
   gem 'climate_control', '~> 0.2'
-  gem 'faker', '~> 2.17'
+  gem 'faker', '~> 2.19'
   gem 'microformats', '~> 4.2'
   gem 'rails-controller-testing', '~> 1.0'
   gem 'rspec-sidekiq', '~> 3.1'
   gem 'simplecov', '~> 0.21', require: false
-  gem 'webmock', '~> 3.12'
-  gem 'parallel_tests', '~> 3.6'
+  gem 'webmock', '~> 3.14'
   gem 'rspec_junit_formatter', '~> 0.4'
 end
 
@@ -137,10 +132,10 @@ group :development do
   gem 'letter_opener', '~> 1.7'
   gem 'letter_opener_web', '~> 1.4'
   gem 'memory_profiler'
-  gem 'rubocop', '~> 1.12', require: false
-  gem 'rubocop-rails', '~> 2.9', require: false
-  gem 'brakeman', '~> 5.0', require: false
-  gem 'bundler-audit', '~> 0.8', require: false
+  gem 'rubocop', '~> 1.22', require: false
+  gem 'rubocop-rails', '~> 2.12', require: false
+  gem 'brakeman', '~> 5.1', require: false
+  gem 'bundler-audit', '~> 0.9', require: false
 
   gem 'capistrano', '~> 3.16'
   gem 'capistrano-rails', '~> 1.6'
@@ -158,4 +153,3 @@ gem 'concurrent-ruby', require: false
 gem 'connection_pool', require: false
 
 gem 'xorcist', '~> 1.1'
-gem 'pluck_each', git: 'https://github.com/nsommer/pluck_each', ref: '73be0947c52fc54bf6d7085378db008358aac5eb'

@@ -45,19 +45,15 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def create_status
     return reject_payload! if unsupported_object_type? || invalid_origin?(object_uri) || tombstone_exists? || !related_to_local_activity?
 
-    RedisLock.acquire(lock_options) do |lock|
-      if lock.acquired?
-        return if delete_arrived_first?(object_uri) || poll_vote? # rubocop:disable Lint/NonLocalExitFromIterator
+    lock_or_fail("create:#{object_uri}") do
+      return if delete_arrived_first?(object_uri) || poll_vote?
 
-        @status = find_existing_status
+      @status = find_existing_status
 
-        if @status.nil?
-          process_status
-        elsif @options[:delivered_to_account_id].present?
-          postprocess_audience_and_deliver
-        end
-      else
-        raise Mastodon::RaceConditionError
+      if @status.nil?
+        process_status
+      elsif @options[:delivered_to_account_id].present?
+        postprocess_audience_and_deliver
       end
     end
 
@@ -88,7 +84,6 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     resolve_thread(@status)
     fetch_replies(@status)
-    check_for_spam
     distribute(@status)
     forward_for_reply
   end
@@ -169,7 +164,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def attach_tags(status)
     @tags.each do |tag|
       status.tags << tag
-      TrendingTags.record_use!(tag, status.account, status.created_at) if status.public_visibility?
+      tag.use!(@account, status: status, at_time: status.created_at) if status.public_visibility?
     end
 
     @mentions.each do |mention|
@@ -228,8 +223,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     emoji ||= CustomEmoji.new(domain: @account.domain, shortcode: shortcode, uri: uri)
     emoji.image_remote_url = image_url
     emoji.save
-  rescue Seahorse::Client::NetworkingError
-    nil
+  rescue Seahorse::Client::NetworkingError => e
+    Rails.logger.warn "Error storing emoji: #{e}"
   end
 
   def process_attachments
@@ -252,8 +247,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
         media_attachment.save
       rescue Mastodon::UnexpectedResponseError, HTTP::TimeoutError, HTTP::ConnectionError, OpenSSL::SSL::SSLError
         RedownloadMediaWorker.perform_in(rand(30..600).seconds, media_attachment.id)
-      rescue Seahorse::Client::NetworkingError
-        nil
+      rescue Seahorse::Client::NetworkingError => e
+        Rails.logger.warn "Error storing media attachment: #{e}"
       end
     end
 
@@ -314,13 +309,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     poll = replied_to_status.preloadable_poll
     already_voted = true
 
-    RedisLock.acquire(poll_lock_options) do |lock|
-      if lock.acquired?
-        already_voted = poll.votes.where(account: @account).exists?
-        poll.votes.create!(account: @account, choice: poll.options.index(@object['name']), uri: object_uri)
-      else
-        raise Mastodon::RaceConditionError
-      end
+    lock_or_fail("vote:#{replied_to_status.poll_id}:#{@account.id}") do
+      already_voted = poll.votes.where(account: @account).exists?
+      poll.votes.create!(account: @account, choice: poll.options.index(@object['name']), uri: object_uri)
     end
 
     increment_voters_count! unless already_voted
@@ -455,8 +446,12 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def supported_blurhash?(blurhash)
-    components = blurhash.blank? ? nil : Blurhash.components(blurhash)
+    components = blurhash.blank? || !blurhash_valid_chars?(blurhash) ? nil : Blurhash.components(blurhash)
     components.present? && components.none? { |comp| comp > 5 }
+  end
+
+  def blurhash_valid_chars?(blurhash)
+    /^[\w#$%*+-.:;=?@\[\]^{|}~]+$/.match?(blurhash)
   end
 
   def skip_download?
@@ -492,10 +487,6 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     Tombstone.exists?(uri: object_uri)
   end
 
-  def check_for_spam
-    SpamCheck.perform(@status)
-  end
-
   def forward_for_reply
     return unless @status.distributable? && @json['signature'].present? && reply_to_local?
 
@@ -512,13 +503,5 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   rescue ActiveRecord::StaleObjectError
     poll.reload
     retry
-  end
-
-  def lock_options
-    { redis: Redis.current, key: "create:#{object_uri}" }
-  end
-
-  def poll_lock_options
-    { redis: Redis.current, key: "vote:#{replied_to_status.poll_id}:#{@account.id}" }
   end
 end

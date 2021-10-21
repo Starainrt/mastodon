@@ -21,6 +21,10 @@ class Form::AccountBatch
       approve!
     when 'reject'
       reject!
+    when 'suppress_follow_recommendation'
+      suppress_follow_recommendation!
+    when 'unsuppress_follow_recommendation'
+      unsuppress_follow_recommendation!
     end
   end
 
@@ -39,9 +43,7 @@ class Form::AccountBatch
   end
 
   def remove_from_followers!
-    current_account.passive_relationships.where(account_id: account_ids).find_each do |follow|
-      reject_follow!(follow)
-    end
+    RemoveFromFollowersService.new.call(current_account, account_ids)
   end
 
   def block_domains!
@@ -58,14 +60,6 @@ class Form::AccountBatch
     Account.where(id: account_ids)
   end
 
-  def reject_follow!(follow)
-    follow.destroy
-
-    return unless follow.account.activitypub?
-
-    ActivityPub::DeliveryWorker.perform_async(Oj.dump(serialize_payload(follow, ActivityPub::RejectFollowSerializer)), current_account.id, follow.account.inbox_url)
-  end
-
   def approve!
     users = accounts.includes(:user).map(&:user)
 
@@ -78,5 +72,19 @@ class Form::AccountBatch
 
     records.each { |account| authorize(account.user, :reject?) }
            .each { |account| DeleteAccountService.new.call(account, reserve_email: false, reserve_username: false) }
+  end
+
+  def suppress_follow_recommendation!
+    authorize(:follow_recommendation, :suppress?)
+
+    accounts.each do |account|
+      FollowRecommendationSuppression.create(account: account)
+    end
+  end
+
+  def unsuppress_follow_recommendation!
+    authorize(:follow_recommendation, :unsuppress?)
+
+    FollowRecommendationSuppression.where(account_id: account_ids).destroy_all
   end
 end

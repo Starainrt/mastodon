@@ -1,6 +1,21 @@
 require_relative 'boot'
 
-require 'rails/all'
+require 'rails'
+
+require 'active_record/railtie'
+#require 'active_storage/engine'
+require 'action_controller/railtie'
+require 'action_view/railtie'
+require 'action_mailer/railtie'
+require 'active_job/railtie'
+#require 'action_cable/engine'
+#require 'action_mailbox/engine'
+#require 'action_text/engine'
+#require 'rails/test_unit/railtie'
+require 'sprockets/railtie'
+
+# Used to be implicitly required in action_mailbox/engine
+require 'mail'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -12,13 +27,13 @@ require_relative '../lib/sanitize_ext/sanitize_config'
 require_relative '../lib/redis/namespace_extensions'
 require_relative '../lib/paperclip/url_generator_extensions'
 require_relative '../lib/paperclip/attachment_extensions'
-require_relative '../lib/paperclip/media_type_spoof_detector_extensions'
-require_relative '../lib/paperclip/transcoder_extensions'
+require_relative '../lib/paperclip/storage_extensions'
 require_relative '../lib/paperclip/lazy_thumbnail'
 require_relative '../lib/paperclip/gif_transcoder'
-require_relative '../lib/paperclip/video_transcoder'
+require_relative '../lib/paperclip/transcoder'
 require_relative '../lib/paperclip/type_corrector'
 require_relative '../lib/paperclip/response_with_limit_adapter'
+require_relative '../lib/terrapin/multi_pipe_extensions'
 require_relative '../lib/mastodon/snowflake'
 require_relative '../lib/mastodon/version'
 require_relative '../lib/devise/two_factor_ldap_authenticatable'
@@ -29,6 +44,7 @@ require_relative '../lib/webpacker/helper_extensions'
 require_relative '../lib/action_dispatch/cookie_jar_extensions'
 require_relative '../lib/rails/engine_extensions'
 require_relative '../lib/active_record/database_tasks_extensions'
+require_relative '../lib/active_record/batches'
 
 Dotenv::Railtie.load
 
@@ -53,6 +69,7 @@ module Mastodon
     # All translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.available_locales = [
+      :af,
       :ar,
       :ast,
       :bg,
@@ -69,12 +86,14 @@ module Mastodon
       :eo,
       :es,
       :'es-AR',
+      :'es-MX',
       :et,
       :eu,
       :fa,
       :fi,
       :fr,
       :ga,
+      :gd,
       :gl,
       :he,
       :hi,
@@ -89,6 +108,7 @@ module Mastodon
       :ka,
       :kab,
       :kk,
+      :kmr,
       :kn,
       :ko,
       :ku,
@@ -109,6 +129,7 @@ module Mastodon
       :ru,
       :sa,
       :sc,
+      :si,
       :sk,
       :sl,
       :sq,

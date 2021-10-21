@@ -112,7 +112,7 @@ export default class StatusContent extends React.PureComponent {
   onMentionClick = (mention, e) => {
     if (this.context.router && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(`/accounts/${mention.get('id')}`);
+      this.context.router.history.push(`/@${mention.get('acct')}`);
     }
   }
 
@@ -121,7 +121,7 @@ export default class StatusContent extends React.PureComponent {
 
     if (this.context.router && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(`/timelines/tag/${hashtag}`);
+      this.context.router.history.push(`/tags/${hashtag}`);
     }
   }
 
@@ -170,10 +170,6 @@ export default class StatusContent extends React.PureComponent {
   render () {
     const { status } = this.props;
 
-    if (status.get('content').length === 0) {
-      return null;
-    }
-
     const hidden = this.props.onExpandedToggle ? !this.props.expanded : this.state.hidden;
     const renderReadMore = this.props.onClick && status.get('collapsed');
     const renderViewThread = this.props.showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']);
@@ -202,7 +198,7 @@ export default class StatusContent extends React.PureComponent {
       let mentionsPlaceholder = '';
 
       const mentionLinks = status.get('mentions').map(item => (
-        <Permalink to={`/accounts/${item.get('id')}`} href={item.get('url')} key={item.get('id')} className='mention'>
+        <Permalink to={`/@${item.get('acct')}`} href={item.get('url')} key={item.get('id')} className='mention'>
           @<span>{item.get('username')}</span>
         </Permalink>
       )).reduce((aggregate, item) => [...aggregate, item, ' '], []);

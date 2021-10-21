@@ -17,12 +17,14 @@ class Admin::ActionLogFilter
     create_domain_allow: { target_type: 'DomainAllow', action: 'create' }.freeze,
     create_domain_block: { target_type: 'DomainBlock', action: 'create' }.freeze,
     create_email_domain_block: { target_type: 'EmailDomainBlock', action: 'create' }.freeze,
+    create_unavailable_domain: { target_type: 'UnavailableDomain', action: 'create' }.freeze,
     demote_user: { target_type: 'User', action: 'demote' }.freeze,
     destroy_announcement: { target_type: 'Announcement', action: 'destroy' }.freeze,
     destroy_custom_emoji: { target_type: 'CustomEmoji', action: 'destroy' }.freeze,
     destroy_domain_allow: { target_type: 'DomainAllow', action: 'destroy' }.freeze,
     destroy_domain_block: { target_type: 'DomainBlock', action: 'destroy' }.freeze,
     destroy_email_domain_block: { target_type: 'EmailDomainBlock', action: 'destroy' }.freeze,
+    destroy_unavailable_domain: { target_type: 'UnavailableDomain', action: 'destroy' }.freeze,
     destroy_status: { target_type: 'Status', action: 'destroy' }.freeze,
     disable_2fa_user: { target_type: 'User', action: 'disable' }.freeze,
     disable_custom_emoji: { target_type: 'CustomEmoji', action: 'disable' }.freeze,
@@ -74,7 +76,7 @@ class Admin::ActionLogFilter
     when 'account_id'
       Admin::ActionLog.where(account_id: value)
     when 'target_account_id'
-      account = Account.find(value)
+      account = Account.find_or_initialize_by(id: value)
       Admin::ActionLog.where(target: [account, account.user].compact)
     else
       raise "Unknown filter: #{key}"

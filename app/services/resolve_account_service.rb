@@ -122,7 +122,7 @@ class ResolveAccountService < BaseService
     return false if @options[:check_delivery_availability] && !DeliveryFailureTracker.available?(@domain)
     return false if @options[:skip_webfinger]
 
-    @account.nil? || (@account.ostatus? && @account.possibly_stale?)
+    @account.nil? || @account.possibly_stale?
   end
 
   def activitypub_ready?
@@ -142,10 +142,11 @@ class ResolveAccountService < BaseService
   end
 
   def queue_deletion!
+    @account.suspend!(origin: :remote)
     AccountDeletionWorker.perform_async(@account.id, reserve_username: false, skip_activitypub: true)
   end
 
   def lock_options
-    { redis: Redis.current, key: "resolve:#{@username}@#{@domain}" }
+    { redis: Redis.current, key: "resolve:#{@username}@#{@domain}", autorelease: 15.minutes.seconds }
   end
 end
