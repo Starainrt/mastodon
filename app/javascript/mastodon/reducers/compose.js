@@ -122,13 +122,9 @@ function clearAll(state) {
     map.set('is_changing_upload', false);
     map.set('in_reply_to', null);
     map.set('privacy', state.get('default_privacy'));
-<<<<<<< HEAD
     map.set('federation', state.get('default_federation'));
-    map.set('sensitive', false);
-=======
     map.set('sensitive', state.get('default_sensitive'));
     map.set('language', state.get('default_language'));
->>>>>>> 17ba5e1e616c853a389b9c24a347d873747f2126
     map.update('media_attachments', list => list.clear());
     map.set('poll', null);
     map.set('idempotencyKey', uuid());
