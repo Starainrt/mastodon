@@ -40,7 +40,6 @@ gd:
       other: post
       two: phost
     status_count_before: A dh’fhoillsich
-    tagline: Lean air caraidean ’s rùraich feadhainn ùra
     terms: Teirmichean na seirbheise
     unavailable_content: Frithealaichean fo mhaorsainneachd
     unavailable_content_description:
@@ -91,10 +90,8 @@ gd:
     posts_tab_heading: Postaichean
     posts_with_replies: Postaichean ’s freagairtean
     roles:
-      admin: Rianaire
       bot: Bot
       group: Buidheann
-      moderator: Maor
     unavailable: Chan eil a’ phròifil ri làimh
     unfollow: Na lean tuilleadh
   admin:
@@ -113,7 +110,6 @@ gd:
       avatar: Avatar
       by_domain: Àrainn
       change_email:
-        changed_msg: Chaidh post-d a’ chunntais atharrachadh!
         current_email: Am post-d làithreach
         label: Atharraich am post-d
         new_email: Post-d ùr
@@ -197,12 +193,6 @@ gd:
       reset: Ath-shuidhich
       reset_password: Ath-shuidhich am facal-faire
       resubscribe: Fo-sgrìobh a-rithist
-      role: Ceadan
-      roles:
-        admin: Rianaire
-        moderator: Maor
-        staff: Ball dhen sgioba
-        user: Cleachdaiche
       search: Lorg
       search_same_email_domain: Cleachdaichean eile aig a bheil an aon àrainn puist-d
       search_same_ip: Cleachdaichean eile aig a bheil an t-aon IP
@@ -446,6 +436,7 @@ gd:
       destroyed_msg: Chan eil an àrainn ’ga bacadh tuilleadh
       domain: Àrainn
       edit: Deasaich bacadh na h-àrainne
+      existing_domain_block: Chuir thu cuingeachaidhean nas teinne air %{name} mu thràth.
       existing_domain_block_html: Chuir thu cuingeachadh nas teinne air %{name} mu thràth, feumaidh tu a <a href="%{unblock_url}">dì-bhacadh</a> an toiseach.
       new:
         create: Cruthaich bacadh
@@ -728,9 +719,6 @@ gd:
         deletion:
           desc_html: Leig le neach sa bith an cunntas a sguabadh às
           title: Fosgail sguabadh às chunntasan
-        min_invite_role:
-          disabled: Na ceadaich idir
-          title: Ceadaich cuiridhean le
         require_invite_text:
           desc_html: Nuair a bhios aontachadh a làimh riatanach dhan chlàradh, dèan an raon teacsa “Carson a bu mhiann leat ballrachd fhaighinn?” riatanach seach roghainneil
           title: Iarr air cleachdaichean ùra gun innis iad carson a tha iad ag iarraidh ballrachd
@@ -743,9 +731,6 @@ gd:
       show_known_fediverse_at_about_page:
         desc_html: Nuair a bhios seo à comas, cha sheall an loidhne-ama phoblach a thèid a cheangal rithe on duilleag-landaidh ach susbaint ionadail
         title: Gabh a-staigh susbaint cho-naisgte air duilleag na loidhne-ama poblaich gun ùghdarrachadh
-      show_staff_badge:
-        desc_html: Seall bràist sgioba air duilleag cleachdaiche
-        title: Seall bràist sgioba
       site_description:
         desc_html: Earrann tuairisgeil air an API. Mìnich dè tha sònraichte mun fhrithealaiche Mastodon seo agus rud sa bith eile a tha cudromach. ’S urrainn dhut tagaichean HTML a chleachdadh agus <code>&lt;a&gt;</code> ’s <code>&lt;em&gt;</code> gu sònraichte.
         title: Tuairisgeul an fhrithealaiche
@@ -949,7 +934,6 @@ gd:
   applications:
     created: Chaidh an t-iarrtas a chruthachadh
     destroyed: Chaidh an t-iarrtas a sguabadh às
-    invalid_url: Tha an t-URL a thugadh seachad mì-dhligheach
     regenerate_token: Ath-ghin an tòcan inntrigidh
     token_regenerated: Chaidh an tòcan inntrigidh ath-ghintinn
     warning: Bi glè chùramach leis an dàta seo. Na co-roinn le duine sam bith e!
@@ -1141,7 +1125,6 @@ gd:
       title: Deasaich a’ chriathrag
     errors:
       invalid_context: Cha deach co-theacs a sholar no tha e mì-dhligheach
-      invalid_irreversible: Chan obraich criathradh buan ach ann an co-theacsa na dachaigh no na brathan
     index:
       delete: Sguab às
       empty: Chan eil criathrag agad.

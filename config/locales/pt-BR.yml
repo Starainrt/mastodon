@@ -38,7 +38,7 @@ pt-BR:
       one: toot
       other: toots
     status_count_before: Autores de
-    tagline: Siga seus amigos e faça novas amizades
+    tagline: Rede social descentralizada
     terms: Termos de serviço
     unavailable_content: Conteúdo indisponível
     unavailable_content_description:
@@ -83,10 +83,8 @@ pt-BR:
     posts_tab_heading: Toots
     posts_with_replies: Toots e respostas
     roles:
-      admin: Admin
       bot: Robô
       group: Grupo
-      moderator: Moderador
     unavailable: Perfil indisponível
     unfollow: Deixar de seguir
   admin:
@@ -105,7 +103,6 @@ pt-BR:
       avatar: Imagem de perfil
       by_domain: Domínio
       change_email:
-        changed_msg: E-mail da conta alterado com sucesso!
         current_email: E-mail atual
         label: Alterar e-mail
         new_email: Novo e-mail
@@ -187,12 +184,6 @@ pt-BR:
       reset: Redefinir
       reset_password: Redefinir senha
       resubscribe: Reinscrever-se
-      role: Permissões
-      roles:
-        admin: Administrador
-        moderator: Moderador
-        staff: Equipe
-        user: Usuário
       search: Pesquisar
       search_same_email_domain: Outros usuários com o mesmo domínio de e-mail
       search_same_ip: Outros usuários com o mesmo IP
@@ -428,6 +419,7 @@ pt-BR:
       destroyed_msg: Domínio desbloqueado
       domain: Domínio
       edit: Editar bloqueio de domínio
+      existing_domain_block: Você já impôs limites mais rigorosos em %{name}.
       existing_domain_block_html: Você já impôs limites mais estritos em %{name}, você precisa <a href="%{unblock_url}">desbloqueá-lo</a> primeiro.
       new:
         create: Criar bloqueio
@@ -615,6 +607,7 @@ pt-BR:
       forwarded: Encaminhados
       forwarded_to: Encaminhado para %{domain}
       mark_as_resolved: Marcar como resolvido
+      mark_as_sensitive: Marcar como sensível
       mark_as_unresolved: Marcar como não resolvido
       no_one_assigned: Ninguém
       notes:
@@ -694,9 +687,6 @@ pt-BR:
         deletion:
           desc_html: Permitir que qualquer um exclua a própria conta
           title: Exclusão aberta de contas
-        min_invite_role:
-          disabled: Ninguém
-          title: Permitir convites de
         require_invite_text:
           desc_html: Quando o cadastro de novas contas exigir aprovação manual, tornar obrigatório, ao invés de opcional, o texto de solicitação de convite em "Por que você deseja criar uma conta aqui?"
           title: Exigir que novos usuários preencham um texto de solicitação de convite
@@ -709,9 +699,6 @@ pt-BR:
       show_known_fediverse_at_about_page:
         desc_html: Quando ativado, mostra toots globais na prévia da linha, se não, mostra somente toots locais
         title: Mostrar toots globais na prévia da linha
-      show_staff_badge:
-        desc_html: Mostrar uma insígnia de Equipe na página de usuário
-        title: Mostrar insígnia de equipe
       site_description:
         desc_html: Parágrafo introdutório na página inicial. Descreva o que faz esse servidor especial, e qualquer outra coisa de importante. Você pode usar tags HTML, em especial <code>&lt;a&gt;</code> e <code>&lt;em&gt;</code>.
         title: Descrição da instância
@@ -745,6 +732,7 @@ pt-BR:
       back_to_account: Voltar para página da conta
       back_to_report: Voltar às denúncias
       batch:
+        remove_from_report: Remover do relatório
         report: Denunciar
       deleted: Excluídos
       media:
@@ -752,9 +740,16 @@ pt-BR:
       no_status_selected: Nenhum status foi modificado porque nenhum estava selecionado
       title: Toots da conta
       with_media: Com mídia
+    strikes:
+      appeal_approved: Apelado
+      appeal_pending: Recurso pendente
     system_checks:
       database_schema_check:
         message_html: Existem migrações de banco de dados pendentes. Por favor, execute-as para garantir que o aplicativo se comporte como esperado
+      elasticsearch_running_check:
+        message_html: Não foi possível conectar ao Elasticsearch. Por favor, verifique se está em execução, ou desabilite a pesquisa de texto completo
+      elasticsearch_version_check:
+        message_html: 'Versão de Elasticsearch incompatível: %{value}'
       rules_check:
         action: Gerenciar regras do servidor
         message_html: Você não definiu nenhuma regra de servidor.
@@ -800,13 +795,28 @@ pt-BR:
         usable: Pode ser usado
         usage_comparison: Usado %{today} vezes hoje, em comparação com %{yesterday} de ontem
       title: Em alta
+      trending: Em alta
     warning_presets:
       add_new: Adicionar novo
       delete: Excluir
       edit_preset: Editar o aviso pré-definido
       empty: Você ainda não definiu nenhuma predefinição de alerta.
       title: Gerenciar os avisos pré-definidos
+    webhooks:
+      delete: Excluir
+      disable: Desabilitar
+      disabled: Desativado
+      enable: Habilitar
+      enabled: Ativo
+      events: Eventos
+      status: Status
   admin_mailer:
+    new_appeal:
+      actions:
+        delete_statuses: para excluir suas publicações
+        none: um aviso
+        sensitive: para marcar sua conta como sensível
+        silence: para limitar sua conta
     new_pending_account:
       body: Os detalhes da nova conta estão abaixo. Você pode aprovar ou vetar.
       subject: Nova conta para revisão em %{instance} (%{username})
@@ -851,7 +861,6 @@ pt-BR:
   applications:
     created: Aplicativo criado com sucesso
     destroyed: Aplicativo excluído com sucesso
-    invalid_url: O link fornecido é inválido
     regenerate_token: Gerar código de acesso
     token_regenerated: Código de acesso gerado com sucesso
     warning: Tenha cuidado com estes dados. Nunca compartilhe com alguém!
@@ -972,10 +981,12 @@ pt-BR:
       appealed_msg: Seu recurso foi enviado. Se ele for aprovado, você será notificado.
       appeals:
         submit: Enviar recurso
+      approve_appeal: Aprovar recurso
       associated_report: Relatório associado
       created_at: Datado
       description_html: Estas são ações tomadas contra sua conta e avisos que foram enviados a você pela equipe de %{instance}.
       recipient: Endereçado para
+      reject_appeal: Rejeitar recurso
       status: 'Postagem #%{id}'
       status_removed: Postagem já removida do sistema
       title: "%{action} de %{date}"
@@ -1038,15 +1049,17 @@ pt-BR:
       public: Linhas públicas
       thread: Conversas
     edit:
+      add_keyword: Adicionar palavra-chave
+      keywords: Palavras-chave
       title: Editar filtro
     errors:
       invalid_context: Contexto inválido ou nenhum contexto informado
-      invalid_irreversible: O filtro irreversível só funciona com os contextos página inicial e notificações
     index:
       delete: Remover
       empty: Sem filtros.
       title: Filtros
     new:
+      save: Salvar novo filtro
       title: Adicionar filtro
   footer:
     developers: Desenvolvedores
@@ -1165,6 +1178,8 @@ pt-BR:
     copy_account_note_text: 'Este usuário saiu de %{acct}, aqui estão suas notas anteriores sobre ele:'
   notification_mailer:
     admin:
+      report:
+        subject: "%{name} enviou uma denúncia"
       sign_up:
         subject: "%{name} se inscreveu"
     digest:
@@ -1290,6 +1305,8 @@ pt-BR:
   reports:
     errors:
       invalid_rules: não faz referência a regras válidas
+  rss:
+    content_warning: 'Aviso de conteúdo:'
   scheduled_statuses:
     over_daily_limit: Você excedeu o limite de %{limit} toots agendados para esse dia
     over_total_limit: Você excedeu o limite de %{limit} toots agendados

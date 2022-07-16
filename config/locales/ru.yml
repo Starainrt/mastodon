@@ -40,7 +40,7 @@ ru:
       one: пост
       other: поста
     status_count_before: И опубликовано
-    tagline: Подписывайтесь на друзей и заводите новые знакомства
+    tagline: Децентрализованная социальная сеть
     terms: Условия использования
     unavailable_content: Недоступный контент
     unavailable_content_description:
@@ -91,10 +91,8 @@ ru:
     posts_tab_heading: Посты
     posts_with_replies: Посты с ответами
     roles:
-      admin: Администратор
       bot: Бот
       group: Группа
-      moderator: Модератор
     unavailable: Профиль недоступен
     unfollow: Отписаться
   admin:
@@ -113,12 +111,17 @@ ru:
       avatar: Аватар
       by_domain: Домен
       change_email:
-        changed_msg: E-mail учётной записи успешно изменён!
+        changed_msg: Адрес эл. почты успешно изменен!
         current_email: Текущий e-mail
         label: Сменить e-mail
         new_email: Новый e-mail
         submit: Сменить e-mail
         title: Сменить e-mail для %{username}
+      change_role:
+        changed_msg: Роль успешно изменена!
+        label: Изменить роль
+        no_role: Нет роли
+        title: Изменить роль %{username}
       confirm: Подтвердить
       confirmed: Подтверждено
       confirming: Подтверждение
@@ -162,6 +165,7 @@ ru:
         active: Действующие
         all: Все
         pending: В ожидании
+        silenced: Ограниченные
         suspended: Заблокированные
         title: Модерация
       moderation_notes: Заметки модератора
@@ -169,6 +173,7 @@ ru:
       most_recent_ip: Последний IP
       no_account_selected: Ничего не изменилось, так как ни одна учётная запись не была выделена
       no_limits_imposed: Без ограничений
+      no_role_assigned: Роль не присвоена
       not_subscribed: Не подписаны
       pending: Ожидает рассмотрения
       perform_full_suspension: Блокировка
@@ -197,12 +202,7 @@ ru:
       reset: Сбросить
       reset_password: Сбросить пароль
       resubscribe: Переподписаться
-      role: Разрешения
-      roles:
-        admin: Администратор
-        moderator: Модератор
-        staff: Персонал
-        user: Пользователь
+      role: Роль
       search: Поиск
       search_same_email_domain: Другие пользователи с тем же доменом электронной почты
       search_same_ip: Другие пользователи с таким же IP
@@ -403,6 +403,21 @@ ru:
       media_storage: Медиа файлы
       new_users: новые пользователи
       opened_reports: жалоб открыто
+      pending_reports_html:
+        few: "<strong>%{count}</strong> ожидающих отчета"
+        many: "<strong>%{count}</strong> ожидающих отчетов"
+        one: "<strong>%{count}</strong> ожидающий отчет"
+        other: "<strong>%{count}</strong> ожидающих отчетов"
+      pending_tags_html:
+        few: "<strong>%{count}</strong> ожидающих хэштега"
+        many: "<strong>%{count}</strong> ожидающих хэштегов"
+        one: "<strong>%{count}</strong> ожидающий хэштег"
+        other: "<strong>%{count}</strong> ожидающих хэштегов"
+      pending_users_html:
+        few: "<strong>%{count}</strong> ожидающих пользователя"
+        many: "<strong>%{count}</strong> ожидающих пользователей"
+        one: "<strong>%{count}</strong> ожидающий пользователь"
+        other: "<strong>%{count}</strong> ожидающих пользователей"
       resolved_reports: жалоб решено
       software: Программное обеспечение
       sources: Источники регистрации
@@ -484,6 +499,11 @@ ru:
       unsuppress: Восстановить рекомендацию
     instances:
       availability:
+        failures_recorded:
+          few: Попытки неудачны уже %{count} дня.
+          many: Попытки неудачны уже %{count} дней.
+          one: Попытки неудачны %{count} день.
+          other: Попытки неудачны уже %{count} дней.
         no_failures_recorded: Сбоев в записи нет.
         title: Доступность
         warning: Последняя попытка подключения к этому серверу не удалась
@@ -496,10 +516,12 @@ ru:
         comment: Внутренняя заметка
         policies:
           reject_media: Отклонить медиа
+          reject_reports: Отклонять жалобы
           silence: Лимит
           suspend: Приостановить
         policy: Политика
         reason: Публичная причина
+        title: Политика контента
       dashboard:
         instance_accounts_dimension: Популярные аккаунты
         instance_accounts_measure: сохраненные учетные записи
@@ -639,6 +661,38 @@ ru:
       unresolved: Нерешённые
       updated_at: Обновлена
       view_profile: Открыть профиль
+    roles:
+      add_new: Добавить роль
+      assigned_users:
+        few: "%{count} пользователя"
+        many: "%{count} пользователей"
+        one: "%{count} пользователь"
+        other: "%{count} пользователей"
+      categories:
+        administration: Администрация
+        devops: DevOps
+        invites: Приглашения
+        moderation: Модерация
+        special: Особые
+      delete: Удалить
+      description_html: С помощью <strong>ролей пользователей</strong> вы можете настроить, к каким функциям и областям Mastodon у ваших пользователей будет доступ.
+      edit: Изменить роль '%{name}' '
+      everyone: Разрешения по умолчанию
+      everyone_full_description_html: Это <strong>базовая роль</strong>, касающаяся <strong>всех пользователей</strong>, даже тех, кто не имеет назначенной роли. Все другие роли наследуют разрешения от нее.
+      permissions_count:
+        few: "%{count} разрешения"
+        many: "%{count} разрешений"
+        one: "%{count} разрешение"
+        other: "%{count} разрешений"
+      privileges:
+        administrator: Администратор
+        delete_user_data: Удалить пользовательские данные
+        delete_user_data_description: Позволяет пользователям удалять данные других пользователей без задержки
+        invite_users: Пригласить пользователей
+        invite_users_description: Позволяет пользователям приглашать новых людей на сервер
+        manage_announcements: Управление объявлениями
+        manage_announcements_description: Позволяет пользователям управлять объявлениями на сервере
+      title: Роли
     rules:
       add_new: Добавить правило
       delete: Удалить
@@ -691,9 +745,6 @@ ru:
         deletion:
           desc_html: Позволяет всем удалять собственные учётные записи
           title: Разрешить удаление учётных записей
-        min_invite_role:
-          disabled: Никого
-          title: Разрешать приглашения от
         require_invite_text:
           desc_html: Когда регистрация требует ручного подтверждения, сделать ответ на вопрос "Почему вы хотите присоединиться?" обязательным, а не опциональным
           title: Обязать новых пользователей заполнять текст запроса на приглашение
@@ -706,9 +757,6 @@ ru:
       show_known_fediverse_at_about_page:
         desc_html: Если включено, показывает посты со всех известных узлов в предпросмотре ленты. В противном случае отображаются только локальные посты.
         title: Показывать контент со всей федерации в публичной ленте неавторизованным пользователям
-      show_staff_badge:
-        desc_html: Показывать метку персонала на странице пользователя
-        title: Показывать метку персонала
       site_description:
         desc_html: Отображается в качестве параграфа на титульной странице и используется в качестве мета-тега.<br>Можно использовать HTML-теги, в особенности <code>&lt;a&gt;</code> и <code>&lt;em&gt;</code>.
         title: Описание сайта
@@ -803,6 +851,13 @@ ru:
       statuses:
         allow: Разрешить пост
         allow_account: Разрешить автора
+        disallow: Запретить пост
+        disallow_account: Запретить автора
+        shared_by:
+          few: Поделились или добавили в избранное %{friendly_count} раза
+          many: Поделились или добавили в избранное %{friendly_count} раз
+          one: Поделились или добавили в избранное один раз
+          other: Поделились или добавили в избранное %{friendly_count} раз
         title: Популярные посты
       tags:
         current_score: Текущий счет %{score}
@@ -818,6 +873,7 @@ ru:
         peaked_on_and_decaying: Последний пик — %{date}, сейчас идёт на спад
         title: Актуальные хэштеги
         trendable: Может появляться в списке «актуального»
+        trending_rank: 'Популярное #%{rank}'
         usable: Может использоваться
         usage_comparison: Использовано %{today} сегодня, для сравнения вчера %{yesterday}
         used_by_over_week:
@@ -833,12 +889,35 @@ ru:
       edit_preset: Удалить шаблон предупреждения
       empty: Вы еще не определили пресеты предупреждений.
       title: Управление шаблонами предупреждений
+    webhooks:
+      add_new: Добавить конечную точку
+      delete: Удалить
+      description_html: "<strong>Вебхуки</strong> позволяют Mastodon отправлять вашим приложениям <strong>уведомления в реальном времени</strong> о выбранных происходящих событиях, а они могут <strong>обрабатывать их в автоматическом режиме</strong>."
+      disable: Отключить
+      disabled: Отключено
+      edit: Редактировать вебхук
+      empty: У вас пока нет настроенных конечных точек вебхуков.
+      enable: Включить
+      enabled: Активен
+      enabled_events:
+        few: "%{count} события включено"
+        many: "%{count} событий включено"
+        one: "%{count} событие включено"
+        other: "%{count} событий включено"
+      events: События
+      new: Новый вебхук
+      rotate_secret: Сгенерировать новый
+      secret: Ключ подписи
+      status: Состояние
+      title: Вебхуки
+      webhook: Вебхук
   admin_mailer:
     new_appeal:
       actions:
         none: предупреждение
         silence: ограничить учётную запись
         suspend: приостановить действие учётной записи
+      body: "%{target} обжалуют решение модератора %{action_taken_by} от %{date}, которое %{type}. Они написали:"
       subject: "%{username} обжалует решение модерации на %{instance}"
     new_pending_account:
       body: Ниже указана информация учётной записи. Вы можете одобрить или отклонить заявку.
@@ -856,6 +935,7 @@ ru:
       new_trending_tags:
         no_approved_tags: На данный момент популярные подтвержденные хэштеги отсутствуют.
         title: Популярные хэштеги
+      subject: Новые тренды для проверки на %{instance}
   aliases:
     add_new: Создать псевдоним
     created_msg: Новый псевдоним установлен. Теперь мы можете начать миграцию со старой учётной записи.
@@ -885,7 +965,6 @@ ru:
   applications:
     created: Приложение успешно создано
     destroyed: Приложение успешно удалено
-    invalid_url: Введенный URL неверен
     regenerate_token: Повторно сгенерировать токен доступа
     token_regenerated: Токен доступа успешно сгенерирован
     warning: Будьте очень внимательны с этими данными. Не делитесь ими ни с кем!
@@ -1073,15 +1152,26 @@ ru:
       public: Публичные ленты
       thread: Диалоги
     edit:
+      add_keyword: Добавить ключевое слово
+      keywords: Ключевые слова
       title: Изменить фильтр
     errors:
+      deprecated_api_multiple_keywords: Эти параметры нельзя изменить из этого приложения, так как применяются к более чем одному ключевому слову фильтра. Используйте более последнее приложение или веб-интерфейс.
       invalid_context: Некорректный контекст или ничего
-      invalid_irreversible: Необратимая фильтрация работает только с лентой уведомлений и домашней лентой
     index:
+      contexts: Фильтры по %{contexts}
       delete: Удалить
       empty: У вас пока нет фильтров.
+      expires_in: Истекает через %{distance}
+      expires_on: Истекает %{date}
+      keywords:
+        few: "%{count} ключевых слова"
+        many: "%{count} ключевых слов"
+        one: "%{count} ключевое слово"
+        other: "%{count} ключевых слов"
       title: Фильтры
     new:
+      save: Сохранить новый фильтр
       title: Добавить фильтр
   footer:
     developers: Разработчикам
@@ -1204,6 +1294,8 @@ ru:
     copy_account_note_text: 'Этот пользователь переехал с %{acct}, вот ваша предыдущая заметка о нём:'
   notification_mailer:
     admin:
+      report:
+        subject: "%{name} отправил жалобу"
       sign_up:
         subject: "%{name} зарегистрирован"
     digest:

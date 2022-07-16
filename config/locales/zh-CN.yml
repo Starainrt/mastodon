@@ -19,7 +19,7 @@ zh-CN:
     continue_to_web: 继续前往网页应用
     discover_users: 发现用户
     documentation: 文档
-    federation_hint_html: 在 %{instance} 上拥有账号后，你可以关注任何兼容Mastodon的服务器上的人。
+    federation_hint_html: 在 %{instance} 上拥有账号后，你可以关注任何兼容 Mastodon 服务器上的人。
     get_apps: 尝试移动应用
     hosted_on: 运行在 %{domain} 上的 Mastodon 站点
     instance_actor_flash: '这个账号是个虚拟账号，不代表任何用户，只用来代表服务器本身。它用于和其它服务器互通，所以不应该被封禁，除非你想封禁整个实例。但是想封禁整个实例的时候，你应该用域名封禁。
@@ -37,7 +37,7 @@ zh-CN:
     status_count_after:
       other: 条嘟文
     status_count_before: 他们共嘟出了
-    tagline: 关注并发现新朋友
+    tagline: 分布式社交网络
     terms: 使用条款
     unavailable_content: 被限制的服务器
     unavailable_content_description:
@@ -79,10 +79,8 @@ zh-CN:
     posts_tab_heading: 嘟文
     posts_with_replies: 嘟文和回复
     roles:
-      admin: 管理员
       bot: 机器人
       group: 群组
-      moderator: 监察员
     unavailable: 个人资料不可用
     unfollow: 取消关注
   admin:
@@ -101,7 +99,6 @@ zh-CN:
       avatar: 头像
       by_domain: 域名
       change_email:
-        changed_msg: 已成功更改账号的电子邮箱！
         current_email: 当前的电子邮箱
         label: 更改电子邮箱
         new_email: 新的电子邮箱
@@ -182,12 +179,6 @@ zh-CN:
       reset: 重置
       reset_password: 重置密码
       resubscribe: 重新订阅
-      role: 用户组
-      roles:
-        admin: 管理员
-        moderator: 监察员
-        staff: 站务人员
-        user: 普通用户
       search: 搜索
       search_same_email_domain: 其他具有相同电子邮箱域名的用户
       search_same_ip: 具有相同IP的其他用户
@@ -419,6 +410,7 @@ zh-CN:
       destroyed_msg: 域名屏蔽已撤销
       domain: 域名
       edit: 编辑域名屏蔽
+      existing_domain_block: 您已经对 %{name} 设置了更严格的限制。
       existing_domain_block_html: 你已经对 %{name} 施加了更严格的限制，你需要先 <a href="%{unblock_url}">解封</a>。
       new:
         create: 添加屏蔽
@@ -434,7 +426,7 @@ zh-CN:
       private_comment: 私密评论
       private_comment_hint: 给这一域名限制添加备注，供监察员内部使用
       public_comment: 公开评论
-      public_comment_hint: 给这一域名限制添加公开的评论，如果你推广你的域名限制列表的话，这些评论就会显示出来。
+      public_comment_hint: 给这一域名限制添加公开的评论，在公告域名限制列表开启时这些评论将会公开可见。
       reject_media: 拒绝接收媒体文件
       reject_media_hint: 删除本站已缓存的媒体文件，并且不再接收来自该域名的任何媒体文件。此选项不影响封禁
       reject_reports: 拒绝接收举报
@@ -686,9 +678,6 @@ zh-CN:
         deletion:
           desc_html: 允许所有人删除自己的帐户
           title: 开放删除帐户权限
-        min_invite_role:
-          disabled: 没有人
-          title: 允许发送邀请的用户组
         require_invite_text:
           desc_html: 当注册需要手动批准时，将“你为什么想要加入？”设为必填项
           title: 要求新用户填写申请注册的原因
@@ -701,9 +690,6 @@ zh-CN:
       show_known_fediverse_at_about_page:
         desc_html: 如果开启，就会在时间轴预览显示其他站点嘟文，否则就只会只显示本站嘟文。
         title: 在时间轴预览中显示其他站点嘟文
-      show_staff_badge:
-        desc_html: 在个人资料页上显示管理人员标志
-        title: 显示管理人员标志
       site_description:
         desc_html: 首页上的介绍文字。 描述一下本 Mastodon 实例的特殊之处以及其他重要信息。可以使用 HTML 标签，包括 <code>&lt;a&gt;</code> 和 <code>&lt;em&gt;</code> 。
         title: 本站简介
@@ -834,6 +820,10 @@ zh-CN:
       edit_preset: 编辑预置警告
       empty: 你尚未定义任何警告预设。
       title: 管理预设警告
+    webhooks:
+      delete: 删除
+      disable: 禁用
+      enable: 启用
   admin_mailer:
     new_appeal:
       actions:
@@ -898,7 +888,6 @@ zh-CN:
   applications:
     created: 应用创建成功
     destroyed: 应用删除成功
-    invalid_url: URL 无效
     regenerate_token: 重置访问令牌
     token_regenerated: 访问令牌重置成功
     warning: 一定小心，千万不要把它分享给任何人！
@@ -1087,10 +1076,11 @@ zh-CN:
       public: 公共时间轴
       thread: 对话
     edit:
+      add_keyword: 添加关键词
+      keywords: 关键词
       title: 编辑过滤器
     errors:
       invalid_context: 过滤器场景没有或无效
-      invalid_irreversible: 此功能只适用于主页时间轴或通知
     index:
       delete: 删除
       empty: 你没有过滤器。
