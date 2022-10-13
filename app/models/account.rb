@@ -62,7 +62,7 @@ class Account < ApplicationRecord
   )
 
   USERNAME_RE   = /[a-z0-9_]+([a-z0-9_\.-]+[a-z0-9_]+)?/i
-  MENTION_RE    = /(?<=^|[^\/[:word:]])@((#{USERNAME_RE})(?:@[[:alnum:]\.\-]+[[:alnum:]]+)?)/i
+  MENTION_RE    = /(?<=^|[^\/[:word:]])@((#{USERNAME_RE})(?:@[[:word:]\.\-]+[[:word:]]+)?)/i
   URL_PREFIX_RE = /\Ahttp(s?):\/\/[^\/]+/
 
   include Attachmentable
@@ -258,6 +258,10 @@ class Account < ApplicationRecord
     update!(memorial: true)
   end
 
+  def trendable
+    boolean_with_default('trendable', Setting.trendable_by_default)
+  end
+
   def sign?
     true
   end
@@ -360,6 +364,10 @@ class Account < ApplicationRecord
 
   def to_param
     username
+  end
+
+  def to_log_human_identifier
+    acct
   end
 
   def excluded_from_timeline_account_ids

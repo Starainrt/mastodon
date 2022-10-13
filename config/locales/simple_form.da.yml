@@ -73,6 +73,10 @@ da:
         actions:
           hide: Skjul filtreret indhold helt (adfærd som om, det ikke fandtes)
           warn: Skjul filtreret indhold bag en advarsel, der nævner filterets titel
+      form_admin_settings:
+        backups_retention_period: Behold genererede brugerarkiver i det angivne antal dage.
+        content_cache_retention_period: Indlæg fra andre servere slettes efter det angivne antal dage, når sat til en positiv værdi. Dette kan være irreversibelt.
+        media_cache_retention_period: Downloadede mediefiler slettes efter det angivne antal dage, når sat til en positiv værdi, og gendownloades på forlangende.
       form_challenge:
         current_password: Du bevæger dig ind på et sikkert område
       imports:
@@ -85,6 +89,7 @@ da:
         ip: Angiv en IPv4- eller IPv6-adresse. Hele intervaller kan blokeres vha. CIDR-syntaksen. Pas på med ikke selv at blive låst ude!
         severities:
           no_access: Blokér adgang til alle ressourcer
+          sign_up_block: Nye tilmeldinger vil ikke være mulige
           sign_up_requires_approval: Nye tilmeldinger kræver din godkendelse
         severity: Afgør, hvordan forespørgsler fra denne IP behandles
       rule:
@@ -206,6 +211,10 @@ da:
         actions:
           hide: Skjul helt
           warn: Skjul bag en advarsel
+      form_admin_settings:
+        backups_retention_period: Brugerarkivs opbevaringsperiode
+        content_cache_retention_period: Indholds-cache opbevaringsperiode
+        media_cache_retention_period: Media-cache opbevaringsperiode
       interactions:
         must_be_follower: Blokér notifikationer fra ikke-følgere
         must_be_following: Blokér notifikationer fra folk, som ikke følges
@@ -219,6 +228,7 @@ da:
         ip: IP
         severities:
           no_access: Blokér adgang
+          sign_up_block: Blokér tilmeldinger
           sign_up_requires_approval: Begræns tilmeldinger
         severity: Regel
       notification_emails:
@@ -251,6 +261,7 @@ da:
         events: Aktive begivenheder
         url: Endepunkts-URL
     'no': Nej
+    not_recommended: Ikke anbefalet
     recommended: Anbefalet
     required:
       mark: "*"

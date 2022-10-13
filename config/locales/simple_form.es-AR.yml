@@ -73,6 +73,10 @@ es-AR:
         actions:
           hide: Ocultar completamente el contenido filtrado, comportándose como si no existiera
           warn: Ocultar el contenido filtrado detrás de una advertencia mencionando el título del filtro
+      form_admin_settings:
+        backups_retention_period: Conservar los archivos historiales generados por el usuario durante el número de días especificado.
+        content_cache_retention_period: Los mensajes de otros servidores se eliminarán después del número especificado de días cuando se establezca un valor positivo. Esto puede ser irreversible.
+        media_cache_retention_period: Los archivos de medios descargados se eliminarán después del número especificado de días cuando se establezca un valor positivo, y se volverán a descargar a pedido.
       form_challenge:
         current_password: Estás ingresando en un área segura
       imports:
@@ -85,6 +89,7 @@ es-AR:
         ip: Ingresá una dirección IPv4 ó IPv6. Podés bloquear rangos completos usando la sintaxis CIDR. ¡Tené cuidado de no bloquearte vos mismo!
         severities:
           no_access: Bloquear acceso a todos los recursos
+          sign_up_block: Los nuevos registros se deshabilitarán
           sign_up_requires_approval: Los nuevos registros requerirán tu aprobación
         severity: Elegí lo que pasará con las solicitudes desde esta dirección IP
       rule:
@@ -206,6 +211,10 @@ es-AR:
         actions:
           hide: Ocultar completamente
           warn: Ocultar con una advertencia
+      form_admin_settings:
+        backups_retention_period: Período de retención del archivo historial del usuario
+        content_cache_retention_period: Período de retención de la caché de contenido
+        media_cache_retention_period: Período de retención de la caché de medios
       interactions:
         must_be_follower: Bloquear notificaciones de cuentas que no te siguen
         must_be_following: Bloquear notificaciones de cuentas que no seguís
@@ -219,6 +228,7 @@ es-AR:
         ip: Dirección IP
         severities:
           no_access: Bloquear acceso
+          sign_up_block: Bloquear registros
           sign_up_requires_approval: Limitar registros
         severity: Regla
       notification_emails:
@@ -251,6 +261,7 @@ es-AR:
         events: Eventos habilitados
         url: Dirección web del punto final
     'no': 'No'
+    not_recommended: No recomendado
     recommended: Opción recomendada
     required:
       mark: "*"

@@ -73,6 +73,10 @@ pl:
         actions:
           hide: Całkowicie ukryj przefiltrowaną zawartość, jakby nie istniała
           warn: Ukryj filtrowaną zawartość za ostrzeżeniem wskazującym tytuł filtra
+      form_admin_settings:
+        backups_retention_period: Zachowaj wygenerowane archiwa użytkownika przez określoną liczbę dni.
+        content_cache_retention_period: Posty z innych serwerów zostaną usunięte po określonej liczbie dni, kiedy liczba jest ustawiona na wartość dodatnią. Może to być nieodwracalne.
+        media_cache_retention_period: Pobrane pliki multimedialne zostaną usunięte po określonej liczbie dni po ustawieniu na wartość dodatnią i ponownie pobrane na żądanie.
       form_challenge:
         current_password: Wchodzisz w strefę bezpieczną
       imports:
@@ -85,6 +89,7 @@ pl:
         ip: Wprowadź adres IPv4 lub IPv6. Możesz zablokować całe zakresy za pomocą składni CIDR. Uważaj, aby się nie zablokować!
         severities:
           no_access: Zablokuj dostęp do wszystkich zasobów
+          sign_up_block: Nowe rejestracje nie będą możliwe
           sign_up_requires_approval: Nowe rejestracje będą wymagać twojej zgody
         severity: Wybierz co ma się stać z żadaniami z tego adresu IP
       rule:
@@ -96,7 +101,12 @@ pl:
         name: Możesz zmieniać tylko wielkość liter, np. aby były bardziej widoczne
       user:
         chosen_languages: Jeżeli zaznaczone, tylko wpisy w wybranych językach będą wyświetlane na publicznych osiach czasu
+        role: Rola kontroluje uprawnienia użytkownika
       user_role:
+        color: Kolor używany dla roli w całym interfejsie użytkownika, wyrażony jako RGB w formacie szesnastkowym
+        highlighted: To sprawia, że rola jest widoczna publicznie
+        name: Publiczna nazwa roli, jeśli włączone jest wyświetlanie odznaki
+        permissions_as_keys: Użytkownicy z tą rolą będą mieli dostęp do...
         position: Wyższa rola decyduje o rozwiązywaniu konfliktów w pewnych sytuacjach. Niektóre działania mogą być wykonywane tylko na rolach z niższym priorytetem
       webhook:
         events: Wybierz zdarzenia do wysłania
@@ -201,6 +211,10 @@ pl:
         actions:
           hide: Ukryj całkowicie
           warn: Ukryj z ostrzeżeniem
+      form_admin_settings:
+        backups_retention_period: Okres przechowywania archiwum użytkownika
+        content_cache_retention_period: Okres przechowywania pamięci podręcznej
+        media_cache_retention_period: Okres przechowywania pamięci podręcznej
       interactions:
         must_be_follower: Nie wyświetlaj powiadomień od osób, które Cię nie śledzą
         must_be_following: Nie wyświetlaj powiadomień od osób, których nie śledzisz
@@ -214,6 +228,7 @@ pl:
         ip: Adres IP
         severities:
           no_access: Zablokuj dostęp
+          sign_up_block: Zablokuj nowe rejestracje
           sign_up_requires_approval: Ogranicz rejestracje
         severity: Reguła
       notification_emails:
@@ -234,10 +249,19 @@ pl:
         name: Hashtag
         trendable: Pozwól na wyświetlanie tego hashtagu w „Na czasie”
         usable: Pozwól na umieszczanie tego hashtagu we wpisach
+      user:
+        role: Rola
+      user_role:
+        color: Kolor odznaki
+        highlighted: Wyświetl rolę jako odznakę na profilach użytkowników
+        name: Nazwa
+        permissions_as_keys: Uprawnienia
+        position: Priorytet
       webhook:
         events: Włączone zdarzenia
         url: Endpoint URL
     'no': Nie
+    not_recommended: Niezalecane
     recommended: Polecane
     required:
       mark: "*"
