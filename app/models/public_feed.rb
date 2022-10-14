@@ -92,6 +92,7 @@ class PublicFeed
  
   def instance_only_statuses_scope
     Status.where(local_only: [false, nil])
+  end
 
   def language_scope
     if account&.chosen_languages.present?
