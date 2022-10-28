@@ -2,73 +2,26 @@
 es-AR:
   about:
     about_mastodon_html: 'La red social del futuro: ¡sin publicidad, sin vigilancia corporativa, con diseño ético y descentralización! ¡Con Mastodon vos sos el dueño de tus datos!'
-    about_this: Acerca de Mastodon
-    administered_by: 'Administrado por:'
-    api: API
-    apps: Aplicaciones móviles
-    contact: Contacto
     contact_missing: No establecido
     contact_unavailable: No disponible
-    documentation: Documentación
     hosted_on: Mastodon alojado en %{domain}
-    instance_actor_flash: |
-      Esta cuenta es un actor virtual usado para representar al propio servidor y no a ningún usuario individual.
-      Se usa para fines federativos y no debe ser bloqueado a menos que quieras bloquear toda la instancia, en cuyo caso deberías usar un bloqueo de dominio.
-    privacy_policy: Política de privacidad
-    rules: Reglas del servidor
-    rules_html: 'Abajo hay un resumen de las reglas que tenés que seguir si querés tener una cuenta en este servidor de Mastodon:'
-    source_code: Código fuente
-    status_count_after:
-      one: mensaje
-      other: mensajes
-    status_count_before: Que enviaron
-    unavailable_content: Servidores moderados
-    unavailable_content_description:
-      domain: Servidor
-      reason: Motivo
-      rejecting_media: 'Los archivos de medios de este servidor no van a ser procesados y no se mostrarán miniaturas, lo que requiere un clic manual hacia el archivo original:'
-      rejecting_media_title: Medios filtrados
-      silenced: 'Los mensajes de estos servidores se ocultarán en las líneas temporales y conversaciones públicas, y no se generarán notificaciones de las interacciones de sus usuarios, a menos que los estés siguiendo:'
-      silenced_title: Servidores limitados
-      suspended: 'No se procesarán, almacenarán o intercambiarán datos de estos servidores, haciendo imposible cualquier interacción o comunicación con los usuarios de estos servidores:'
-      suspended_title: Servidores suspendidos
-    unavailable_content_html: Mastodon generalmente te permite ver contenido e interactuar con usuarios de cualquier otro servidor en el fediverso. Estas son las excepciones que se hicieron en este servidor en particular.
-    user_count_after:
-      one: usuario
-      other: usuarios
-    user_count_before: Hogar de
-    what_is_mastodon: "¿Qué es Mastodon?"
+    title: Información
   accounts:
-    choices_html: 'Recomendados de %{name}:'
-    endorsements_hint: Podés recomendar, desde la interface web, a cuentas que seguís, y van a aparecer acá.
-    featured_tags_hint: Podés destacar etiquetas específicas que se mostrarán acá.
     follow: Seguir
     followers:
       one: Seguidor
       other: Seguidores
     following: Siguiendo
     instance_actor_flash: Esta cuenta es un actor virtual usado para representar al servidor en sí mismo y no a ningún usuario individual. Se usa para propósitos de la federación y no debe ser suspendido.
-    joined: En este servidor desde %{date}
     last_active: última actividad
     link_verified_on: La propiedad de este enlace fue verificada el %{date}
-    media: Medios
-    moved_html: "%{name} se mudó a %{new_profile_link}:"
-    network_hidden: Esta información no está disponible
     nothing_here: "¡No hay nada acá!"
-    people_followed_by: "%{name} sigue a estas personas"
-    people_who_follow: Estas personas siguen a %{name}
     pin_errors:
       following: Ya tenés que estar siguiendo a la cuenta que querés recomendar
     posts:
       one: Mensaje
       other: Mensajes
     posts_tab_heading: Mensajes
-    posts_with_replies: Mensajes y respuestas
-    roles:
-      bot: Bot
-      group: Grupo
-    unavailable: Perfil no disponible
-    unfollow: Dejar de seguir
   admin:
     account_actions:
       action: Ejecutar acción
@@ -371,6 +324,7 @@ es-AR:
       listed: Listados
       new:
         title: Agregar nuevo emoji personalizado
+      no_emoji_selected: No se cambió ningún emoji, ya que ninguno fue seleccionado
       not_permitted: No tenés permiso para realizar esta acción
       overwrite: Sobreescribir
       shortcode: Código corto
@@ -471,7 +425,7 @@ es-AR:
       status: Estado
       suppress: Eliminar recomendación de cuentas para seguir
       suppressed: Eliminado
-      title: Recomendaciones de cuentas para seguir
+      title: Recom. de cuentas a seguir
       unsuppress: Restablecer recomendaciones de cuentas para seguir
     instances:
       availability:
@@ -713,82 +667,40 @@ es-AR:
       empty: Aún no se han definido las reglas del servidor.
       title: Reglas del servidor
     settings:
-      activity_api_enabled:
-        desc_html: Conteos de mensajes publicados localmente, usuarios activos y nuevos registros en tandas semanales
-        title: Publicar estadísticas agregadas sobre la actividad del usuario en la API
-      bootstrap_timeline_accounts:
-        desc_html: Separar múltiples nombres de usuario con coma. Sólo funcionarán las cuentas locales y desbloqueadas. Predeterminadamente, cuando está vacío se trata de todos los administradores locales.
-        title: Recomendar estas cuentas a usuarios nuevos
-      contact_information:
-        email: Correo electrónico de negocios
-        username: Nombre de usuario de contacto
-      custom_css:
-        desc_html: Modificá la apariencia con CSS cargado en cada página
-        title: CSS personalizado
-      default_noindex:
-        desc_html: Afecta a todos los usuarios que no cambiaron esta configuración por sí mismos
-        title: Quitar predeterminadamente a los usuarios de la indexación de los motores de búsqueda
+      about:
+        manage_rules: Administrar reglas del servidor
+        preamble: Proveé información en profundidad sobre cómo el servidor es operado, moderado y financiado.
+        rules_hint: Hay un área dedicada para las reglas a las que se espera que tus usuarios se adhieran.
+        title: Información
+      appearance:
+        preamble: Personalizá la interface web de Mastodon.
+        title: Apariencia
+      branding:
+        preamble: La marca de tu servidor lo diferencia de otros servidores de la red. Esta información puede mostrarse a través de una variedad de entornos, como en la interface web de Mastodon, en aplicaciones nativas, en previsualizaciones de enlaces en otros sitios web y en aplicaciones de mensajería, etc. Por esta razón, es mejor mantener esta información clara, breve y concisa.
+        title: Marca
+      content_retention:
+        preamble: Controlá cómo el contenido generado por el usuario se almacena en Mastodon.
+        title: Retención de contenido
+      discovery:
+        follow_recommendations: Recom. de cuentas a seguir
+        preamble: Exponer contenido interesante a la superficie es fundamental para incorporar nuevos usuarios que pueden no conocer a nadie Mastodon. Controlá cómo funcionan varias opciones de descubrimiento en tu servidor.
+        profile_directory: Directorio de perfiles
+        public_timelines: Líneas temporales públicas
+        title: Descubrí
+        trends: Tendencias
       domain_blocks:
         all: A todos
         disabled: A nadie
-        title: Mostrar dominios bloqueados
         users: A usuarios locales con sesiones abiertas
-      domain_blocks_rationale:
-        title: Mostrar razonamiento
-      hero:
-        desc_html: Mostrado en la página principal. Se recomienda un tamaño mínimo de 600x100 píxeles. Predeterminadamente se establece a la miniatura del servidor
-        title: Imagen de portada
-      mascot:
-        desc_html: Mostrado en múltiples páginas. Se recomienda un tamaño mínimo de 293x205 píxeles. Cuando no se especifica, se muestra la mascota predeterminada
-        title: Imagen de la mascota
-      peers_api_enabled:
-        desc_html: Nombres de dominio que este servidor encontró en el fediverso
-        title: Publicar lista de servidores descubiertos en la API
-      preview_sensitive_media:
-        desc_html: Las previsualizaciones de enlaces en otros sitios web mostrarán una miniatura incluso si el medio está marcado como contenido sensible
-        title: Mostrar medios sensibles en previsualizaciones de OpenGraph
-      profile_directory:
-        desc_html: Permitir que los usuarios puedan ser descubiertos
-        title: Habilitar directorio de perfiles
       registrations:
-        closed_message:
-          desc_html: Mostrado en la página principal cuando los registros de nuevas cuentas están cerrados. Podés usar etiquetas HTML
-          title: Mensaje de registro de nuevas cuentas cerrado
-        require_invite_text:
-          desc_html: Cuando los registros requieran aprobación manual, hacé que la solicitud de invitación "¿Por qué querés unirte?" sea obligatoria, en vez de opcional
-          title: Requerir que los nuevos usuarios llenen un texto de solicitud de invitación
+        preamble: Controlá quién puede crear una cuenta en tu servidor.
+        title: Registros
       registrations_mode:
         modes:
           approved: Se requiere aprobación para registrarse
           none: Nadie puede registrarse
           open: Cualquiera puede registrarse
-        title: Modo de registros
-      site_description:
-        desc_html: Párrafo introductorio en la API. Describe qué hace especial a este servidor de Mastodon y todo lo demás que sea importante. Podés usar etiquetas HTML, en particular <code>&lt;a&gt;</code> y <code>&lt;em&gt;</code>.
-        title: Descripción del servidor
-      site_description_extended:
-        desc_html: Un buen lugar para tu código de conducta, reglas, directrices y otras cosas que definen tu servidor. Podés usar etiquets HTML
-        title: Información extendida personalizada
-      site_short_description:
-        desc_html: Mostrado en la barra lateral y las etiquetas de metadatos. Describe qué es Mastodon y qué hace especial a este servidor en un solo párrafo.
-        title: Descripción corta del servidor
-      site_terms:
-        desc_html: Podés escribir tu propia política de privacidad. Podés usar etiquetas HTML
-        title: Política de privacidad personalizada
-      site_title: Nombre del servidor
-      thumbnail:
-        desc_html: Usado para previsualizaciones vía OpenGraph y APIs. Se recomienda 1200x630 píxeles
-        title: Miniatura del servidor
-      timeline_preview:
-        desc_html: Mostrar enlace a la línea temporal pública en la página de inicio y permitir el acceso a la API a la línea temporal pública sin autenticación
-        title: Permitir acceso no autorizado a la línea temporal pública
-      title: Configuración del sitio
-      trendable_by_default:
-        desc_html: El contenido de tendencias específicas todavía puede ser explícitamente desactivado
-        title: Permitir tendencias sin revisión previa
-      trends:
-        desc_html: Mostrar públicamente etiquetas previamente revisadas que son tendencia actualmente
-        title: Tendencias
+      title: Configuraciones del servidor
     site_uploads:
       delete: Eliminar archivo subido
       destroyed_msg: "¡Subida al sitio eliminada exitosamente!"
@@ -842,6 +754,9 @@ es-AR:
         description_html: Estos son enlaces que actualmente están siendo muy compartidos por cuentas desde las que tu servidor ve los mensajes. Esto puede ayudar a tus usuarios a averiguar qué está pasando en el mundo. No hay enlaces que se muestren públicamente hasta que autoricés al publicador. También podés permitir o rechazar enlaces individuales.
         disallow: Rechazar enlace
         disallow_provider: Rechazar medio
+        no_link_selected: No se cambió ningún enlace, ya que ninguno fue seleccionado
+        publishers:
+          no_publisher_selected: No se cambió ningún medio, ya que ninguno fue seleccionado
         shared_by_over_week:
           one: Compartido por una persona durante la última semana
           other: Compartido por %{count} personas durante la última semana
@@ -861,6 +776,7 @@ es-AR:
         description_html: Estos son mensajes que tu servidor detecta que están siendo compartidos y marcados como favoritos muchas veces en este momento. Esto puede ayudar a tus usuarios nuevos y retornantes a encontrar más cuentas para seguir. No hay mensajes que se muestren públicamente hasta que aprobés al autor, y el autor permita que su cuenta sea sugerida a otros. También podés permitir o rechazar mensajes individuales.
         disallow: Rechazar mensaje
         disallow_account: Rechazar autor
+        no_status_selected: No se cambió ningún mensaje en tendencia, ya que ninguno fue seleccionado
         not_discoverable: El autor optó ser detectable
         shared_by:
           one: Compartido o marcado como favorito una vez
@@ -876,6 +792,7 @@ es-AR:
           tag_uses_measure: usos totales
         description_html: Estas son etiquetas que están apareciendo en muchos mensajes que tu servidor ve. Esto puede ayudar a tus usuarios a averiguar de qué habla la gente en estos momentos. No hay etiquetas que se muestren públicamente hasta que las aprobés.
         listable: Pueden ser recomendadas
+        no_tag_selected: No se cambió ninguna etiqueta, ya que ninguna fue seleccionada
         not_listable: No serán recomendadas
         not_trendable: No aparecerán en tendencias
         not_usable: No podrán ser usadas
@@ -1199,9 +1116,6 @@ es-AR:
         hint: Este filtro se aplica a la selección de mensajes individuales, independientemente de otros criterios. Podés agregar más mensajes a este filtro desde la interface web.
         title: Mensajes filtrados
   footer:
-    developers: Desarrolladores
-    more: Más…
-    resources: Recursos
     trending_now: Tendencia ahora
   generic:
     all: Todas
@@ -1244,7 +1158,6 @@ es-AR:
       following: Lista de seguidos
       muting: Lista de silenciados
     upload: Subir
-  in_memoriam_html: Cuenta conmemorativa.
   invites:
     delete: Desactivar
     expired: Vencidas
@@ -1424,22 +1337,7 @@ es-AR:
     remove_selected_follows: Dejar de seguir a los usuarios seleccionados
     status: Estado de la cuenta
   remote_follow:
-    acct: Ingresá tu usuario@dominio desde el que querés continuar
     missing_resource: No se pudo encontrar la dirección web de redireccionamiento requerida para tu cuenta
-    no_account_html: "¿No tenés cuenta? Podés <a href='%{sign_up_path}' target='_blank'>registrarte acá</a>"
-    proceed: Proceder para seguir
-    prompt: 'Vas a seguir a:'
-    reason_html: "<strong>¿Por qué es necesario este paso?</strong> <code>%{instance}</code> puede que no sea el servidor donde estás registrado, así que necesitamos redirigirte primero a tu servidor de origen."
-  remote_interaction:
-    favourite:
-      proceed: Proceder para marcar como favorito
-      prompt: 'Vas a marcar este mensaje como favorito:'
-    reblog:
-      proceed: Proceder para adherir
-      prompt: 'Vas a adherir a este mensaje:'
-    reply:
-      proceed: Proceder para responder
-      prompt: 'Vas a responder a este mensaje:'
   reports:
     errors:
       invalid_rules: no hace referencia a reglas válidas
@@ -1513,9 +1411,9 @@ es-AR:
     preferences: Configuración
     profile: Perfil
     relationships: Seguimientos
-    statuses_cleanup: Eliminación automática de mensajes
+    statuses_cleanup: Eliminación auto. de mensajes
     strikes: Moderación de incumplimientos
-    two_factor_authentication: Autenticación de dos factores
+    two_factor_authentication: Aut. de dos factores
     webauthn_authentication: Llaves de seguridad
   statuses:
     attached:

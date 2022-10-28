@@ -1,27 +1,5 @@
 ---
 br:
-  about:
-    about_this: Diàr-benn
-    api: API
-    apps: Arloadoù pellgomz
-    contact: Darempred
-    rules: Reolennoù ar servijer
-    source_code: Boneg tarzh
-    status_count_after:
-      few: toud
-      many: toud
-      one: toud
-      other: toud
-      two: toud
-    unavailable_content_description:
-      domain: Dafariad
-    user_count_after:
-      few: implijer·ez
-      many: implijer·ez
-      one: implijer·ez
-      other: implijer·ez
-      two: implijer·ez
-    what_is_mastodon: Petra eo Mastodon?
   accounts:
     follow: Heuliañ
     followers:
@@ -31,7 +9,6 @@ br:
       other: Heulier·ez
       two: Heulier·ez
     following: O heuliañ
-    media: Media
     posts:
       few: Toud
       many: Toud
@@ -39,12 +16,6 @@ br:
       other: Toud
       two: Toud
     posts_tab_heading: Toudoù
-    posts_with_replies: Toudoù ha respontoù
-    roles:
-      bot: Robot
-      group: Strollad
-    unavailable: Profil dihegerz
-    unfollow: Diheuliañ
   admin:
     accounts:
       avatar: Avatar
@@ -145,8 +116,6 @@ br:
     settings:
       domain_blocks:
         all: D'an holl dud
-      site_title: Anv ar servijer
-      title: Arventennoù al lec'hienn
     statuses:
       deleted: Dilamet
     warning_presets:
@@ -210,9 +179,6 @@ br:
     index:
       delete: Dilemel
       title: Siloù
-  footer:
-    developers: Diorroerien
-    more: Muioc'h…
   generic:
     all: Pep tra
     copy: Eilañ

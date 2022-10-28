@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import Logo from 'mastodon/components/logo';
-import TrendsContainer from 'mastodon/features/getting_started/containers/trends_container';
-import { showTrends, timelinePreview } from 'mastodon/initial_state';
+import { timelinePreview, showTrends } from 'mastodon/initial_state';
 import ColumnLink from './column_link';
 import FollowRequestsColumnLink from './follow_requests_column_link';
 import ListPanel from './list_panel';
 import NotificationsCounterIcon from './notifications_counter_icon';
 import SignInBanner from './sign_in_banner';
+import NavigationPortal from 'mastodon/components/navigation_portal';
 
 const messages = defineMessages({
   home: { id: 'tabs_bar.home', defaultMessage: 'Home' },
@@ -24,6 +24,7 @@ const messages = defineMessages({
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   followsAndFollowers: { id: 'navigation_bar.follows_and_followers', defaultMessage: 'Follows and followers' },
   about: { id: 'navigation_bar.about', defaultMessage: 'About' },
+  search: { id: 'navigation_bar.search', defaultMessage: 'Search' },
 });
 
 export default @injectIntl
@@ -57,7 +58,12 @@ class NavigationPanel extends React.Component {
           </React.Fragment>
         )}
 
-        <ColumnLink transparent to='/explore' icon='hashtag' text={intl.formatMessage(messages.explore)} />
+        {showTrends ? (
+          <ColumnLink transparent to='/explore' icon='hashtag' text={intl.formatMessage(messages.explore)} />
+        ) : (
+          <ColumnLink transparent to='/search' icon='search' text={intl.formatMessage(messages.search)} />
+        )}
+
         {(signedIn || timelinePreview) && (
           <>
             <ColumnLink transparent to='/public/local' icon='users' text={intl.formatMessage(messages.local)} />
@@ -84,7 +90,6 @@ class NavigationPanel extends React.Component {
             <hr />
 
             <ColumnLink transparent href='/settings/preferences' icon='cog' text={intl.formatMessage(messages.preferences)} />
-            <ColumnLink transparent href='/relationships' icon='users' text={intl.formatMessage(messages.followsAndFollowers)} />
           </React.Fragment>
         )}
 
@@ -93,12 +98,7 @@ class NavigationPanel extends React.Component {
           <ColumnLink transparent to='/about' icon='ellipsis-h' text={intl.formatMessage(messages.about)} />
         </div>
 
-        {showTrends && (
-          <React.Fragment>
-            <div className='flex-spacer' />
-            <TrendsContainer />
-          </React.Fragment>
-        )}
+        <NavigationPortal />
       </div>
     );
   }

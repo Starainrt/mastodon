@@ -2,70 +2,25 @@
 sv:
   about:
     about_mastodon_html: Mastodon är ett socialt nätverk baserat på öppna webbprotokoll och gratis, öppen källkodsprogramvara. Det är decentraliserat som e-post.
-    about_this: Om
-    administered_by: 'Administreras av:'
-    api: API
-    apps: Mobilappar
-    contact: Kontakt
     contact_missing: Inte inställd
     contact_unavailable: Ej tillämplig
-    documentation: Dokumentation
     hosted_on: Mastodon-värd på %{domain}
-    instance_actor_flash: "Detta konto är en virtuell agent som används för att representera servern själv och inte någon individuell användare. Det används av sammanslutningsskäl och ska inte blockeras såvitt du inte vill blockera hela instansen, och för detta fall ska domänblockering användas. \n"
-    rules: Serverns regler
-    rules_html: 'Nedan en sammanfattning av kontoreglerna för denna Mastodonserver:'
-    source_code: Källkod
-    status_count_after:
-      one: status
-      other: statusar
-    status_count_before: Som skapat
-    unavailable_content: Otillgängligt innehåll
-    unavailable_content_description:
-      domain: Server
-      reason: Anledning
-      rejecting_media: 'Mediafiler från dessa servers kommer inte hanteras eller lagras, och inga miniatyrer kammer att visas, utan manuell klickning erfordras på originalfilen:'
-      rejecting_media_title: Filtrerade media
-      silenced: 'Poster från dessa servers kommer att döljas i publika tidslinjer och konversationer, och meddelanden kommer inte att genereras från deras användares handlingar, förutom om du följer dem:'
-      silenced_title: Ljuddämpade värddatorer
-      suspended: 'Ingen data från dessa serverdatorer kommer bearbetas, lagras eller bytas ut vilket omöjliggör kommunikation med användare från dessa serverdatorer:'
-      suspended_title: Avstängda värddatorer
-    unavailable_content_html: Mastodon låter dig se material från, och interagera med, andra användare i servernätverket. Det är undantag som gjorts på denna serverdator.
-    user_count_after:
-      one: användare
-      other: användare
-    user_count_before: Hem till
-    what_is_mastodon: Vad är Mastodon?
   accounts:
-    choices_html: "%{name}s val:"
-    endorsements_hint: Från webbgränssnittet kan du rekommendera följare, som sedan visas här.
-    featured_tags_hint: Du kan använda fyrkanter som visas här.
     follow: Följa
     followers:
       one: Följare
       other: Följare
     following: Följer
     instance_actor_flash: Detta konto är en virtuell aktör som används för att representera servern själv och inte någon enskild användare. Den används för federationsändamål och bör inte upphävas.
-    joined: Gick med %{date}
     last_active: senast aktiv
     link_verified_on: Ägarskap för denna länk kontrollerades den %{date}
-    media: Media
-    moved_html: "%{name} har flyttat till %{new_profile_link}:"
-    network_hidden: Denna information är inte tillgänglig
     nothing_here: Det finns inget här!
-    people_followed_by: Personer som %{name} följer
-    people_who_follow: Personer som följer %{name}
     pin_errors:
       following: Du måste vara följare av den person du vill godkänna
     posts:
       one: Tuta
       other: Tutor
     posts_tab_heading: Tutor
-    posts_with_replies: Toots med svar
-    roles:
-      bot: Robot
-      group: Grupp
-    unavailable: Profilen är inte tillgänglig
-    unfollow: Sluta följa
   admin:
     account_actions:
       action: Utför åtgärd
@@ -494,72 +449,15 @@ sv:
       edit: Ändra regel
       title: Serverns regler
     settings:
-      activity_api_enabled:
-        desc_html: Räkning av lokalt postade statusar, aktiva användare och nyregistreringar per vecka
-        title: Publicera uppsamlad statistik om användaraktivitet
-      bootstrap_timeline_accounts:
-        desc_html: Separera flera användarnamn med kommatecken. Endast lokala och olåsta konton kommer att fungera. Standard när det är tomt och alla är lokala administratörer.
-        title: Standard att följa för nya användare
-      contact_information:
-        email: Företag E-post
-        username: Användarnamn för kontakt
-      custom_css:
-        desc_html: Ändra utseendet genom CSS laddat på varje sida
-        title: Anpassad CSS
-      default_noindex:
-        desc_html: Påverkar alla användare som inte har ändrat denna inställning själva
-        title: Undantag användare från sökmotorindexering som standard
       domain_blocks:
         all: Till alla
         disabled: För ingen
-        title: Visa domän-blockeringar
         users: För inloggade lokala användare
-      domain_blocks_rationale:
-        title: Visa motiv
-      hero:
-        desc_html: Visas på framsidan. Minst 600x100px rekommenderas. Om inte angiven faller den tillbaka på instansens miniatyrbild
-        title: Hjältebild
-      mascot:
-        title: Maskot bild
-      peers_api_enabled:
-        desc_html: Domännamn denna instans har påträffat i fediverse
-        title: Publicera lista över upptäckta instanser
-      preview_sensitive_media:
-        title: Visa känsligt media i OpenGraph-förhandsvisningar
-      profile_directory:
-        desc_html: Tillåt användare att upptäckas
-        title: Aktivera profil-mapp
-      registrations:
-        closed_message:
-          desc_html: Visas på framsidan när registreringen är stängd. Du kan använda HTML-taggar
-          title: Stängt registreringsmeddelande
-        require_invite_text:
-          desc_html: När nyregistrering kräver manuellt godkännande, gör det obligatoriskt att fylla i text i fältet "Varför vill du gå med?"
-          title: Kräv att nya användare fyller i en inbjudningsförfrågan
       registrations_mode:
         modes:
           approved: Godkännande krävs för registrering
           none: Ingen kan registrera
           open: Alla kan registrera
-        title: Registreringsläge
-      site_description:
-        desc_html: Inledande stycke på framsidan och i metataggar. Du kan använda HTML-taggar, i synnerhet <code>&lt;a&gt;</code> och <code>&lt;em&gt;</code>.
-        title: Instansbeskrivning
-      site_description_extended:
-        desc_html: Ett bra ställe för din uppförandekod, regler, riktlinjer och andra saker som stämmer med din instans. Du kan använda HTML-taggar
-        title: Egentillverkad utökad information
-      site_short_description:
-        title: Kort beskrivning av servern
-      site_title: Namn på instans
-      thumbnail:
-        desc_html: Används för förhandsgranskningar via OpenGraph och API. 1200x630px rekommenderas
-        title: Instans tumnagelbild
-      timeline_preview:
-        desc_html: Visa offentlig tidslinje på landingsidan
-        title: Förhandsgranska tidslinje
-      title: Sidans inställningar
-      trends:
-        title: Trendande hashtaggar
     site_uploads:
       delete: Radera uppladdad fil
     statuses:
@@ -773,9 +671,6 @@ sv:
     new:
       title: Lägg till nytt filter
   footer:
-    developers: Utvecklare
-    more: Mer…
-    resources: Resurser
     trending_now: Trendar nu
   generic:
     all: Alla
@@ -804,7 +699,6 @@ sv:
       following: Lista av följare
       muting: Lista av nertystade
     upload: Ladda upp
-  in_memoriam_html: Till minne av.
   invites:
     delete: Avaktivera
     expired: Utgånget
@@ -965,19 +859,7 @@ sv:
     remove_selected_follows: Sluta följ valda användare
     status: Kontostatus
   remote_follow:
-    acct: Ange ditt användarnamn@domän du vill följa från
     missing_resource: Det gick inte att hitta den begärda omdirigeringsadressen för ditt konto
-    no_account_html: Har du inget konto? Du kan <a href='%{sign_up_path}' target='_blank'>registrera dig här</a>
-    proceed: Fortsätt för att följa
-    prompt: 'Du kommer att följa:'
-    reason_html: "<strong>Varför är det här steget nödvändigt?</strong> <code>%{instance}</code> är kanske inte den server du är registrerad vid, så vi behöver dirigera dig till din hemserver först."
-  remote_interaction:
-    favourite:
-      proceed: Fortsätt till favorit
-      prompt: 'Du vill favorit-markera det här inlägget:'
-    reply:
-      proceed: Fortsätt till svar
-      prompt: 'Du vill svara på det här inlägget:'
   sessions:
     activity: Senaste aktivitet
     browser: Webbläsare

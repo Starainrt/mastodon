@@ -845,6 +845,62 @@
       {
         "defaultMessage": "About",
         "id": "column.about"
+      },
+      {
+        "defaultMessage": "Server rules",
+        "id": "about.rules"
+      },
+      {
+        "defaultMessage": "Moderated servers",
+        "id": "about.blocks"
+      },
+      {
+        "defaultMessage": "Limited",
+        "id": "about.domain_blocks.silenced.title"
+      },
+      {
+        "defaultMessage": "You will generally not see profiles and content from this server, unless you explicitly look it up or opt into it by following.",
+        "id": "about.domain_blocks.silenced.explanation"
+      },
+      {
+        "defaultMessage": "Suspended",
+        "id": "about.domain_blocks.suspended.title"
+      },
+      {
+        "defaultMessage": "No data from this server will be processed, stored or exchanged, making any interaction or communication with users from this server impossible.",
+        "id": "about.domain_blocks.suspended.explanation"
+      },
+      {
+        "defaultMessage": "Decentralized social media powered by {mastodon}",
+        "id": "about.powered_by"
+      },
+      {
+        "defaultMessage": "Administered by:",
+        "id": "server_banner.administered_by"
+      },
+      {
+        "defaultMessage": "Contact:",
+        "id": "about.contact"
+      },
+      {
+        "defaultMessage": "This information has not been made available on this server.",
+        "id": "about.not_available"
+      },
+      {
+        "defaultMessage": "Mastodon generally allows you to view content from and interact with users from any other server in the fediverse. These are the exceptions that have been made on this particular server.",
+        "id": "about.domain_blocks.preamble"
+      },
+      {
+        "defaultMessage": "Domain",
+        "id": "about.domain_blocks.domain"
+      },
+      {
+        "defaultMessage": "Severity",
+        "id": "about.domain_blocks.severity"
+      },
+      {
+        "defaultMessage": "Reason",
+        "id": "about.domain_blocks.comment"
       }
     ],
     "path": "app/javascript/mastodon/features/about/index.json"
@@ -904,6 +960,10 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Withdraw request",
+        "id": "confirmations.cancel_follow_request.confirm"
+      },
+      {
         "defaultMessage": "Unfollow",
         "id": "confirmations.unfollow.confirm"
       },
@@ -914,6 +974,10 @@
       {
         "defaultMessage": "Are you sure you want to unfollow {name}?",
         "id": "confirmations.unfollow.message"
+      },
+      {
+        "defaultMessage": "Are you sure you want to withdraw your request to follow {name}?",
+        "id": "confirmations.cancel_follow_request.message"
       },
       {
         "defaultMessage": "Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications. Your followers from that domain will be removed.",
@@ -963,6 +1027,23 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Last post on {date}",
+        "id": "account.featured_tags.last_status_at"
+      },
+      {
+        "defaultMessage": "No posts",
+        "id": "account.featured_tags.last_status_never"
+      },
+      {
+        "defaultMessage": "{name}'s featured hashtags",
+        "id": "account.featured_tags.title"
+      }
+    ],
+    "path": "app/javascript/mastodon/features/account/components/featured_tags.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Unfollow",
         "id": "account.unfollow"
       },
@@ -971,7 +1052,7 @@
         "id": "account.follow"
       },
       {
-        "defaultMessage": "Cancel follow request",
+        "defaultMessage": "Withdraw follow request",
         "id": "account.cancel_follow_request"
       },
       {
@@ -1812,7 +1893,7 @@
         "id": "account.follow"
       },
       {
-        "defaultMessage": "Cancel follow request",
+        "defaultMessage": "Withdraw follow request",
         "id": "account.cancel_follow_request"
       },
       {
@@ -3654,16 +3735,44 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Network error",
-        "id": "bundle_column_error.title"
+        "defaultMessage": "Copied",
+        "id": "copypaste.copied"
       },
       {
-        "defaultMessage": "Something went wrong while loading this component.",
-        "id": "bundle_column_error.body"
+        "defaultMessage": "404",
+        "id": "bundle_column_error.routing.title"
+      },
+      {
+        "defaultMessage": "The requested page could not be found. Are you sure the URL in the address bar is correct?",
+        "id": "bundle_column_error.routing.body"
+      },
+      {
+        "defaultMessage": "Network error",
+        "id": "bundle_column_error.network.title"
+      },
+      {
+        "defaultMessage": "There was an error when trying to load this page. This could be due to a temporary problem with your internet connection or this server.",
+        "id": "bundle_column_error.network.body"
+      },
+      {
+        "defaultMessage": "Oh, no!",
+        "id": "bundle_column_error.error.title"
+      },
+      {
+        "defaultMessage": "The requested page could not be rendered. It could be due to a bug in our code, or a browser compatibility issue.",
+        "id": "bundle_column_error.error.body"
       },
       {
         "defaultMessage": "Try again",
         "id": "bundle_column_error.retry"
+      },
+      {
+        "defaultMessage": "Copy error report",
+        "id": "bundle_column_error.copy_stacktrace"
+      },
+      {
+        "defaultMessage": "Go back home",
+        "id": "bundle_column_error.return"
       }
     ],
     "path": "app/javascript/mastodon/features/ui/components/bundle_column_error.json"
@@ -3684,15 +3793,6 @@
       }
     ],
     "path": "app/javascript/mastodon/features/ui/components/bundle_modal_error.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Publish",
-        "id": "compose_form.publish"
-      }
-    ],
-    "path": "app/javascript/mastodon/features/ui/components/columns_area.json"
   },
   {
     "descriptors": [
@@ -3834,6 +3934,10 @@
   },
   {
     "descriptors": [
+      {
+        "defaultMessage": "Publish",
+        "id": "compose_form.publish"
+      },
       {
         "defaultMessage": "Sign in",
         "id": "sign_in_banner.sign_in"
