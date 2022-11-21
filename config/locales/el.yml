@@ -184,6 +184,7 @@ el:
         reject_user: Απόρριψη Χρήστη
         remove_avatar_user: Αφαίρεση Avatar
         reopen_report: Ξανάνοιγμα Καταγγελίας
+        resend_user: Επαναποστολή του email επιβεβαίωσης
         reset_password_user: Επαναφορά Συνθηματικού
         resolve_report: Επίλυση Καταγγελίας
         sensitive_account: Σήμανση των πολυμέσων στον λογαριασμό σας ως ευαίσθητων
@@ -202,6 +203,7 @@ el:
         destroy_instance_html: Ο/Η %{name} εκκαθάρισε τον τομέα %{target}
         reject_user_html: "%{name} απορρίφθηκε εγγραφή από %{target}"
         unblock_email_account_html: "%{name} ξεμπλόκαρε τη διεύθυνση ηλεκτρονικού ταχυδρομείου του %{target}"
+      deleted_account: διαγραμμένος λογαριασμός
       empty: Δεν βρέθηκαν αρχεία καταγραφής.
       filter_by_action: Φιλτράρισμα ανά ενέργεια
       filter_by_user: Φιλτράρισμα ανά χρήστη
@@ -280,9 +282,7 @@ el:
         create: Δημιουργία αποκλεισμού
         hint: Ο αποκλεισμός τομέα δεν θα αποτρέψει νέες καταχωρίσεις λογαριασμών στην βάση δεδομένων, αλλά θα εφαρμόσει αναδρομικά και αυτόματα συγκεκριμένες πολιτικές μεσολάβησης σε αυτούς τους λογαριασμούς.
         severity:
-          desc_html: Η <strong>αποσιώπηση</strong> θα κάνει αόρατες τις δημοσιεύσεις ενός λογαριασμού σε όσους δεν τον ακολουθούν. Η <strong>αναστολή</strong> θα αφαιρέσει όλο το περιεχόμενο, τα πολυμέσα και τα στοιχεία προφίλ ενός λογαριασμού. Χρησιμοποίησε το <strong>κανένα</strong> αν θέλεις απλά να απορρίψεις τα αρχεία πολυμέσων.
           noop: Κανένα
-          silence: Σίγαση
           suspend: Αναστολή
         title: Αποκλεισμός νέου τομέα
       private_comment: Ιδιωτικό σχόλιο
@@ -436,6 +436,8 @@ el:
         devops: Devops
         invites: Προσκλήσεις
       delete: Διαγραφή
+      privileges:
+        view_devops: DevOps
     rules:
       add_new: Προσθήκη κανόνα
       delete: Διαγραφή
@@ -471,15 +473,27 @@ el:
       delete: Διαγραφή μεταφορτωμένου αρχείου
       destroyed_msg: Η μεταφόρτωση ιστότοπου διαγράφηκε επιτυχώς!
     statuses:
+      account: Συντάκτης
+      application: Εφαρμογή
       back_to_account: Επιστροφή στη σελίδα λογαριασμού
       batch:
         remove_from_report: Αφαίρεση από την αναφορά
         report: Αναφορά
       deleted: Διαγραμμένα
+      favourites: Αγαπημένα
+      history: Ιστορικό εκδόσεων
+      in_reply_to: Απάντηση σε
+      language: Γλώσσα
       media:
         title: Πολυμέσα
+      metadata: Μεταδεδομένα
       no_status_selected: Καμία δημοσίευση δεν άλλαξε αφού καμία δεν ήταν επιλεγμένη
+      open: Άνοιγμα δημοσίευσης
+      reblogs: Αναδημοσιεύσεις
+      status_changed: Η ανάρτηση άλλαξε
       title: Καταστάσεις λογαριασμού
+      trending: Δημοφιλή
+      visibility: Ορατότητα
       with_media: Με πολυμέσα
     system_checks:
       database_schema_check:
@@ -812,6 +826,8 @@ el:
     carry_blocks_over_text: Ο/Η χρήστης μετακόμισε από το %{acct}, που είχες αποκλείσει.
     carry_mutes_over_text: Ο/Η χρήστης μετακόμισε από το %{acct}, που είχες αποσιωπήσει.
     copy_account_note_text: 'Ο/Η χρήστης μετακόμισε από το %{acct}, ορίστε οι προηγούμενες σημειώσεις σου:'
+  navigation:
+    toggle_menu: Εμφάνιση/Απόκρυψη μενού
   notification_mailer:
     admin:
       report:
@@ -920,11 +936,15 @@ el:
     activity: Τελευταία δραστηριότητα
     browser: Φυλλομετρητής (Browser)
     browsers:
+      blackberry: BlackBerry
       generic: Άγνωστος φυλλομετρητής
+      uc_browser: UC Browser
     current_session: Τρέχουσα σύνδεση
     description: "%{browser} σε %{platform}"
     explanation: Αυτοί είναι οι φυλλομετρητές (browsers) που είναι συνδεδεμένοι στον λογαριασμό σου στο Mastodon αυτή τη στιγμή.
     platforms:
+      blackberry: BlackBerry
+      chrome_os: ChromeOS
       mac: Mac
       other: άγνωστη πλατφόρμα
     revoke: Ανακάλεσε

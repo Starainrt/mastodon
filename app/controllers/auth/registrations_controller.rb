@@ -148,11 +148,12 @@ class Auth::RegistrationsController < Devise::RegistrationsController
     return if @rules.empty? || (session[:accept_token].present? && params[:accept] == session[:accept_token])
 
     @accept_token = session[:accept_token] = SecureRandom.hex
+    @invite_code  = invite_code
 
     set_locale { render :rules }
   end
 
   def set_cache_headers
-    response.headers['Cache-Control'] = 'no-cache, no-store, max-age=0, must-revalidate'
+    response.headers['Cache-Control'] = 'private, no-store'
   end
 end

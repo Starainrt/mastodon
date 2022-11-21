@@ -13,11 +13,11 @@ module Mastodon
     end
 
     def patch
-      0
+      2
     end
 
     def flags
-      '~B612~Kira!~rc1'
+      '~B612~Kira!'
     end
 
     def suffix
