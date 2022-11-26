@@ -32,7 +32,8 @@ jobs:
           flavor: |
             latest=auto
           tags: |
-            type=edge,branch=localonly
+            type=local,branch=localonly
+            type=latest,branch=localonly
             type=pep440,pattern={{raw}}
             type=pep440,pattern=v{{major}}.{{minor}}
             type=ref,event=pr
