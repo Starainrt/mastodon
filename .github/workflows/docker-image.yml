@@ -33,6 +33,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           builder: ${{ steps.buildx.outputs.name }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: local
+          tags: starainrt/mastodon:local
           cache-from: type=gha
           cache-to: type=gha,mode=max
