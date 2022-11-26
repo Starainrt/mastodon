@@ -9,12 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
     
       - name: Push to Docker Hub
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v1
         with:
-          platforms: linux/amd64,linux/arm64
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: starainrt/mastodon
