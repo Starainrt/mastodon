@@ -5,16 +5,34 @@ on:
     branches: [ localonly ]
 
 jobs:
-  docker-build:
+  build-image:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-    
-      - name: Push to Docker Hub
-        uses: docker/build-push-action@v1
+      - uses: actions/checkout@v3
+      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-buildx-action@v2
+      - uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: starainrt/mastodon
+          password: ${{ secrets.DOCKER_TOKEN }}
+        if: github.event_name != 'pull_request'
+      - uses: docker/metadata-action@v4
+        id: meta
+        with:
+          images: starainrt/mastodon
+          flavor: |
+            latest=auto
+          tags: |
+            type=edge,branch=localonly
+            type=pep440,pattern={{raw}}
+            type=pep440,pattern=v{{major}}.{{minor}}
+            type=ref,event=pr
+      - uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          builder: ${{ steps.buildx.outputs.name }}
+          push: ${{ github.event_name != 'pull_request' }}
           tags: local
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
