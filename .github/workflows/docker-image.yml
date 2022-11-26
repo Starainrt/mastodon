@@ -32,8 +32,7 @@ jobs:
           flavor: |
             latest=auto
           tags: |
-            type=local,branch=localonly
-            type=latest,branch=localonly
+            type=edge,branch=localonly
             type=pep440,pattern={{raw}}
             type=pep440,pattern=v{{major}}.{{minor}}
             type=ref,event=pr
@@ -43,6 +42,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           builder: ${{ steps.buildx.outputs.name }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: local
           cache-from: type=gha
           cache-to: type=gha,mode=max
