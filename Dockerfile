@@ -59,6 +59,7 @@ RUN apt-get update && \
 	curl \
 	vim \
 	git \
+        procps \
         libssl1.1 \
         libpq5 \
         imagemagick \
