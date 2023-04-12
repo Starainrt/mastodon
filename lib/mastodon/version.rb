@@ -21,7 +21,7 @@ module Mastodon
     end
 
     def suffix
-      '+glitch'
+      '~b612~kira+glitch'
     end
 
     def to_a

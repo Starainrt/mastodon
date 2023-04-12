@@ -431,7 +431,13 @@ class Status < ApplicationRecord
 
   def marked_local_only?
     # match both with and without U+FE0F (the emoji variation selector)
-    /#{local_only_emoji}\ufe0f?\z/.match?(content)
+    mark_regex = /#{local_only_emoji}\ufe0f?\z/
+    if mark_regex.match?(content)
+      content.gsub!(mark_regex, '')
+      true
+    else
+      false
+    end
   end
 
   def local_only_emoji
