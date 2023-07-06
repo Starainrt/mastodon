@@ -1,19 +1,16 @@
-//  Package imports.
 import PropTypes from 'prop-types';
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import { injectIntl, defineMessages } from 'react-intl';
+
 import { Link } from 'react-router-dom';
+
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-//  Components.
-import Icon from 'flavours/glitch/components/icon';
-
-//  Utils.
-import { conditionalRender } from 'flavours/glitch/utils/react_helpers';
+import { Icon } from 'flavours/glitch/components/icon';
 import { signOutLink } from 'flavours/glitch/utils/backend_links';
+import { conditionalRender } from 'flavours/glitch/utils/react_helpers';
 
-//  Messages.
 const messages = defineMessages({
   community: {
     defaultMessage: 'Local timeline',
@@ -77,7 +74,7 @@ class Header extends ImmutablePureComponent {
 
     //  The result.
     return (
-      <nav className='drawer--header'>
+      <nav className='drawer__header'>
         <Link
           aria-label={intl.formatMessage(messages.start)}
           title={intl.formatMessage(messages.start)}
