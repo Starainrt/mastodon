@@ -15,7 +15,7 @@ import contexts from './contexts';
 import conversations from './conversations';
 import custom_emojis from './custom_emojis';
 import domain_lists from './domain_lists';
-import dropdown_menu from './dropdown_menu';
+import { dropdownMenuReducer } from './dropdown_menu';
 import filters from './filters';
 import followed_tags from './followed_tags';
 import height_cache from './height_cache';
@@ -26,7 +26,6 @@ import lists from './lists';
 import markers from './markers';
 import media_attachments from './media_attachments';
 import meta from './meta';
-import { missedUpdatesReducer } from './missed_updates';
 import { modalReducer } from './modal';
 import mutes from './mutes';
 import notifications from './notifications';
@@ -47,7 +46,7 @@ import user_lists from './user_lists';
 
 const reducers = {
   announcements,
-  dropdown_menu,
+  dropdownMenu: dropdownMenuReducer,
   timelines,
   meta,
   alerts,
@@ -82,7 +81,6 @@ const reducers = {
   suggestions,
   polls,
   trends,
-  missed_updates: missedUpdatesReducer,
   markers,
   picture_in_picture,
   history,
@@ -101,7 +99,7 @@ const initialRootState = Object.fromEntries(
     reducer(undefined, {
       // empty action
     }),
-  ])
+  ]),
 );
 
 const RootStateRecord = ImmutableRecord(initialRootState, 'RootState');
