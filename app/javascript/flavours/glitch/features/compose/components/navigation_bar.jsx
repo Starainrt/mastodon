@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import Permalink from 'flavours/glitch/components/permalink';
+import { Permalink } from 'flavours/glitch/components/permalink';
 import { profileLink } from 'flavours/glitch/utils/backend_links';
 
 import { Avatar } from '../../../components/avatar';
@@ -15,7 +15,7 @@ import ActionBar from './action_bar';
 export default class NavigationBar extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     onLogout: PropTypes.func.isRequired,
     onClose: PropTypes.func,
   };
@@ -30,9 +30,11 @@ export default class NavigationBar extends ImmutablePureComponent {
         </Permalink>
 
         <div className='navigation-bar__profile'>
-          <Permalink className='acct' href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>
-            <strong className='navigation-bar__profile-account'>@{username}</strong>
-          </Permalink>
+          <span>
+            <Permalink className='acct' href={this.props.account.get('url')} to={`/@${username}`}>
+              <strong className='navigation-bar__profile-account'>@{username}</strong>
+            </Permalink>
+          </span>
 
           { profileLink !== undefined && (
             <a

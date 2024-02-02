@@ -8,7 +8,7 @@ import { DisplayName } from 'flavours/glitch/components/display_name';
 import MediaAttachments from 'flavours/glitch/components/media_attachments';
 import { RelativeTimestamp } from 'flavours/glitch/components/relative_timestamp';
 import StatusContent from 'flavours/glitch/components/status_content';
-import VisibilityIcon from 'flavours/glitch/components/status_visibility_icon';
+import { VisibilityIcon } from 'flavours/glitch/components/visibility_icon';
 
 import Option from './option';
 
@@ -45,7 +45,7 @@ class StatusCheckBox extends PureComponent {
           </div>
         </div>
 
-        <StatusContent status={status} media={<MediaAttachments status={status} revealed={false} />} />
+        <StatusContent status={status} media={<MediaAttachments status={status} visible={false} />} />
       </div>
     );
 
