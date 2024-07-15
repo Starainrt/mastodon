@@ -14,7 +14,9 @@ import { HotKeys } from 'react-hotkeys';
 import { focusApp, unfocusApp, changeLayout } from 'mastodon/actions/app';
 import { synchronouslySubmitMarkers, submitMarkers, fetchMarkers } from 'mastodon/actions/markers';
 import { INTRODUCTION_VERSION } from 'mastodon/actions/onboarding';
-import PictureInPicture from 'mastodon/features/picture_in_picture';
+import { HoverCardController } from 'mastodon/components/hover_card_controller';
+import { PictureInPicture } from 'mastodon/features/picture_in_picture';
+import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 import { layoutFromWindow } from 'mastodon/is_mobile';
 import { WithRouterPropTypes } from 'mastodon/utils/react_router';
 
@@ -23,7 +25,7 @@ import { clearHeight } from '../../actions/height_cache';
 import { expandNotifications } from '../../actions/notifications';
 import { fetchServer, fetchServerTranslationLanguages } from '../../actions/server';
 import { expandHomeTimeline } from '../../actions/timelines';
-import initialState, { me, owner, singleUserMode, trendsEnabled, trendsAsLanding } from '../../initial_state';
+import initialState, { me, owner, singleUserMode, trendsEnabled, trendsAsLanding, disableHoverCards } from '../../initial_state';
 
 import BundleColumnError from './components/bundle_column_error';
 import Header from './components/header';
@@ -54,6 +56,7 @@ import {
   FavouritedStatuses,
   BookmarkedStatuses,
   FollowedTags,
+  LinkTimeline,
   ListTimeline,
   Blocks,
   DomainBlocks,
@@ -89,7 +92,7 @@ const mapStateToProps = state => ({
 const keyMap = {
   help: '?',
   new: 'n',
-  search: 's',
+  search: ['s', '/'],
   forceNew: 'option+n',
   toggleComposeSpoilers: 'option+x',
   focusColumn: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
@@ -120,12 +123,8 @@ const keyMap = {
 };
 
 class SwitchingColumnsArea extends PureComponent {
-
-  static contextTypes = {
-    identity: PropTypes.object,
-  };
-
   static propTypes = {
+    identity: identityContextPropShape,
     children: PropTypes.node,
     location: PropTypes.object,
     singleColumn: PropTypes.bool,
@@ -160,7 +159,7 @@ class SwitchingColumnsArea extends PureComponent {
 
   render () {
     const { children, singleColumn } = this.props;
-    const { signedIn } = this.context.identity;
+    const { signedIn } = this.props.identity;
     const pathName = this.props.location.pathname;
 
     let redirect;
@@ -204,6 +203,7 @@ class SwitchingColumnsArea extends PureComponent {
             <WrappedRoute path='/public/remote' exact component={Firehose} componentParams={{ feedType: 'public:remote' }} content={children} />
             <WrappedRoute path={['/conversations', '/timelines/direct']} component={DirectTimeline} content={children} />
             <WrappedRoute path='/tags/:id' component={HashtagTimeline} content={children} />
+            <WrappedRoute path='/links/:url' component={LinkTimeline} content={children} />
             <WrappedRoute path='/lists/:id' component={ListTimeline} content={children} />
             <WrappedRoute path='/notifications' component={Notifications} content={children} exact />
             <WrappedRoute path='/notifications/requests' component={NotificationRequests} content={children} exact />
@@ -252,12 +252,8 @@ class SwitchingColumnsArea extends PureComponent {
 }
 
 class UI extends PureComponent {
-
-  static contextTypes = {
-    identity: PropTypes.object.isRequired,
-  };
-
   static propTypes = {
+    identity: identityContextPropShape,
     dispatch: PropTypes.func.isRequired,
     children: PropTypes.node,
     isComposing: PropTypes.bool,
@@ -309,7 +305,7 @@ class UI extends PureComponent {
       this.dragTargets.push(e.target);
     }
 
-    if (e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files') && this.props.canUploadMore && this.context.identity.signedIn) {
+    if (e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files') && this.props.canUploadMore && this.props.identity.signedIn) {
       this.setState({ draggingOver: true });
     }
   };
@@ -337,7 +333,7 @@ class UI extends PureComponent {
     this.setState({ draggingOver: false });
     this.dragTargets = [];
 
-    if (e.dataTransfer && e.dataTransfer.files.length >= 1 && this.props.canUploadMore && this.context.identity.signedIn) {
+    if (e.dataTransfer && e.dataTransfer.files.length >= 1 && this.props.canUploadMore && this.props.identity.signedIn) {
       this.props.dispatch(uploadCompose(e.dataTransfer.files));
     }
   };
@@ -389,7 +385,7 @@ class UI extends PureComponent {
   };
 
   componentDidMount () {
-    const { signedIn } = this.context.identity;
+    const { signedIn } = this.props.identity;
 
     window.addEventListener('focus', this.handleWindowFocus, false);
     window.addEventListener('blur', this.handleWindowBlur, false);
@@ -586,12 +582,13 @@ class UI extends PureComponent {
         <div className={classNames('ui', { 'is-composing': isComposing })} ref={this.setRef}>
           <Header />
 
-          <SwitchingColumnsArea location={location} singleColumn={layout === 'mobile' || layout === 'single-column'}>
+          <SwitchingColumnsArea identity={this.props.identity} location={location} singleColumn={layout === 'mobile' || layout === 'single-column'}>
             {children}
           </SwitchingColumnsArea>
 
           {layout !== 'mobile' && <PictureInPicture />}
           <NotificationsContainer />
+          {!disableHoverCards && <HoverCardController />}
           <LoadingBarContainer className='loading-bar' />
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
@@ -602,4 +599,4 @@ class UI extends PureComponent {
 
 }
 
-export default connect(mapStateToProps)(injectIntl(withRouter(UI)));
+export default connect(mapStateToProps)(injectIntl(withRouter(withIdentity(UI))));
