@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     /lists/(*any)
     /links/(*any)
     /notifications/(*any)
+    /notifications_v2/(*any)
     /favourites
     /bookmarks
     /pinned
@@ -142,7 +143,11 @@ Rails.application.routes.draw do
 
   resource :inbox, only: [:create], module: :activitypub
 
-  get '/:encoded_at(*path)', to: redirect('/@%{path}'), constraints: { encoded_at: /%40/ }
+  constraints(encoded_path: /%40.*/) do
+    get '/:encoded_path', to: redirect { |params|
+      "/#{params[:encoded_path].gsub('%40', '@')}"
+    }
+  end
 
   constraints(username: %r{[^@/.]+}) do
     with_options to: 'accounts#show' do
