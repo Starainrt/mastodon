@@ -26,6 +26,7 @@ import {
   unmuteStatus,
   deleteStatus,
   toggleStatusSpoilers,
+  toggleStatusCollapse,
   editStatus,
   translateStatus,
   undoStatusTranslation,
@@ -33,8 +34,6 @@ import {
 import Status from 'flavours/glitch/components/status';
 import { deleteModal } from 'flavours/glitch/initial_state';
 import { makeGetStatus, makeGetPictureInPicture } from 'flavours/glitch/selectors';
-
-import { showAlertForError } from '../actions/alerts';
 
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
@@ -111,10 +110,7 @@ const mapDispatchToProps = (dispatch, { contextType }) => ({
   onEmbed (status) {
     dispatch(openModal({
       modalType: 'EMBED',
-      modalProps: {
-        id: status.get('id'),
-        onError: error => dispatch(showAlertForError(error)),
-      },
+      modalProps: { id: status.get('id') },
     }));
   },
 
@@ -195,6 +191,11 @@ const mapDispatchToProps = (dispatch, { contextType }) => ({
   onToggleHidden (status) {
     dispatch(toggleStatusSpoilers(status.get('id')));
   },
+
+  onToggleCollapsed (status, isCollapsed) {
+    dispatch(toggleStatusCollapse(status.get('id'), isCollapsed));
+  },
+
 
   deployPictureInPicture (status, type, mediaProps) {
     dispatch((_, getState) => {

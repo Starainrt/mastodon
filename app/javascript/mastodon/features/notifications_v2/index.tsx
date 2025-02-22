@@ -4,6 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
 
+import { isEqual } from 'lodash';
 import { useDebouncedCallback } from 'use-debounce';
 
 import DoneAllIcon from '@/material-icons/400-24px/done_all.svg?react';
@@ -35,7 +36,8 @@ import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
 import { addColumn, removeColumn, moveColumn } from '../../actions/columns';
 import { submitMarkers } from '../../actions/markers';
-import Column from '../../components/column';
+import { Column } from '../../components/column';
+import type { ColumnRef } from '../../components/column';
 import { ColumnHeader } from '../../components/column_header';
 import { LoadGap } from '../../components/load_gap';
 import ScrollableList from '../../components/scrollable_list';
@@ -62,7 +64,7 @@ export const Notifications: React.FC<{
   multiColumn?: boolean;
 }> = ({ columnId, multiColumn }) => {
   const intl = useIntl();
-  const notifications = useAppSelector(selectNotificationGroups);
+  const notifications = useAppSelector(selectNotificationGroups, isEqual);
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector((s) => s.notificationGroups.isLoading);
   const hasMore = notifications.at(-1)?.type === 'gap';
@@ -95,7 +97,7 @@ export const Notifications: React.FC<{
     selectNeedsNotificationPermission,
   );
 
-  const columnRef = useRef<Column>(null);
+  const columnRef = useRef<ColumnRef>(null);
 
   const selectChild = useCallback((index: number, alignTop: boolean) => {
     const container = columnRef.current?.node as HTMLElement | undefined;

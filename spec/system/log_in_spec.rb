@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Log in' do
+RSpec.describe 'Log in' do
   include ProfileStories
 
   subject { page }
@@ -34,7 +34,7 @@ describe 'Log in' do
     it 'A unconfirmed user is able to log in' do
       fill_in_auth_details(email, password)
 
-      expect(subject).to have_css('div.admin-wrapper')
+      expect(subject).to have_css('.title', text: I18n.t('auth.setup.title'))
     end
   end
 

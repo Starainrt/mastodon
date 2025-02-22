@@ -20,11 +20,6 @@ class Auth::SessionsController < Devise::SessionsController
     p.form_action(false)
   end
 
-  def check_suspicious!
-    user = find_user
-    @login_is_suspicious = suspicious_sign_in?(user) unless user.nil?
-  end
-
   def create
     super do |resource|
       # We only need to call this if this hasn't already been
@@ -78,7 +73,7 @@ class Auth::SessionsController < Devise::SessionsController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :otp_attempt, credential: {})
+    params.expect(user: [:email, :password, :otp_attempt, credential: {}])
   end
 
   def after_sign_in_path_for(resource)
@@ -100,6 +95,11 @@ class Auth::SessionsController < Devise::SessionsController
   end
 
   private
+
+  def check_suspicious!
+    user = find_user
+    @login_is_suspicious = suspicious_sign_in?(user) unless user.nil?
+  end
 
   def home_paths(resource)
     paths = [about_path, '/explore']

@@ -7,7 +7,6 @@ en:
     hosted_on: Mastodon hosted on %{domain}
     title: About
   accounts:
-    follow: Follow
     followers:
       one: Follower
       other: Followers
@@ -22,9 +21,12 @@ en:
       one: Post
       other: Posts
     posts_tab_heading: Posts
+    self_follow_error: Following your own account is not allowed
   admin:
     account_actions:
       action: Perform action
+      already_silenced: This account has already been limited.
+      already_suspended: This account has already been suspended.
       title: Perform moderation action on %{acct}
     account_moderation_notes:
       create: Leave note
@@ -46,6 +48,7 @@ en:
         title: Change email for %{username}
       change_role:
         changed_msg: Role successfully changed!
+        edit_roles: Manage user roles
         label: Change role
         no_role: No role
         title: Change role for %{username}
@@ -184,6 +187,7 @@ en:
         create_domain_block: Create Domain Block
         create_email_domain_block: Create Email Domain Block
         create_ip_block: Create IP rule
+        create_relay: Create Relay
         create_unavailable_domain: Create Unavailable Domain
         create_user_role: Create Role
         demote_user: Demote User
@@ -195,18 +199,22 @@ en:
         destroy_email_domain_block: Delete Email Domain Block
         destroy_instance: Purge Domain
         destroy_ip_block: Delete IP rule
+        destroy_relay: Delete Relay
         destroy_status: Delete Post
         destroy_unavailable_domain: Delete Unavailable Domain
         destroy_user_role: Destroy Role
         disable_2fa_user: Disable 2FA
         disable_custom_emoji: Disable Custom Emoji
+        disable_relay: Disable Relay
         disable_sign_in_token_auth_user: Disable Email Token Authentication for User
         disable_user: Disable User
         enable_custom_emoji: Enable Custom Emoji
+        enable_relay: Enable Relay
         enable_sign_in_token_auth_user: Enable Email Token Authentication for User
         enable_user: Enable User
         memorialize_account: Memorialize Account
         promote_user: Promote User
+        publish_terms_of_service: Publish Terms of Service
         reject_appeal: Reject Appeal
         reject_user: Reject User
         remove_avatar_user: Remove Avatar
@@ -244,6 +252,7 @@ en:
         create_domain_block_html: "%{name} blocked domain %{target}"
         create_email_domain_block_html: "%{name} blocked email domain %{target}"
         create_ip_block_html: "%{name} created rule for IP %{target}"
+        create_relay_html: "%{name} created a relay %{target}"
         create_unavailable_domain_html: "%{name} stopped delivery to domain %{target}"
         create_user_role_html: "%{name} created %{target} role"
         demote_user_html: "%{name} demoted user %{target}"
@@ -255,18 +264,22 @@ en:
         destroy_email_domain_block_html: "%{name} unblocked email domain %{target}"
         destroy_instance_html: "%{name} purged domain %{target}"
         destroy_ip_block_html: "%{name} deleted rule for IP %{target}"
+        destroy_relay_html: "%{name} deleted the relay %{target}"
         destroy_status_html: "%{name} removed post by %{target}"
         destroy_unavailable_domain_html: "%{name} resumed delivery to domain %{target}"
         destroy_user_role_html: "%{name} deleted %{target} role"
         disable_2fa_user_html: "%{name} disabled two factor requirement for user %{target}"
         disable_custom_emoji_html: "%{name} disabled emoji %{target}"
+        disable_relay_html: "%{name} disabled the relay %{target}"
         disable_sign_in_token_auth_user_html: "%{name} disabled email token authentication for %{target}"
         disable_user_html: "%{name} disabled login for user %{target}"
         enable_custom_emoji_html: "%{name} enabled emoji %{target}"
+        enable_relay_html: "%{name} enabled the relay %{target}"
         enable_sign_in_token_auth_user_html: "%{name} enabled email token authentication for %{target}"
         enable_user_html: "%{name} enabled login for user %{target}"
         memorialize_account_html: "%{name} turned %{target}'s account into a memoriam page"
         promote_user_html: "%{name} promoted user %{target}"
+        publish_terms_of_service_html: "%{name} published updates to the terms of service"
         reject_appeal_html: "%{name} rejected moderation decision appeal from %{target}"
         reject_user_html: "%{name} rejected sign-up from %{target}"
         remove_avatar_user_html: "%{name} removed %{target}'s avatar"
@@ -602,6 +615,7 @@ en:
         suspend_description_html: The account and all its contents will be inaccessible and eventually deleted, and interacting with it will be impossible. Reversible within 30 days. Closes all reports against this account.
       actions_description_html: Decide which action to take to resolve this report. If you take a punitive action against the reported account, an email notification will be sent to them, except when the <strong>Spam</strong> category is selected.
       actions_description_remote_html: Decide which action to take to resolve this report. This will only affect how <strong>your</strong> server communicates with this remote account and handle its content.
+      actions_no_posts: This report doesn't have any associated posts to delete
       add_to_report: Add more to report
       already_suspended_badges:
         local: Already suspended on this server
@@ -814,8 +828,10 @@ en:
       back_to_account: Back to account page
       back_to_report: Back to report page
       batch:
+        add_to_report: 'Add to report #%{id}'
         remove_from_report: Remove from report
         report: Report
+      contents: Contents
       deleted: Deleted
       favourites: Favorites
       history: Version history
@@ -824,13 +840,17 @@ en:
       media:
         title: Media
       metadata: Metadata
+      no_history: This post hasn't been edited
       no_status_selected: No posts were changed as none were selected
       open: Open post
       original_status: Original post
       reblogs: Reblogs
+      replied_to_html: Replied to %{acct_link}
       status_changed: Post changed
-      title: Account posts
+      status_title: Post by @%{name}
+      title: Account posts - @%{name}
       trending: Trending
+      view_publicly: View publicly
       visibility: Visibility
       with_media: With media
     strikes:
@@ -872,6 +892,9 @@ en:
         message_html: You haven't defined any server rules.
       sidekiq_process_check:
         message_html: No Sidekiq process running for the %{value} queue(s). Please review your Sidekiq configuration
+      software_version_check:
+        action: See available updates
+        message_html: A Mastodon update is available.
       software_version_critical_check:
         action: See available updates
         message_html: A critical Mastodon update is available, please update as quickly as possible.
@@ -898,11 +921,41 @@ en:
       name: Name
       newest: Newest
       oldest: Oldest
+      open: View Publicly
       reset: Reset
       review: Review status
       search: Search
       title: Hashtags
       updated_msg: Hashtag settings updated successfully
+    terms_of_service:
+      back: Back to terms of service
+      changelog: What's changed
+      create: Use your own
+      current: Current
+      draft: Draft
+      generate: Use template
+      generates:
+        action: Generate
+        chance_to_review_html: "<strong>The generated terms of service will not be published automatically.</strong> You will have a chance to review the results. Please fill in the necessary details to proceed."
+        explanation_html: The terms of service template provided is for informational purposes only, and should not be construed as legal advice on any subject matter. Please consult with your own legal counsel on your situation and specific legal questions you have.
+        title: Terms of Service Setup
+      history: History
+      live: Live
+      no_history: There are no recorded changes of the terms of service yet.
+      no_terms_of_service_html: You don't currently have any terms of service configured. Terms of service are meant to provide clarity and protect you from potential liabilities in disputes with your users.
+      notified_on_html: Users notified on %{date}
+      notify_users: Notify users
+      preview:
+        explanation_html: 'The email will be sent to <strong>%{display_count} users</strong> who have signed up before %{date}. The following text will be included in the e-mail:'
+        send_preview: Send preview to %{email}
+        send_to_all:
+          one: Send %{display_count} email
+          other: Send %{display_count} emails
+        title: Preview terms of service notification
+      publish: Publish
+      published_on_html: Published on %{date}
+      save_draft: Save draft
+      title: Terms of Service
     title: Administration
     trends:
       allow: Allow
@@ -1110,7 +1163,6 @@ en:
     migrate_account: Move to a different account
     migrate_account_html: If you wish to redirect this account to a different one, you can <a href="%{path}">configure it here</a>.
     or_log_in_with: Or log in with
-    privacy_policy_agreement_html: I have read and agree to the <a href="%{privacy_policy_path}" target="_blank">privacy policy</a>
     progress:
       confirm: Confirm email
       details: Your details
@@ -1135,7 +1187,7 @@ en:
     set_new_password: Set new password
     setup:
       email_below_hint_html: Check your spam folder, or request another one. You can correct your email address if it's wrong.
-      email_settings_hint_html: Click the link we sent you to verify %{email}. We'll wait right here.
+      email_settings_hint_html: Click the link we sent to %{email} to begin using Mastodon. We'll wait right here.
       link_not_received: Didn't get a link?
       new_confirmation_instructions_sent: You will receive a new email with the confirmation link in a few minutes!
       title: Check your inbox
@@ -1144,7 +1196,7 @@ en:
       title: Login to %{domain}
     sign_up:
       manual_review: Sign-ups on %{domain} go through manual review by our moderators. To help us process your registration, write a bit about yourself and why you want an account on %{domain}.
-      preamble: With an account on this Mastodon server, you'll be able to follow any other person on the network, regardless of where their account is hosted.
+      preamble: With an account on this Mastodon server, you'll be able to follow any other person on the fediverse, regardless of where their account is hosted.
       title: Let's get you set up on %{domain}.
     status:
       account_status: Account status
@@ -1156,6 +1208,16 @@ en:
       view_strikes: View past strikes against your account
     too_fast: Form submitted too fast, try again.
     use_security_key: Use security key
+    user_agreement_html: I have read and agree to the <a href="%{terms_of_service_path}" target="_blank">terms of service</a> and <a href="%{privacy_policy_path}" target="_blank">privacy policy</a>
+    user_privacy_agreement_html: I have read and agree to the <a href="%{privacy_policy_path}" target="_blank">privacy policy</a>
+  author_attribution:
+    example_title: Sample text
+    hint_html: Are you writing news or blog articles outside of Mastodon? Control how you get credited when they are shared on Mastodon.
+    instructions: 'Make sure this code is in your article''s HTML:'
+    more_from_html: More from %{name}
+    s_blog: "%{name}'s Blog"
+    then_instructions: Then, add the domain name of the publication in the field below.
+    title: Author attribution
   challenge:
     confirm: Continue
     hint_html: "<strong>Tip:</strong> We won't ask you for your password again for the next hour."
@@ -1164,7 +1226,6 @@ en:
   crypto:
     errors:
       invalid_key: is not a valid Ed25519 or Curve25519 key
-      invalid_signature: is not a valid Ed25519 signature
   date:
     formats:
       default: "%b %d, %Y"
@@ -1230,8 +1291,6 @@ en:
       your_appeal_approved: Your appeal has been approved
       your_appeal_pending: You have submitted an appeal
       your_appeal_rejected: Your appeal has been rejected
-  domain_validator:
-    invalid_domain: is not a valid domain name
   edit_profile:
     basic_information: Basic information
     hint_html: "<strong>Customize what people see on your public profile and next to your posts.</strong> Other people are more likely to follow you back and interact with you when you have a filled out profile and a profile picture."
@@ -1356,19 +1415,43 @@ en:
       overwrite: Overwrite
       overwrite_long: Replace current records with the new ones
     overwrite_preambles:
-      blocking_html: You are about to <strong>replace your block list</strong> with up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
-      bookmarks_html: You are about to <strong>replace your bookmarks</strong> with up to <strong>%{total_items} posts</strong> from <strong>%{filename}</strong>.
-      domain_blocking_html: You are about to <strong>replace your domain block list</strong> with up to <strong>%{total_items} domains</strong> from <strong>%{filename}</strong>.
-      following_html: You are about to <strong>follow</strong> up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong> and <strong>stop following anyone else</strong>.
-      lists_html: You are about to <strong>replace your lists</strong> with contents of <strong>%{filename}</strong>. Up to <strong>%{total_items} accounts</strong> will be added to new lists.
-      muting_html: You are about to <strong>replace your list of muted accounts</strong> with up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
+      blocking_html:
+        one: You are about to <strong>replace your block list</strong> with up to <strong>%{count} account</strong> from <strong>%{filename}</strong>.
+        other: You are about to <strong>replace your block list</strong> with up to <strong>%{count} accounts</strong> from <strong>%{filename}</strong>.
+      bookmarks_html:
+        one: You are about to <strong>replace your bookmarks</strong> with up to <strong>%{count} post</strong> from <strong>%{filename}</strong>.
+        other: You are about to <strong>replace your bookmarks</strong> with up to <strong>%{count} posts</strong> from <strong>%{filename}</strong>.
+      domain_blocking_html:
+        one: You are about to <strong>replace your domain block list</strong> with up to <strong>%{count} domain</strong> from <strong>%{filename}</strong>.
+        other: You are about to <strong>replace your domain block list</strong> with up to <strong>%{count} domains</strong> from <strong>%{filename}</strong>.
+      following_html:
+        one: You are about to <strong>follow</strong> up to <strong>%{count} account</strong> from <strong>%{filename}</strong> and <strong>stop following anyone else</strong>.
+        other: You are about to <strong>follow</strong> up to <strong>%{count} accounts</strong> from <strong>%{filename}</strong> and <strong>stop following anyone else</strong>.
+      lists_html:
+        one: You are about to <strong>replace your lists</strong> with contents of <strong>%{filename}</strong>. Up to <strong>%{count} account</strong> will be added to new lists.
+        other: You are about to <strong>replace your lists</strong> with contents of <strong>%{filename}</strong>. Up to <strong>%{count} accounts</strong> will be added to new lists.
+      muting_html:
+        one: You are about to <strong>replace your list of muted account</strong> with up to <strong>%{count} account</strong> from <strong>%{filename}</strong>.
+        other: You are about to <strong>replace your list of muted accounts</strong> with up to <strong>%{count} accounts</strong> from <strong>%{filename}</strong>.
     preambles:
-      blocking_html: You are about to <strong>block</strong> up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
-      bookmarks_html: You are about to add up to <strong>%{total_items} posts</strong> from <strong>%{filename}</strong> to your <strong>bookmarks</strong>.
-      domain_blocking_html: You are about to <strong>block</strong> up to <strong>%{total_items} domains</strong> from <strong>%{filename}</strong>.
-      following_html: You are about to <strong>follow</strong> up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
-      lists_html: You are about to add up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong> to your <strong>lists</strong>. New lists will be created if there is no list to add to.
-      muting_html: You are about to <strong>mute</strong> up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
+      blocking_html:
+        one: You are about to <strong>block</strong> up to <strong>%{count} account</strong> from <strong>%{filename}</strong>.
+        other: You are about to <strong>block</strong> up to <strong>%{count} accounts</strong> from <strong>%{filename}</strong>.
+      bookmarks_html:
+        one: You are about to add up to <strong>%{count} post</strong> from <strong>%{filename}</strong> to your <strong>bookmarks</strong>.
+        other: You are about to add up to <strong>%{count} posts</strong> from <strong>%{filename}</strong> to your <strong>bookmarks</strong>.
+      domain_blocking_html:
+        one: You are about to <strong>block</strong> up to <strong>%{count} domain</strong> from <strong>%{filename}</strong>.
+        other: You are about to <strong>block</strong> up to <strong>%{count} domains</strong> from <strong>%{filename}</strong>.
+      following_html:
+        one: You are about to <strong>follow</strong> up to <strong>%{count} account</strong> from <strong>%{filename}</strong>.
+        other: You are about to <strong>follow</strong> up to <strong>%{count} accounts</strong> from <strong>%{filename}</strong>.
+      lists_html:
+        one: You are about to add up to <strong>%{count} account</strong> from <strong>%{filename}</strong> to your <strong>lists</strong>. New lists will be created if there is no list to add to.
+        other: You are about to add up to <strong>%{count} accounts</strong> from <strong>%{filename}</strong> to your <strong>lists</strong>. New lists will be created if there is no list to add to.
+      muting_html:
+        one: You are about to <strong>mute</strong> up to <strong>%{count} account</strong> from <strong>%{filename}</strong>.
+        other: You are about to <strong>mute</strong> up to <strong>%{count} accounts</strong> from <strong>%{filename}</strong>.
     preface: You can import data that you have exported from another server, such as a list of the people you are following or blocking.
     recent_imports: Recent imports
     states:
@@ -1453,6 +1536,7 @@ en:
   media_attachments:
     validations:
       images_and_video: Cannot attach a video to a post that already contains images
+      not_found: Media %{ids} not found or already attached to another post
       not_ready: Cannot attach files that have not finished processing. Try again in a moment!
       too_many: Cannot attach more than 4 files
   migrations:
@@ -1625,7 +1709,7 @@ en:
   scheduled_statuses:
     over_daily_limit: You have exceeded the limit of %{limit} scheduled posts for today
     over_total_limit: You have exceeded the limit of %{limit} scheduled posts
-    too_soon: The scheduled date must be in the future
+    too_soon: date must be in the future
   self_destruct:
     lead_html: Unfortunately, <strong>%{domain}</strong> is permanently closing down. If you had an account there, you will not be able to continue using it, but you can still request a backup of your data.
     title: This server is closing down
@@ -1685,7 +1769,7 @@ en:
     delete: Account deletion
     development: Development
     edit_profile: Edit profile
-    export: Data export
+    export: Export
     featured_tags: Featured hashtags
     import: Import
     import_and_export: Import and export
@@ -1731,23 +1815,12 @@ en:
     edited_at_html: Edited %{date}
     errors:
       in_reply_not_found: The post you are trying to reply to does not appear to exist.
-    open_in_web: Open in web
     over_character_limit: character limit of %{max} exceeded
     pin_errors:
       direct: Posts that are only visible to mentioned users cannot be pinned
       limit: You have already pinned the maximum number of posts
       ownership: Someone else's post cannot be pinned
       reblog: A boost cannot be pinned
-    poll:
-      total_people:
-        one: "%{count} person"
-        other: "%{count} people"
-      total_votes:
-        one: "%{count} vote"
-        other: "%{count} votes"
-      vote: Vote
-    show_more: Show more
-    show_thread: Show thread
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: Direct
@@ -1799,6 +1872,8 @@ en:
       too_late: It is too late to appeal this strike
   tags:
     does_not_match_previous_name: does not match the previous name
+  terms_of_service:
+    title: Terms of Service
   themes:
     contrast: Mastodon (High contrast)
     default: Mastodon (Dark)
@@ -1859,6 +1934,15 @@ en:
       further_actions_html: If this wasn't you, we recommend that you %{action} immediately and enable two-factor authentication to keep your account secure.
       subject: Your account has been accessed from a new IP address
       title: A new sign-in
+    terms_of_service_changed:
+      agreement: By continuing to use %{domain}, you are agreeing to these terms. If you disagree with the updated terms, you may terminate your agreement with %{domain} at any time by deleting your account.
+      changelog: 'At a glance, here is what this update means for you:'
+      description: 'You are receiving this e-mail because we''re making some changes to our terms of service at %{domain}. We encourage you to review the updated terms in full here:'
+      description_html: You are receiving this e-mail because we're making some changes to our terms of service at %{domain}. We encourage you to review the <a href="%{path}" target="_blank">updated terms in full here</a>.
+      sign_off: The %{domain} team
+      subject: Updates to our terms of service
+      subtitle: The terms of service of %{domain} are changing
+      title: Important update
     warning:
       appeal: Submit an appeal
       appeal_description: If you believe this is an error, you can submit an appeal to the staff of %{instance}.
@@ -1946,6 +2030,7 @@ en:
     instructions_html: Copy and paste the code below into the HTML of your website. Then add the address of your website into one of the extra fields on your profile from the "Edit profile" tab and save changes.
     verification: Verification
     verified_links: Your verified links
+    website_verification: Website verification
   webauthn_credentials:
     add: Add new security key
     create:

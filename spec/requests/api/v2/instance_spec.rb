@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Instances' do
+RSpec.describe 'Instances' do
   let(:user)    { Fabricate(:user) }
   let(:token)   { Fabricate(:accessible_access_token, resource_owner_id: user.id) }
   let(:headers) { { 'Authorization' => "Bearer #{token.token}" } }
@@ -15,7 +15,10 @@ describe 'Instances' do
         expect(response)
           .to have_http_status(200)
 
-        expect(body_as_json)
+        expect(response.content_type)
+          .to start_with('application/json')
+
+        expect(response.parsed_body)
           .to be_present
           .and include(title: 'Mastodon Glitch Edition')
           .and include_api_versions
@@ -30,7 +33,10 @@ describe 'Instances' do
         expect(response)
           .to have_http_status(200)
 
-        expect(body_as_json)
+        expect(response.content_type)
+          .to start_with('application/json')
+
+        expect(response.parsed_body)
           .to be_present
           .and include(title: 'Mastodon Glitch Edition')
           .and include_api_versions
@@ -49,8 +55,11 @@ describe 'Instances' do
             max_characters: StatusLengthValidator::MAX_CHARS,
             max_media_attachments: Status::MEDIA_ATTACHMENTS_LIMIT
           ),
+          media_attachments: include(
+            description_limit: MediaAttachment::MAX_DESCRIPTION_LENGTH
+          ),
           polls: include(
-            max_options: PollValidator::MAX_OPTIONS
+            max_options: PollOptionsValidator::MAX_OPTIONS
           )
         )
       )

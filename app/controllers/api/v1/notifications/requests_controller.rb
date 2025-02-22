@@ -52,7 +52,7 @@ class Api::V1::Notifications::RequestsController < Api::BaseController
   private
 
   def load_requests
-    requests = NotificationRequest.where(account: current_account).includes(:last_status, from_account: [:account_stat, :user]).to_a_paginated_by_id(
+    requests = NotificationRequest.where(account: current_account).without_suspended.includes(:last_status, from_account: [:account_stat, :user]).to_a_paginated_by_id(
       limit_param(DEFAULT_ACCOUNTS_LIMIT),
       params_slice(:max_id, :since_id, :min_id)
     )
@@ -75,11 +75,15 @@ class Api::V1::Notifications::RequestsController < Api::BaseController
   end
 
   def next_path
-    api_v1_notifications_requests_url pagination_params(max_id: pagination_max_id) unless @requests.empty?
+    api_v1_notifications_requests_url pagination_params(max_id: pagination_max_id) if records_continue?
   end
 
   def prev_path
     api_v1_notifications_requests_url pagination_params(min_id: pagination_since_id) unless @requests.empty?
+  end
+
+  def records_continue?
+    @requests.size == limit_param(DEFAULT_ACCOUNTS_LIMIT)
   end
 
   def pagination_max_id

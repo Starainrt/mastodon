@@ -7,7 +7,6 @@ kab:
     hosted_on: Maṣṭudun yersen deg %{domain}
     title: Ɣef
   accounts:
-    follow: Ḍfeṛ
     followers:
       one: Umeḍfaṛ
       other: Imeḍfaṛen
@@ -223,8 +222,8 @@ kab:
       shortcode: Tangalt tawezlant
       title: Imujiten udmawanen
       uncategorized: War-taggayt
-      unlist: Kkes seg wumuγ
-      unlisted: Yettwakkes seg wumuγ
+      unlist: Kkes seg wumuɣ
+      unlisted: Yettwakkes seg wumuɣ
       update_failed_msg: Ur izmir ara ad-issali umuji-a
       upload: Sali
     dashboard:
@@ -265,6 +264,8 @@ kab:
       domain: Taɣult
       new:
         create: Rnu taɣult
+    export_domain_allows:
+      no_file: Ula d yiwen ufaylu ma yettwafran
     export_domain_blocks:
       no_file: Ulac afaylu yettwafernen
     follow_recommendations:
@@ -412,13 +413,13 @@ kab:
       account: Ameskar
       application: Asnas
       back_to_account: Tuɣalin ɣer usebter n umiḍan
+      contents: Agbur
       deleted: Yettwakkes
       favourites: Imenyafen
       language: Tutlayt
       media:
         title: Amidya
       open: Ldi tasuffeɣt
-      title: Tisuffaɣ n umiḍan
       trending: Ayen mucaɛen
       visibility: Abani
       with_media: S umidya
@@ -432,6 +433,10 @@ kab:
     tags:
       search: Anadi
       title: Ihacṭagen
+    terms_of_service:
+      draft: Arewway
+      publish: Asuffeɣ
+      save_draft: Sekles arewway
     title: Tadbelt
     trends:
       allow: Sireg
@@ -485,7 +490,7 @@ kab:
     delete_account: Kkes amiḍan
     description:
       prefix_invited_by_user: "@%{name} inced-ik·ikem ad ternuḍ ɣer uqeddac-a n Mastodon!"
-      prefix_sign_up: Zeddi di Maṣṭudun assa!
+      prefix_sign_up: Zeddi di Maṣṭudun ass-a!
       suffix: S umiḍan, tzemreḍ ad tḍefreḍ imdanen, ad d-tessufɣeḍ tisuffaɣ d wembadal n yiznan akked yiseqdacen n yal aqeddac Mastodon d wayen-nniḍen!
     didnt_get_confirmation: Ur d-teṭṭifeḍ ara aseɣwen n usentem ?
     dont_have_your_security_key: Ulac ɣur-k·m tasarut-ik·im n tɣellist?
@@ -495,7 +500,6 @@ kab:
     logout: Ffeɣ
     migrate_account: Gujj ɣer umiḍan nniḍen
     or_log_in_with: Neɣ eqqen s
-    privacy_policy_agreement_html: Ɣriɣ yerna qebleɣ <a href="%{privacy_policy_path}" target="_blank">tasertit n tbaḍnit</a>
     progress:
       confirm: Sentem imayl
       details: Isalli-inek
@@ -518,18 +522,20 @@ kab:
     security: Taɣellist
     set_new_password: Egr-d awal uffir amaynut
     setup:
-      email_settings_hint_html: Sit ɣef useɣwen i ak-d-nceyyeε akken ad tesfeqdeḍ %{email}. Ad nerǧu da kan.
       link_not_received: Ur k-id-iṣaḥ ara wassaɣ ?
     sign_in:
       preamble_html: Kcem ar <strong>%{domain}</strong> s inekcam-inek n tuqqna. Ma yella yezga-d umiḍan-ik deg uqeddac-nniḍen, ur tezmireḍ ara ad tkecmeḍ sya.
       title: Akeččum ɣer %{domain}
     sign_up:
-      preamble: S umiḍan deg uqeddac-a n Mastodon, ad tizmireḍ ad tḍefreḍ win i ak·kem-yehwan deg uẓeṭṭa, anida yebɣu yili umiḍan-nnsen.
       title: Iyya ad d-nessewjed tiɣawsiwin i %{domain}.
     status:
       account_status: Addad n umiḍan
       functional: Amiḍan-inek·inem yetteddu s lekmal-is.
     use_security_key: Seqdec tasarut n teɣlist
+  author_attribution:
+    example_title: Amedya n weḍris
+    more_from_html: Ugar s ɣur %{name}
+    s_blog: Ablug n %{name}
   challenge:
     confirm: Kemmel
     invalid_password: Yir awal uffir
@@ -686,6 +692,9 @@ kab:
       subject: Yuder-ik·ikem-id %{name}
     reblog:
       subject: "%{name} yesselha addad-ik·im"
+      title: Azuzer amaynut
+    status:
+      subject: "%{name} akken i d-y·t·essufeɣ"
   number:
     human:
       decimal_units:
@@ -704,14 +713,15 @@ kab:
     prev: Win iɛeddan
   preferences:
     other: Wiyaḍ
+    posting_defaults: Iɣewwaṛen n usuffeɣ imezwura
   privacy:
     privacy: Tabaḍnit
     search: Anadi
   privacy_policy:
     title: Tasertit tabaḍnit
   redirects:
-    prompt: Ma tumneḍ aseɣwen-a, sit fell-as akken ad tkemmleḍ.
-    title: Aql-ik·em ad teffɣeḍ seg %{instance}.
+    prompt: Ma tumneḍ asaɣ-a, sit fell-as akken ad tkemmleḍ.
+    title: Ad teffɣeḍ seg %{instance}.
   relationships:
     activity: Armud n umiḍan
     followers: Imeḍfaṛen
@@ -737,6 +747,7 @@ kab:
       electron: Electron
       firefox: Firefox
       generic: Iminig arusin
+      huawei_browser: Iminig n Huawei
       ie: Internet Explorer
       micro_messenger: MicroMessenger
       nokia: Iminig Nokia S40 Ovi
@@ -745,6 +756,7 @@ kab:
       phantom_js: PhantomJS
       qq: Iminig QQ
       safari: Safari
+      uc_browser: UC Browser
       unknown_browser: Iminig arussin
       weibo: Weibo
     current_session: Tiɣimit tamirant
@@ -776,10 +788,11 @@ kab:
     delete: Tukksa n umiḍan
     development: Taneflit
     edit_profile: Ẓreg amaɣnu
-    export: Taktert n yisefka
+    export: Sifeḍ
     import: Kter
     import_and_export: Taktert d usifeḍ
     migrate: Tunigin n umiḍan
+    notifications: Alɣuten s imayl
     preferences: Imenyafen
     profile: Ameɣnu
     relationships: Imeḍfaṛen akked wid i teṭṭafaṛeḍ
@@ -798,17 +811,6 @@ kab:
         one: "%{count} n tbidyutt"
         other: "%{count} n tbidyutin"
     edited_at_html: Tettwaẓreg ass n %{date}
-    open_in_web: Ldi deg Web
-    poll:
-      total_people:
-        one: "%{count} n wemdan"
-        other: "%{count} n yemdanen"
-      total_votes:
-        one: "%{count} n wedɣar"
-        other: "%{count} n yedɣaren"
-      vote: Dɣeṛ
-    show_more: Ssken-d ugar
-    show_thread: Ssken-d lxiḍ
     title: '%{name} : "%{quote}"'
     visibilities:
       direct: Usrid

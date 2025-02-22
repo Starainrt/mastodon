@@ -1,10 +1,4 @@
-@use 'sass:math';
-
 .directory {
-  background: var(--background-color);
-  border-radius: 4px;
-  box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
-
   &__tag {
     box-sizing: border-box;
     margin-bottom: 10px;
@@ -65,7 +59,8 @@
     &.active h4 {
       &,
       .fa,
-      small {
+      small,
+      .trends__item__current {
         color: $primary-text-color;
       }
     }
@@ -78,6 +73,10 @@
     &.active .avatar-stack .account__avatar {
       border-color: $ui-highlight-color;
     }
+
+    .trends__item__current {
+      padding-inline-end: 0;
+    }
   }
 }
 
@@ -85,6 +84,7 @@
   width: 100%;
 
   .account {
+    max-width: calc(56px + 30ch);
     padding: 0;
     border: 0;
   }
@@ -153,8 +153,9 @@
     vertical-align: initial !important;
   }
 
-  &__interrelationships {
+  tbody td.accounts-table__interrelationships {
     width: 21px;
+    padding-inline-end: 16px;
   }
 
   .icon {

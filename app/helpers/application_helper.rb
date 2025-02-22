@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  DANGEROUS_SCOPES = %w(
-    read
-    write
-    follow
-  ).freeze
-
   RTL_LOCALES = %i(
     ar
     ckb
@@ -85,8 +79,8 @@ module ApplicationHelper
 
   def html_title
     safe_join(
-      [content_for(:page_title).to_s.chomp, title]
-      .select(&:present?),
+      [content_for(:page_title), title]
+      .compact_blank,
       ' - '
     )
   end
@@ -95,8 +89,11 @@ module ApplicationHelper
     Rails.env.production? ? site_title : "#{site_title} (Dev)"
   end
 
-  def class_for_scope(scope)
-    'scope-danger' if DANGEROUS_SCOPES.include?(scope.to_s)
+  def label_for_scope(scope)
+    safe_join [
+      tag.samp(scope, class: { 'scope-danger' => SessionActivation::DEFAULT_SCOPES.include?(scope.to_s) }),
+      tag.span(t("doorkeeper.scopes.#{scope}"), class: :hint),
+    ]
   end
 
   def can?(action, record)
@@ -106,28 +103,21 @@ module ApplicationHelper
   end
 
   def material_symbol(icon, attributes = {})
-    inline_svg_tag(
-      "400-24px/#{icon}.svg",
-      class: ['icon', "material-#{icon}"].concat(attributes[:class].to_s.split),
-      role: :img,
-      data: attributes[:data]
+    safe_join(
+      [
+        inline_svg_tag(
+          "400-24px/#{icon}.svg",
+          class: ['icon', "material-#{icon}"].concat(attributes[:class].to_s.split),
+          role: :img,
+          data: attributes[:data]
+        ),
+        ' ',
+      ]
     )
   end
 
   def check_icon
     inline_svg_tag 'check.svg'
-  end
-
-  def visibility_icon(status)
-    if status.public_visibility?
-      material_symbol('globe', title: I18n.t('statuses.visibilities.public'))
-    elsif status.unlisted_visibility?
-      material_symbol('lock_open', title: I18n.t('statuses.visibilities.unlisted'))
-    elsif status.private_visibility? || status.limited_visibility?
-      material_symbol('lock', title: I18n.t('statuses.visibilities.private'))
-    elsif status.direct_visibility?
-      material_symbol('alternate_email', title: I18n.t('statuses.visibilities.direct'))
-    end
   end
 
   def interrelationships_icon(relationships, account_id)
@@ -153,10 +143,12 @@ module ApplicationHelper
   end
 
   def body_classes
-    output = body_class_string.split
+    output = []
+    output << content_for(:body_classes)
     output << "flavour-#{current_flavour.parameterize}"
     output << "skin-#{current_skin.parameterize}"
     output << 'system-font' if current_account&.user&.setting_system_font_ui
+    output << 'custom-scrollbars' unless current_account&.user&.setting_system_scrollbars_ui
     output << (current_account&.user&.setting_reduce_motion ? 'reduce-motion' : 'no-reduce-motion')
     output << 'rtl' if locale_direction == 'rtl'
     output.compact_blank.join(' ')
@@ -238,20 +230,21 @@ module ApplicationHelper
     full_asset_url(instance_presenter.mascot&.file&.url || frontend_asset_path('images/elephant_ui_plane.svg'))
   end
 
-  def instance_presenter
-    @instance_presenter ||= InstancePresenter.new
+  def copyable_input(options = {})
+    tag.input(type: :text, maxlength: 999, spellcheck: false, readonly: true, **options)
   end
 
-  def favicon_path(size = '48')
-    instance_presenter.favicon&.file&.url(size)
+  def recent_tag_usage(tag)
+    people = tag.history.aggregate(2.days.ago.to_date..Time.zone.today).accounts
+    I18n.t 'user_mailer.welcome.hashtags_recent_count', people: number_with_delimiter(people), count: people
   end
 
-  def app_icon_path(size = '48')
-    instance_presenter.app_icon&.file&.url(size)
+  def app_store_url_ios
+    'https://apps.apple.com/app/mastodon-for-iphone-and-ipad/id1571998974'
   end
 
-  def use_mask_icon?
-    instance_presenter.app_icon.blank?
+  def app_store_url_android
+    'https://play.google.com/store/apps/details?id=org.joinmastodon.android'
   end
 
   # glitch-soc addition to handle the multiple flavors
@@ -260,12 +253,12 @@ module ApplicationHelper
     preload_pack_asset "locales/#{current_flavour}/#{I18n.locale}-json.js" if supported_locales.include?(I18n.locale.to_s)
   end
 
-  def flavoured_javascript_pack_tag(pack_name, **options)
-    javascript_pack_tag("flavours/#{current_flavour}/#{pack_name}", **options)
+  def flavoured_javascript_pack_tag(pack_name, **)
+    javascript_pack_tag("flavours/#{current_flavour}/#{pack_name}", **)
   end
 
-  def flavoured_stylesheet_pack_tag(pack_name, **options)
-    stylesheet_pack_tag("flavours/#{current_flavour}/#{pack_name}", **options)
+  def flavoured_stylesheet_pack_tag(pack_name, **)
+    stylesheet_pack_tag("flavours/#{current_flavour}/#{pack_name}", **)
   end
 
   def preload_signed_in_js_packs

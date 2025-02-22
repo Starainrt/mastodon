@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Admin::InstancesController do
   render_views
 
-  let(:current_user) { Fabricate(:user, role: UserRole.find_by(name: 'Admin')) }
+  let(:current_user) { Fabricate(:admin_user) }
 
   let!(:account_popular_main) { Fabricate(:account, domain: 'popular') }
 
@@ -28,11 +28,14 @@ RSpec.describe Admin::InstancesController do
     it 'renders instances' do
       get :index, params: { page: 2 }
 
-      instances = assigns(:instances).to_a
-      expect(instances.size).to eq 1
-      expect(instances[0].domain).to eq 'less.popular'
+      expect(instance_directory_links.size).to eq(1)
+      expect(instance_directory_links.first.text.strip).to match('less.popular')
 
       expect(response).to have_http_status(200)
+    end
+
+    def instance_directory_links
+      response.parsed_body.css('div.directory__tag a')
     end
   end
 
@@ -46,23 +49,11 @@ RSpec.describe Admin::InstancesController do
 
       expect(response).to have_http_status(200)
 
-      instance = assigns(:instance)
-      expect(instance).to_not be_new_record
+      expect(response.body)
+        .to include(I18n.t('admin.instances.totals_time_period_hint_html'))
+        .and include(I18n.t('accounts.nothing_here'))
 
       expect(Admin::ActionLogFilter).to have_received(:new).with(target_domain: account_popular_main.domain)
-
-      action_logs = assigns(:action_logs).to_a
-      expect(action_logs.size).to eq 0
-    end
-
-    context 'with an unknown domain' do
-      it 'returns http success' do
-        get :show, params: { id: 'unknown.example' }
-        expect(response).to have_http_status(200)
-
-        instance = assigns(:instance)
-        expect(instance).to be_new_record
-      end
     end
   end
 

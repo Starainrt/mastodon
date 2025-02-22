@@ -7,7 +7,6 @@ fo:
     hosted_on: Mastodon hýst á %{domain}
     title: Um
   accounts:
-    follow: Fylg
     followers:
       one: Fylgjari
       other: Fylgjarar
@@ -22,9 +21,12 @@ fo:
       one: Uppslag
       other: Uppsløg
     posts_tab_heading: Uppsløg
+    self_follow_error: Tað er ikki loyvt at fylgja tíni egnu kontu
   admin:
     account_actions:
       action: Frem atgerð
+      already_silenced: Hendan kontan er longu avmarkað.
+      already_suspended: Hendan kontan er longu ógildað.
       title: Frem umsjónaratgerð á %{acct}
     account_moderation_notes:
       create: Skriva umsjónarviðmerking
@@ -46,6 +48,7 @@ fo:
         title: Broyt teldupostin hjá %{username}
       change_role:
         changed_msg: Leiklutur broyttur!
+        edit_roles: Stýr brúkaraleiklutir
         label: Broyt leiklut
         no_role: Eingin leiklutur
         title: Broyt leiklut hjá %{username}
@@ -58,6 +61,7 @@ fo:
       demote: Lækka í tign
       destroyed_msg: Dáturnar hjá %{username} eru nú settar í bíðirøð at blíva strikaðar sum skjótast
       disable: Fryst
+      disable_sign_in_token_auth: Ger váttan við teldupostateknum óvirkna
       disable_two_factor_authentication: Ger 2FA óvirkið
       disabled: Fryst
       display_name: Vís navn
@@ -66,6 +70,7 @@ fo:
       email: Teldupostur
       email_status: Teldupostastøða
       enable: Tiðna
+      enable_sign_in_token_auth: Ger váttan við teldupostateknum virkna
       enabled: Í gildi
       enabled_msg: Tiðnaði kontuna hjá %{username}
       followers: Fylgjarar
@@ -182,6 +187,7 @@ fo:
         create_domain_block: Stovna navnaøkjablokering
         create_email_domain_block: Stovna t-post-økisnavnablokk
         create_ip_block: Stovna IP reglu
+        create_relay: Stovna reiðlag
         create_unavailable_domain: Stovna navnaøki, sum ikki er tøkt
         create_user_role: Stovna leiklut
         demote_user: Lækka brúkara í tign
@@ -193,16 +199,22 @@ fo:
         destroy_email_domain_block: Strika t-posta-økisnavnablokk
         destroy_instance: Reinsa navnaøki
         destroy_ip_block: Strika IP reglu
+        destroy_relay: Strika reiðlag
         destroy_status: Strika post
         destroy_unavailable_domain: Strika navnaøki, sum ikki er tøkt
         destroy_user_role: Bein burtur leiklut
         disable_2fa_user: Ger 2FA óvirkið
         disable_custom_emoji: Ger serligt kenslutekn óvirkið
+        disable_relay: Ger reiðlag óvirkið
+        disable_sign_in_token_auth_user: Ger váttan við teldupostateknum óvirkna fyri brúkara
         disable_user: Ger brúkara óvirknan
         enable_custom_emoji: Ger serligt kenslutekn virkið
+        enable_relay: Ger reiðlag virkið
+        enable_sign_in_token_auth_user: Ger váttan við teldupostateknum virkna fyri brúkara
         enable_user: Ger brúkara virknan
         memorialize_account: Minnst til Konto
         promote_user: Vís fram Brúkara
+        publish_terms_of_service: Útgev tænastutreytir
         reject_appeal: Avvís mótmali
         reject_user: Avvís Brúkara
         remove_avatar_user: Sletta Avatar
@@ -234,33 +246,45 @@ fo:
         confirm_user_html: "%{name} váttaði t-post hjá brúkara %{target}"
         create_account_warning_html: "%{name} sendi eina ávaring til %{target}"
         create_announcement_html: "%{name} stovnaði eina fráboðan %{target}"
+        create_canonical_email_block_html: "%{name} forðaði telduposti við hash'inum %{target}"
         create_custom_emoji_html: "%{name} legði upp nýtt kenslutekn %{target}"
         create_domain_allow_html: "%{name} loyv sameining við domainið %{target}"
         create_domain_block_html: "%{name} blokeraði navnaøkið %{target}"
+        create_email_domain_block_html: "%{name} blokeraði teldupostanavnaøkið %{target}"
         create_ip_block_html: "%{name} gjørdi reglu fyri IP %{target}"
+        create_relay_html: "%{name} gjørdi eitt reiðlag %{target}"
         create_unavailable_domain_html: "%{name} steðgaði veiting til navnaøkið %{target}"
         create_user_role_html: "%{name} stovnaði %{target} leiklutin"
         demote_user_html: "%{name} lækkaði tignina hjá brúkaranum %{target}"
         destroy_announcement_html: "%{name} strikaðar fráboðanir %{target}"
+        destroy_canonical_email_block_html: "%{name} strikaði blokeringina av teldupostin við hashkodu %{target}"
         destroy_custom_emoji_html: "%{name} strikaði kensluteknið %{target}"
         destroy_domain_allow_html: "%{name} havnaði sameining við navnaøkið %{target}"
         destroy_domain_block_html: "%{name} strikaði blokering av navnaøkinum %{target}"
+        destroy_email_domain_block_html: "%{name} leysgav teldupostanavnaøkið %{target}"
         destroy_instance_html: "%{name} reinsaði navnaøkið %{target}"
         destroy_ip_block_html: "%{name} slettaðar reglur fyri IP %{target}"
+        destroy_relay_html: "%{name} strikaði reiðlagið %{target}"
         destroy_status_html: "%{name} slettaði upplegg hjá %{target}"
         destroy_unavailable_domain_html: "%{name} tók upp aftir veiting til navnaøkið %{target}"
         destroy_user_role_html: "%{name} slettaði leiklutin hjá %{target}"
         disable_2fa_user_html: "%{name} slepti kravið um váttan í tveimum stigum fyri brúkaran %{target}"
         disable_custom_emoji_html: "%{name} gjørdi kensluteknið %{target} óvirkið"
+        disable_relay_html: "%{name} gjørdi reiðlagið %{target} óvirkið"
+        disable_sign_in_token_auth_user_html: "%{name} gjørdi váttan við teldupostteknum óvirkna fyri %{target}"
         disable_user_html: "%{name} gjørdi innritan hjá brúkaranum %{target} óvirkna"
         enable_custom_emoji_html: "%{name} gjørdi kensluteknið %{target} virkið"
+        enable_relay_html: "%{name} gjørdi reiðlagið %{target} virkið"
+        enable_sign_in_token_auth_user_html: "%{name} gjørdi váttan við teldupostteknum virkna fyri %{target}"
         enable_user_html: "%{name} gjørdi innritan virkna fyri brúkaran %{target}"
         memorialize_account_html: "%{name} broytti kontuna hjá %{target} til eina minnissíðu"
         promote_user_html: "%{name} flutti brúkaran %{target} fram"
+        publish_terms_of_service_html: "%{name} útgav dagføringar til tænastutreytirnar"
         reject_appeal_html: "%{name} avvísti umsjónaráheitan frá %{target}"
         reject_user_html: "%{name} avvísti skráseting hjá %{target}"
         remove_avatar_user_html: "%{name} strikaði eftirgjørda skapningin hjá %{target}"
         reopen_report_html: "%{name} lat uppaftur meldingina %{target}"
+        resend_user_html: "%{name} endursendi váttanarteldubrævið fyri %{target}"
         reset_password_user_html: "%{name} setti loyniorðið hjá brúkaranum %{target} av nýggjum"
         resolve_report_html: "%{name} avgreiddi meldingina %{target}"
         sensitive_account_html: "%{name} hevur merkt media hjá %{target} sum viðkvæmt"
@@ -421,6 +445,7 @@ fo:
       attempts_over_week:
         one: "%{count} roynd seinastu vikuna"
         other: "%{count} tilmeldingarroyndir seinastu vikuna"
+      created_msg: Teldupostanavnaøkið blokerað
       delete: Strika
       dns:
         types:
@@ -429,8 +454,12 @@ fo:
       new:
         create: Stovna nýtt økisnavn
         resolve: Loys navnaøki
+        title: Blokera nýtt teldupostanavnaøki
+      no_email_domain_block_selected: Ongar teldupostanavnaøkisblokeringar vóru broyttar, tí ongar vóru valdar
       not_permitted: Ikki loyvt
+      resolved_dns_records_hint_html: Navnaøkið verður loyst til hesi MX navnaøki, sum í síðsta enda hava ábyrgdina av at móttaka teldupost. At blokera eitt MX navnaøki fer at blokera tilmeldingar frá einum og hvørjum teldupoststaði, sum brúkar sama MX navnaøki, sjálvt um sjónliga navnaøkið er eitt annað. <strong>Ansa eftir ikki at blokera stórar veitarar av telduposti</strong>
       resolved_through_html: Loyst gjøgnum %{domain}
+      title: Blokeraði teldupostanavnaøki
     export_domain_allows:
       new:
         title: Innflyt navnaøkjaloyvi
@@ -584,7 +613,9 @@ fo:
         resolve_description_html: Eingin atgerð verður tikin móti meldaðu kontuni, eingin atsókn verður skrásett og meldingin verður lukkað.
         silence_description_html: Kontan verður einans sjónlig hjá teimum, sum longu fylgja henni ella leita eftir henni við hond, og tað minkar nógv um, hvussu langt hon røkkur. Kann altíð angrast. Lukkar allar rapporteringar um hesa kontuna.
         suspend_description_html: Kontan og alt innihald hjá kontuni gerast óatkomulig og við tíðini strikaði, og tað verður ógjørligt at samvirka við henni. Kann angrast innan 30 dagar. Lukkar allar rapporteringar av hesi kontuni.
+      actions_description_html: Ger av hvør atgerð skal takast fyri at avgreiða hesa meldingina. Revsitiltøk móti meldaðu kontuni føra við sær, at ein teldupostfráboðan verður send teimum, undantikið tá <strong>Ruskpostur</strong> verður valdur.
       actions_description_remote_html: Tak avgerð um hvat skal gerast fyri at avgreiða hesa rapporteringina. Hetta fer einans at ávirka, hvussu <strong>tín</strong> ambætari samskiftir við hesa fjarkontuna og hvussu hann handfer tilfar frá henni.
+      actions_no_posts: Hendan fráboðanin hevur ongar viðkomandi postar at strika
       add_to_report: Legg meira afturat meldingini
       already_suspended_badges:
         local: Longu gjørt óvirkin á hesum ambætaranum
@@ -648,6 +679,7 @@ fo:
         delete_data_html: Strika vangan og innihaldið hjá <strong>@%{acct}</strong> um 30 dagar uttan so at kontan verður gjørd virkin aftur áðrenn tað
         preview_preamble_html: "<strong>@%{acct}</strong> ger at móttaka eina ávaring við hesum innihaldi:"
         record_strike_html: Skráset eitt brot á <strong>@%{acct}</strong>, soleiðis at tað kann havast í huga í samband við møgulig framtíðar mishald
+        send_email_html: Send <strong>@%{acct}</strong> eitt teldubræv við eini ávaring
         warning_placeholder: Møguligar eyka grundgevingar fyri umsjónaratgerð.
       target_origin: Uppruni hjá meldaðu kontuni
       title: Meldingar
@@ -687,6 +719,7 @@ fo:
         manage_appeals: Umsit kærur
         manage_appeals_description: Loyvir brúkarum at eftirkanna kærur um umsjónaratgerðir
         manage_blocks: Stýra blokeringum
+        manage_blocks_description: Loyvir brúkarum at blokera teldupostveitarum og IP adressum
         manage_custom_emojis: Stýra sergjørd kenslutekn
         manage_custom_emojis_description: Loyvir brúkarum at stýra sergjørdum kensluteknum á ambætaranum
         manage_federation: Stýra sameindum
@@ -704,6 +737,7 @@ fo:
         manage_taxonomies: Stýra flokkingum
         manage_taxonomies_description: Loyvir brúkarum at eftirkanna vælumtókt tilfar og at dagføra stillingar viðvíkjandi frámerkjum
         manage_user_access: Stýr brúkaraatgongd
+        manage_user_access_description: Loyvir brúkarum at gera 'váttan í tveimum stigum' (2FA) hjá øðrum brúkarum óvirkna, at broyta teirra teldupost og at nullstilla teirra loyniorð
         manage_users: Stýr brúkarum
         manage_users_description: Loyvir brúkarum at vísa smálutir um aðrar brúkarar og at gjøgnumføra umsjónaratgerðir móti teimum
         manage_webhooks: Stýr webhooks
@@ -778,6 +812,7 @@ fo:
       destroyed_msg: Vevstaðs-uppsending strikað!
     software_updates:
       critical_update: Kritiskt - vinarliga dagfør beinan vegin
+      description: Mælt verður til, at Mastodon-innleggingin hjá tær altíð er dagførd, soleiðis at hon fær gagn av nýggjastu ábótunum og hentleikunum. Harumframt er tað summatíðir kritiskt, at Mastodon umgangandi verður dagført fyri at mótvirka trygdartrupulleikum. Tí kekkar Mastodon hvørjar 30 minuttir, um dagføringar eru neyðugar, og letur teg frætta samsvarandi teldubrævafráboðanarstillingunum hjá tær.
       documentation_link: Lær meira
       release_notes: Útgávuviðmerkingar
       title: Tøkar dagføringar
@@ -793,8 +828,10 @@ fo:
       back_to_account: Aftur til kontusíðu
       back_to_report: Aftur til meldingarsíðu
       batch:
+        add_to_report: 'Legg afturat melding #%{id}'
         remove_from_report: Strika frá melding
         report: Melding
+      contents: Innihald
       deleted: Strikað
       favourites: Dámdir postar
       history: Útgávusøga
@@ -803,13 +840,17 @@ fo:
       media:
         title: Miðlar
       metadata: Metadátur
+      no_history: Hesin posturin er ikki broyttur
       no_status_selected: Eingir postar vóru broyttir, tí eingir vóru valdir
       open: Lat post upp
       original_status: Upprunapostur
       reblogs: Endurbloggar
+      replied_to_html: Svaraði %{acct_link}
       status_changed: Postur broyttur
-      title: Postar hjá kontu
+      status_title: Postar hjá @%{name}
+      title: Kontupostar - @%{name}
       trending: Vælumtókt
+      view_publicly: Vís fyri øllum
       visibility: Sýni
       with_media: Við miðli
     strikes:
@@ -851,6 +892,9 @@ fo:
         message_html: Tú hevur ikki ásett nakrar ambætarareglur.
       sidekiq_process_check:
         message_html: Eingin Sidekiq gongd koyrir fyri %{value} bíðirøðina(r). Vinarliga eftirkanna Sidekiq uppsetingina
+      software_version_check:
+        action: Sí tøkar dagføringar
+        message_html: Ein Mastodon-dagføring er tøk.
       software_version_critical_check:
         action: Sí tøkar dagføringar
         message_html: Ein kritisk Mastodon-dagføring er tøk, vinarliga dagfør sum skjótast.
@@ -877,11 +921,41 @@ fo:
       name: Navn
       newest: Nýggjasta/u
       oldest: Elsta/u
+      open: Vís fyri øllum
       reset: Endurstilla
       review: Eftirkanna støðu
       search: Leita
       title: Frámerki
       updated_msg: Frámerkjastillingar dagførdar
+    terms_of_service:
+      back: Aftur til tænastutreytir
+      changelog: Hvat er broytt
+      create: Brúka tínar egnu
+      current: Núverandi
+      draft: Kladda
+      generate: Brúka leist
+      generates:
+        action: Framleið
+        chance_to_review_html: "<strong>Framleiddu tænastutreytirnar verða ikki útgivnar av sær sjálvum.</strong> Tú fær møguleika at eftirhyggja úrslitini. Vinarliga útfyll neyðugu smálutirnar fyri at halda fram."
+        explanation_html: Leisturin við tænastutreytum er einans til kunningar og skal ikki fatast sum løgfrøðislig ráðgeving yvirhøvur. Vinarliga spyr tín egna løgfrøðisliga ráðgeva um tína støðu og ítøkiligu løgfrøðisligu spurningarnar hjá tær.
+        title: Uppseting av tænastutreytum
+      history: Søga
+      live: Beinleiðis
+      no_history: Enn eru ongar skrásettar broytingar í tænastutreytunum.
+      no_terms_of_service_html: Í løtuni hevur tú ongar tænastutreytir uppsettar. Hugsanin við tænastutreytum er at veita greidleika og at verja teg ímóti møguligum ábyrgdum í ósemjum við tínar brúkarar.
+      notified_on_html: Fráboðan latin brúkarum %{date}
+      notify_users: Gev brúkarum fráboðan
+      preview:
+        explanation_html: 'Teldubrævið verður sent til <strong>%{display_count} brúkarar</strong>, sum hava stovna kontu áðrenn %{date}. Fylgjandi tekstur kemur við í teldubrævið:'
+        send_preview: Send undanvísing til %{email}
+        send_to_all:
+          one: Send %{display_count} teldubræv
+          other: Send %{display_count} teldubrøv
+        title: Undanvís fráboðan um tænastutreytir
+      publish: Útgev
+      published_on_html: Útgivið %{date}
+      save_draft: Goym kladdu
+      title: Tænastutreytir
     title: Umsiting
     trends:
       allow: Loyv
@@ -1040,7 +1114,9 @@ fo:
       guide_link_text: Øll kunnu geva íkast.
     sensitive_content: Viðkvæmt innihald
   application_mailer:
+    notification_preferences: Broyt teldupostastillingar
     salutation: "%{name}"
+    settings: 'Broyt teldupostastillingar: %{link}'
     unsubscribe: Strika hald
     view: 'Vís:'
     view_profile: Vís vanga
@@ -1060,6 +1136,7 @@ fo:
       hint_html: Bara eitt afturat! Tað er neyðugt hjá okkum at vátta, at tú ert eitt menniskja (fyri at sleppa undan ruskposti!). Loys CAPTCHA niðanfyri og trýst á "Halt fram".
       title: Trygdarkanning
     confirmations:
+      awaiting_review: Teldupostadressan hjá góðkend! Nú kanna %{domain} ábyrgdarfólk skrásetingina hjá tær. Góðkenna tey kontu tína, so senda tey tær eitt teldubræv!
       awaiting_review_title: Skrásetingin hjá tær verður viðgjørd
       clicking_this_link: við at klikkja á hetta leinki
       login_link: rita inn
@@ -1067,6 +1144,7 @@ fo:
       redirect_to_app_html: Tú skuldi verið send/ur víðari til <strong>%{app_name}</strong> appina. Hendi tað ikki, so kanst tú royna %{clicking_this_link} ella fara manuelt aftur til appina.
       registration_complete: Skráseting tín á %{domain} er nú avgreidd!
       welcome_title: Vælkomin, %{name}!
+      wrong_email_hint: Um hesin teldupoststaðurin ikki er rættur, so kanst tú broyta hann í kontustillingunum.
     delete_account: Strika kontu
     delete_account_html: Ynskir tú at strika kontuna, so kanst tú <a href="%{path}">halda fram her</a>. Tú verður spurd/ur um váttan.
     description:
@@ -1085,8 +1163,8 @@ fo:
     migrate_account: Flyt til eina aðra kontu
     migrate_account_html: Ynskir tú at víðaribeina hesa kontuna til eina aðra, so kanst tú <a href="%{path}">seta tað upp her</a>.
     or_log_in_with: Ella innrita við
-    privacy_policy_agreement_html: Eg havi lisið og taki undir við <a href="%{privacy_policy_path}" target="_blank">privatlívspolitikkinum</a>
     progress:
+      confirm: Vátta teldupost
       details: Tínir smálutir
       review: Okkara kanning
       rules: Góðtak reglur
@@ -1108,24 +1186,38 @@ fo:
     security: Trygd
     set_new_password: Áset nýtt loyniorð
     setup:
-      email_settings_hint_html: Kekka leinkið, sum vit sendu tær at eftirkanna %{email}. Vit bíða beint her.
+      email_below_hint_html: Kekka mappuna við ruskposti ella bið um ein annan. Tú kanst rætta teldupostadressuna, um hon er skeiv.
+      email_settings_hint_html: Trýst á leinkið, sum vit sendu til %{email} fyri at byrja at brúka Mastodon. Vit bíða beint her.
       link_not_received: Fekk tú einki leinki?
+      new_confirmation_instructions_sent: Tú fer at móttaka eitt nýtt teldubræv við váttanarleinkinum um nakrar fáar minuttir!
       title: Kekka innbakkan hjá tær
     sign_in:
       preamble_html: Rita inn við tínum <strong>%{domain}</strong> heimildum. Er konta tín á einum øðrum ambætara, so er ikki gjørligt hjá tær at rita inn her.
       title: Rita inn á %{domain}
     sign_up:
       manual_review: Tilmeldingar til %{domain} fara ígjøgnum eina manuella eftirkanning av okkara kjakleiðarum. Fyri at hjálpa okkum at skunda undir skrásetingina, skriva eitt sindur um teg sjálva/n og hví tú vil hava eina kontu á %{domain}.
-      preamble: Við eini kontu á hesum Mastodon ambætaranum ber til hjá tær at fylgja ein og hvønn annan persón á netverkinum, óansæð hvar teirra konta er hýst.
+      preamble: Við eini kontu á hesum Mastodon ambætaranum ber til hjá tær at fylgja ein og hvønn annan persón á fediversinum, óansæð hvar teirra konta er hýst.
       title: Latum okkum fáa teg settan upp á %{domain}.
     status:
       account_status: Kontustøða
+      confirming: Bíði eftir at teldupostváttanin er gjøgnumførd.
       functional: Konta tín er fult virkin.
+      pending: Umsókn tín verður eftirkannað av okkara starvsfeløgum. Tað kann taka eina løtu. Tú móttekur eitt teldubræv, um umsóknin er góðkend.
       redirecting_to: Konta tín er óvirkin, tí í løtuni verður hon víðaribeind til %{acct}.
       self_destruct: Av tí at %{domain} er í ferð við at lukka, fært tú einans avmarkaða atgongd til tína kontu.
       view_strikes: Vís eldri atsóknir móti tíni kontu
     too_fast: Oyðublaðið innsent ov skjótt, royn aftur.
     use_security_key: Brúka trygdarlykil
+    user_agreement_html: Eg havi lisið og taki undir við <a href="%{terms_of_service_path}" target="_blank">tænastutreytunum</a> og <a href="%{privacy_policy_path}" target="_blank">privatlívspolitikkinum</a>
+    user_privacy_agreement_html: I have lisið og taki undir við <a href="%{privacy_policy_path}" target="_blank">privatlívspolitikkinum</a>
+  author_attribution:
+    example_title: Tekstadømi
+    hint_html: Skrivar tú tíðindi ella greinar til bloggin uttanfyri Mastodon? Her kanst tú stýra, hvussu tú verður tilsipað/ur, tá ið títt tilfar verður deilt á Mastodon.
+    instructions: 'Tryggja tær, at henda kota er í HTML''inum á tíni grein:'
+    more_from_html: Meiri frá %{name}
+    s_blog: Bloggurin hjá %{name}
+    then_instructions: Skriva síðani økisnavnið, har tað verður lagt út, í teigin niðanfyri.
+    title: Ískoyti høvundans
   challenge:
     confirm: Hald á
     hint_html: "<strong>Góð ráð:</strong> vit spyrja teg ikki aftur um loyniorðið næsta tíman."
@@ -1134,7 +1226,6 @@ fo:
   crypto:
     errors:
       invalid_key: er ikki ein gildur Ed25519 ella Curve25519 lykil
-      invalid_signature: er ikki ein gildug Ed25519 undirskrift
   date:
     formats:
       default: "%b %d, %Y"
@@ -1163,6 +1254,9 @@ fo:
       before: 'Áðrenn tú heldur fram, vinarliga les hesar notur nágreiniliga:'
       caches: Innihald, sum er lagt í goymslu á øðrum ambætarum, kann vera varandi har
       data_removal: Postar tínir og aðrar dátur verða burturbeind varandi
+      email_change_html: Tú kann <a href="%{path}">broyta tín teldupost</a> uttan at strika tína kontu
+      email_contact_html: Um tað framvegis ikki kemur vegin fram, so kanst tú senda teldubræv til <a href="mailto:%{email}">%{email}</a> og biðja um hjálp
+      email_reconfirmation_html: Móttekur tú ikki váttanarteldupostin, so kanst tú <a href="%{path}">biðja um hann aftur</a>
       irreversible: Tað verður ikki møguligt hjá tær at endurskapa ella gera kontu tína virkna aftur
       more_details_html: Fyri fleiri smálutir, sí <a href="%{terms_path}">privatlívpolitikkin</a>.
       username_available: Brúkaranavnið hjá tær verður tøkt aftur
@@ -1197,8 +1291,6 @@ fo:
       your_appeal_approved: Kæra tín er góðkend
       your_appeal_pending: Tú hevur kært
       your_appeal_rejected: Kæra tín er vrakað
-  domain_validator:
-    invalid_domain: er ikki eitt loyvt økisnavn
   edit_profile:
     basic_information: Grundleggjandi upplýsingar
     hint_html: "<strong>Tillaga tað, sum fólk síggja á tínum almenna vanga og við síðna av tínum postum.</strong> Sannlíkindini fyri, at onnur fylgja tær og virka saman við tær eru størri, tá tú hevur fylt út vangan og eina vangamynd."
@@ -1323,19 +1415,43 @@ fo:
       overwrite: Skriva omaná
       overwrite_long: Legg nýggj teigarøð inn fyri tey verandi
     overwrite_preambles:
-      blocking_html: Tú ert í ferð við at <strong>útskifta blokeringslistan hjá tær</strong> við upp til <strong>%{total_items} kontum</strong> frá <strong>%{filename}</strong>.
-      bookmarks_html: Tú ert í ferð við at <strong>útskifta tíni bókamerki</strong> við upp til <strong>%{total_items} postum</strong> frá <strong>%{filename}</strong>.
-      domain_blocking_html: Tú ert í ferð við at <strong>útskifta navnaøkisblokeringslistan hjá tær</strong> við upp til <strong>%{total_items} navnaøkjum</strong> frá <strong>%{filename}</strong>.
-      following_html: Tú ert í ferð við at <strong>fylgja</strong> upp til <strong>%{total_items} kontum</strong> frá <strong>%{filename}</strong> og <strong>at gevast at fylgja øðrum</strong>.
-      lists_html: Tú ert í ferð við at <strong>skifta listarnar hjá tær út</strong> við tað, sum er í <strong>%{filename}</strong>. Upp til <strong>%{total_items} kontur</strong> verða lagdar afturat nýggjum listum.
-      muting_html: Tú ert í ferð við at <strong>útskifta listan hjá tær við doyvdum kontum</strong> við upp til <strong>%{total_items} kontum</strong> frá <strong>%{filename}</strong>.
+      blocking_html:
+        one: Tú ert í ferð við at <strong>útskifta blokeringslistan hjá tær</strong> við upp til <strong>%{count} kontu</strong> frá <strong>%{filename}</strong>.
+        other: Tú ert í ferð við at <strong>útskifta blokeringslistan hjá tær</strong> við upp til <strong>%{count} kontum</strong> frá <strong>%{filename}</strong>.
+      bookmarks_html:
+        one: Tú ert í ferð við at <strong>útskifta tíni bókamerki</strong> við upp til <strong>%{count} posti</strong> frá <strong>%{filename}</strong>.
+        other: Tú ert í ferð við at <strong>útskifta tíni bókamerki</strong> við upp til <strong>%{count} postum</strong> frá <strong>%{filename}</strong>.
+      domain_blocking_html:
+        one: Tú ert í ferð við at <strong>útskifta navnaøkisblokeringslistan hjá tær</strong> við upp til <strong>%{count} navnaøki</strong> frá <strong>%{filename}</strong>.
+        other: Tú ert í ferð við at <strong>útskifta navnaøkisblokeringslistan hjá tær</strong> við upp til <strong>%{count} navnaøkjum</strong> frá <strong>%{filename}</strong>.
+      following_html:
+        one: Tú ert í ferð við at <strong>fylgja</strong> upp til <strong>%{count} kontu</strong> frá <strong>%{filename}</strong> og <strong>at gevast at fylgja øðrum</strong>.
+        other: Tú ert í ferð við at <strong>fylgja</strong> upp til <strong>%{count} kontum</strong> frá <strong>%{filename}</strong> og <strong>at gevast at fylgja øðrum</strong>.
+      lists_html:
+        one: Tú ert í ferð við at <strong>skifta listarnar hjá tær út</strong> við tað, sum er í <strong>%{filename}</strong>. Upp til <strong>%{count} konta</strong> verður løgd afturat nýggjum listum.
+        other: Tú ert í ferð við at <strong>skifta listarnar hjá tær út</strong> við tað, sum er í <strong>%{filename}</strong>. Upp til <strong>%{count} kontur</strong> verða lagdar afturat nýggjum listum.
+      muting_html:
+        one: Tú ert í ferð við at <strong>útskifta listan hjá tær við doyvdum kontum</strong> við upp til <strong>%{count} kontu</strong> frá <strong>%{filename}</strong>.
+        other: Tú ert í ferð við at <strong>útskifta listan hjá tær við doyvdum kontum</strong> við upp til <strong>%{count} kontum</strong> frá <strong>%{filename}</strong>.
     preambles:
-      blocking_html: Tú ert í ferð við at <strong>blokera</strong> upp til <strong>%{total_items} kontur</strong> frá <strong>%{filename}</strong>.
-      bookmarks_html: Tú ert í ferð við at leggja upp til <strong>%{total_items} postar</strong> frá <strong>%{filename}</strong> afturat tínum <strong>bókamerkjum</strong>.
-      domain_blocking_html: Tú ert í ferð við at <strong>blokera</strong> upp til <strong>%{total_items} navnaøki</strong> frá <strong>%{filename}</strong>.
-      following_html: Tú ert í ferð við at <strong>fylgja</strong> upp til <strong>%{total_items} kontur</strong> frá <strong>%{filename}</strong>.
-      lists_html: Tú ert í ferð við at leggja upp til <strong>%{total_items} kontur</strong> frá <strong>%{filename}</strong> afturat tínum <strong>listum</strong>. Nýggir listar verða stovnaðir, um eingin listi er at leggja afturat.
-      muting_html: Tú ert í ferð við at <strong>doyva</strong> upp til <strong>%{total_items} kontur</strong> frá <strong>%{filename}</strong>.
+      blocking_html:
+        one: Tú ert í ferð við at <strong>blokera</strong> upp til <strong>%{count} kontu</strong> frá <strong>%{filename}</strong>.
+        other: Tú ert í ferð við at <strong>blokera</strong> upp til <strong>%{count} kontur</strong> frá <strong>%{filename}</strong>.
+      bookmarks_html:
+        one: Tú ert í ferð við at leggja upp til <strong>%{count} post</strong> frá <strong>%{filename}</strong> afturat tínum <strong>bókamerkjum</strong>.
+        other: Tú ert í ferð við at leggja upp til <strong>%{count} postar</strong> frá <strong>%{filename}</strong> afturat tínum <strong>bókamerkjum</strong>.
+      domain_blocking_html:
+        one: Tú ert í ferð við at <strong>blokera</strong> upp til <strong>%{count} navnaøki</strong> frá <strong>%{filename}</strong>.
+        other: Tú ert í ferð við at <strong>blokera</strong> upp til <strong>%{count} navnaøki</strong> frá <strong>%{filename}</strong>.
+      following_html:
+        one: Tú ert í ferð við at <strong>fylgja</strong> upp til <strong>%{count} kontu</strong> frá <strong>%{filename}</strong>.
+        other: Tú ert í ferð við at <strong>fylgja</strong> upp til <strong>%{count} kontur</strong> frá <strong>%{filename}</strong>.
+      lists_html:
+        one: Tú ert í ferð við at leggja upp til <strong>%{count} kontu</strong> frá <strong>%{filename}</strong> afturat tínum <strong>listum</strong>. Nýggir listar verða stovnaðir, um eingin listi er at leggja afturat.
+        other: Tú ert í ferð við at leggja upp til <strong>%{count} kontur</strong> frá <strong>%{filename}</strong> afturat tínum <strong>listum</strong>. Nýggir listar verða stovnaðir, um eingin listi er at leggja afturat.
+      muting_html:
+        one: Tú ert í ferð við at <strong>doyva</strong> upp til <strong>%{count} kontu</strong> frá <strong>%{filename}</strong>.
+        other: Tú ert í ferð við at <strong>doyva</strong> upp til <strong>%{count} kontur</strong> frá <strong>%{filename}</strong>.
     preface: Tú kanst innlesa dátur, sum tú hevur útlisið frá einum øðrum ambætara, so sum listar av fólki, sum tú fylgir ella blokerar.
     recent_imports: Feskar innflytingar
     states:
@@ -1395,6 +1511,7 @@ fo:
     authentication_methods:
       otp: app til váttan í tveimum stigum
       password: loyniorð
+      sign_in_token: teldupostatrygdarkoda
       webauthn: trygdarlyklar
     description_html: Sært tú virksemi, sum tú ikki kennir aftur, so eigur tú at umhugsa at broyta loyniorðið ella at gera váttan í tveimum stigum virkna.
     empty: Eingin samgildissøga tøk
@@ -1405,10 +1522,21 @@ fo:
     unsubscribe:
       action: Ja, strika hald
       complete: Hald strikað
+      confirmation_html: Ert tú vís/ur í, at tú vil gevast at móttaka %{type} fyri Mastodon á %{domain} til tína teldupostadressu á %{email}? Tú kanst altíð gera haldið virkið aftur frá tínum <a href="%{settings_path}">teldupostfráboðanarstillingum</a>.
+      emails:
+        notification_emails:
+          favourite: yndisfráboðanarteldupostar
+          follow: fylg fráboðanarteldupostar
+          follow_request: fylg umbønir um teldupost
+          mention: nevn fráboðanarteldupostar
+          reblog: framhevja fráboðanarpostar
+      resubscribe_html: Um tú hevur strikað haldið av misgávum, so kanst tú tekna haldið av nýggjum í tínum <a href="%{settings_path}">teldupostfráboðarstillingum</a>.
+      success_html: Tú fer ikki longur at móttaka %{type} fyri Mastodon á %{domain} til tín teldupost á %{email}.
       title: Strika hald
   media_attachments:
     validations:
       images_and_video: Kann ikki viðfesta sjónfílu til ein post, sum longu inniheldur myndir
+      not_found: Miðilin %{ids} ikki funnin ella longu knýttur at øðrum posti
       not_ready: Kann ikki viðfesta fílur, sum ikki eru liðugt viðgjørdar. Roynd aftur um eina løtu!
       too_many: Kann ikki viðfest fleiri enn 4 fílur
   migrations:
@@ -1485,6 +1613,8 @@ fo:
     update:
       subject: "%{name} rættaði ein post"
   notifications:
+    administration_emails: Fráboðanir um teldupost til umsitarar
+    email_events: Hendingar fyri teldupostfráboðanir
     email_events_hint: 'Vel hendingar, sum tú vil hava fráboðanir um:'
   number:
     human:
@@ -1578,7 +1708,7 @@ fo:
   scheduled_statuses:
     over_daily_limit: Tú er komin at markinum, sum er %{limit} skrálagdir postar, í dag
     over_total_limit: Tú er komin at markinum, sum er %{limit} skrálagdir postar
-    too_soon: Ætlanardagfestingin má vera í framtíðini
+    too_soon: dagfesting má vera í framtíðini
   self_destruct:
     lead_html: Tíverri, <strong>%{domain}</strong> er í ferð við at blíva lukkað niður med alla. Um tú hevði eina kontu har, so ber ikki til framhaldandi at brúka hana, men tú kann framvegis biðja um trygdaravrit av tínum dátum.
     title: Hesin ambætarin er í ferð við at lukka
@@ -1638,11 +1768,12 @@ fo:
     delete: Striking av kontu
     development: Menning
     edit_profile: Rætta vanga
-    export: Útflyt dátur
+    export: Flyt út
     featured_tags: Varpaði frámerki
     import: Innflyt
     import_and_export: Innflyt og útflyt
     migrate: Flyting av kontu
+    notifications: Teldupostfráboðanir
     preferences: Stillingar
     profile: Vangi
     relationships: Fylging og fylgjarar
@@ -1683,23 +1814,12 @@ fo:
     edited_at_html: Rættað %{date}
     errors:
       in_reply_not_found: Posturin, sum tú roynir at svara, sýnist ikki at finnast.
-    open_in_web: Lat upp á vevinum
     over_character_limit: mesta tal av teknum, %{max}, rokkið
     pin_errors:
       direct: Postar, sum einans eru sjónligir hjá nevndum brúkarum, kunnu ikki festast
       limit: Tú hevur longu fest loyvda talið av postum
       ownership: Postar hjá øðrum kunnu ikki festast
       reblog: Ein stimbran kann ikki festast
-    poll:
-      total_people:
-        one: "%{count} fólk"
-        other: "%{count} fólk"
-      total_votes:
-        one: "%{count} atkvøða"
-        other: "%{count} atkvøður"
-      vote: Atkvøð
-    show_more: Vís meira
-    show_thread: Vís tráð
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: Beinleiðis
@@ -1751,6 +1871,8 @@ fo:
       too_late: Tað er ov seint at kæra hesa atsókn
   tags:
     does_not_match_previous_name: samsvarar ikki við undanfarna navnið
+  terms_of_service:
+    title: Tænastutreytir
   themes:
     contrast: Mastodon (høgur kontrastur)
     default: Mastodon (myrkt)
@@ -1811,6 +1933,15 @@ fo:
       further_actions_html: Var hetta ikki tú, so mæla vit til, at tú %{action} beinan vegin og at tú ger váttan í tveimum stigum virkna fyri at konta tín kann vera trygg.
       subject: Atgongd er fingin til kontu tína frá eini nýggjari IP adressu
       title: Ein nýggj innritan
+    terms_of_service_changed:
+      agreement: Við framhaldandi at brúka %{domain} góðtekur tú hesar treytir. Tekur tú ikki undir við dagførdu treytunum, so kanst tú til einhvørja tíð uppsiga avtaluna við %{domain} við at strika kontu tína.
+      changelog: 'Í stuttum merkir henda dagføringin:'
+      description: 'Tú móttekur hetta teldubrævið, tí at vit gera nakrar broytingar í okkara tænastutreytum á %{domain}. Vit eggja tær til at eftirhyggja dagførdu treytirnar her:'
+      description_html: Tú móttekur hetta teldubrævið, tí at vit gera nakrar broytingar í okkara tænastutreytum á %{domain}. Vit eggja tær til at eftirhyggja <a href="%{path}" target="_blank">dagførdu og samlaðu treytirnar her</a>.
+      sign_off: "%{domain} toymið"
+      subject: Dagføringar til okkara tænastutreytir
+      subtitle: Tænastutreytirnar hjá %{domain} eru við at verða broyttar
+      title: Týdningarmikil dagføring
     warning:
       appeal: Innsend eina kæru
       appeal_description: Trýrt tú, at hetta er ein feilur, so kanst tú senda eina kæru til starvsfólkini á %{instance}.
@@ -1868,6 +1999,9 @@ fo:
       follows_subtitle: Fylg vælkendar kontur
       follows_title: Hvørji tú átti at fylgt
       follows_view_more: Sí fleiri fólk at fylgja
+      hashtags_recent_count:
+        one: "%{people} fólk seinastu 2 dagarnar"
+        other: "%{people} fólk seinastu 2 dagarnar"
       hashtags_subtitle: Kanna rákið seinastu 2 dagarnar
       hashtags_title: Vælumtókt frámerki
       hashtags_view_more: Sí fleiri vælumtókt frámerki
@@ -1886,6 +2020,7 @@ fo:
     invalid_otp_token: Ógyldug tvey-stigs koda
     otp_lost_help_html: Hevur tú mist atgongd til bæði, so kanst tú koma í samband við %{email}
     rate_limited: Ov nógvar samgildisroyndir, royn aftur seinni.
+    seamless_external_login: Tú er ritað/ur inn umvegis eina uttanhýsis tænastu, so loyniorð og teldupoststillingar eru ikki tøkar.
     signed_in_as: 'Ritað/ur inn sum:'
   verification:
     extra_instructions_html: <strong>Góð ráð:</strong> Leinkið á heimasíðuni hjá tær kann vera ósjónligt. Tann týdningarmikli parturin er <code>rel="me"</code> sum forðar tí, at onkur kann látast at vera ein annar á heimasíðuni við brúkara-gjørdum tilfari. Tú kanst enntá brúka eitt <code>link</code> frámerki í høvdinum á síðuni heldur enn <code>a</code>, men HTML kodan má vera atkomulig uttan at JavaScript skal koyra.
@@ -1894,6 +2029,7 @@ fo:
     instructions_html: Avrita og innset koduna niðanfyri inn í HTML'ið á heimasíðuni hjá tær. Legg síðani adressuna á heimasíðuni hjá tær inn á eitt av eyka teigunum á vanganum hjá tær umvegis "Rætta vanga" teigin og goym broytingar.
     verification: Váttan
     verified_links: Tíni váttaðu leinki
+    website_verification: Heimasíðuváttan
   webauthn_credentials:
     add: Legg nýggjan trygdarlykil afturat
     create:
