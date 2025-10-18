@@ -53,8 +53,6 @@ RSpec.describe 'credentials API' do
       patch '/api/v1/accounts/update_credentials', headers: headers, params: params
     end
 
-    before { allow(ActivityPub::UpdateDistributionWorker).to receive(:perform_async) }
-
     let(:params) do
       {
         avatar: fixture_file_upload('avatar.gif', 'image/gif'),
@@ -103,20 +101,14 @@ RSpec.describe 'credentials API' do
         .to have_http_status(200)
       expect(response.content_type)
         .to start_with('application/json')
-
-      expect(response.parsed_body).to include({
-        source: hash_including({
-          discoverable: true,
-          indexable: true,
-        }),
-        locked: false,
-      })
-
-      expect(ActivityPub::UpdateDistributionWorker)
-        .to have_received(:perform_async).with(user.account_id)
-    end
-
-    def expect_account_updates
+      expect(response.parsed_body)
+        .to include({
+          source: hash_including({
+            discoverable: true,
+            indexable: true,
+          }),
+          locked: false,
+        })
       expect(user.account.reload)
         .to have_attributes(
           display_name: eq("Alice Isn't Dead"),
@@ -125,14 +117,13 @@ RSpec.describe 'credentials API' do
           header: exist,
           attribution_domains: ['example.com']
         )
-    end
-
-    def expect_user_updates
       expect(user.reload)
         .to have_attributes(
           setting_default_privacy: eq('unlisted'),
           setting_default_sensitive: be(true)
         )
+      expect(ActivityPub::UpdateDistributionWorker)
+        .to have_enqueued_sidekiq_job(user.account_id)
     end
   end
 end

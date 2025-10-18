@@ -24,7 +24,7 @@ import { ColumnHeader } from 'flavours/glitch/components/column_header';
 import { LoadMore } from 'flavours/glitch/components/load_more';
 import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';
 import { RadioButton } from 'flavours/glitch/components/radio_button';
-import ScrollContainer from 'flavours/glitch/containers/scroll_container';
+import { ScrollContainer } from 'flavours/glitch/containers/scroll_container';
 import { useSearchParam } from 'flavours/glitch/hooks/useSearchParam';
 import { useAppDispatch, useAppSelector } from 'flavours/glitch/store';
 
@@ -133,6 +133,7 @@ export const Directory: React.FC<{
   }, [dispatch, order, local]);
 
   const pinned = !!columnId;
+  const initialLoad = isLoading && accountIds.size === 0;
 
   const scrollableArea = (
     <div className='scrollable'>
@@ -173,7 +174,7 @@ export const Directory: React.FC<{
       </div>
 
       <div className='directory__list'>
-        {isLoading ? (
+        {initialLoad ? (
           <LoadingIndicator />
         ) : (
           accountIds.map((accountId) => (
@@ -182,7 +183,11 @@ export const Directory: React.FC<{
         )}
       </div>
 
-      <LoadMore onClick={handleLoadMore} visible={!isLoading} />
+      <LoadMore
+        onClick={handleLoadMore}
+        visible={!initialLoad}
+        loading={isLoading}
+      />
     </div>
   );
 
@@ -204,7 +209,6 @@ export const Directory: React.FC<{
       />
 
       {multiColumn && !pinned ? (
-        // @ts-expect-error ScrollContainer is not properly typed yet
         <ScrollContainer scrollKey='directory'>
           {scrollableArea}
         </ScrollContainer>

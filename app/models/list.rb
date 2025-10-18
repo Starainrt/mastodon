@@ -18,7 +18,7 @@ class List < ApplicationRecord
 
   PER_ACCOUNT_LIMIT = 50
 
-  enum :replies_policy, { list: 0, followed: 1, none: 2 }, prefix: :show
+  enum :replies_policy, { list: 0, followed: 1, none: 2 }, prefix: :show, validate: true
 
   belongs_to :account
 
@@ -31,6 +31,8 @@ class List < ApplicationRecord
   validate :validate_account_lists_limit, on: :create
 
   before_destroy :clean_feed_manager
+
+  scope :with_list_account, ->(account) { joins(:list_accounts).where(list_accounts: { account: }) }
 
   private
 

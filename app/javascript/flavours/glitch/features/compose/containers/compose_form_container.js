@@ -1,5 +1,3 @@
-import { injectIntl } from 'react-intl';
-
 import { connect } from 'react-redux';
 
 import {
@@ -12,16 +10,19 @@ import {
   insertEmojiCompose,
   uploadCompose,
 } from 'flavours/glitch/actions/compose';
+import { pasteLinkCompose } from 'flavours/glitch/actions/compose_typed';
 import { openModal } from 'flavours/glitch/actions/modal';
 import { privacyPreference } from 'flavours/glitch/utils/privacy_preference';
 
 import ComposeForm from '../components/compose_form';
 
+const urlLikeRegex = /^https?:\/\/[^\s]+\/[^\s]+$/i;
+
 const sideArmPrivacy = state => {
   const inReplyTo = state.getIn(['compose', 'in_reply_to']);
   const replyPrivacy = inReplyTo ? state.getIn(['statuses', inReplyTo, 'visibility']) : null;
   const sideArmBasePrivacy = state.getIn(['local_settings', 'side_arm']);
-  const sideArmRestrictedPrivacy = replyPrivacy ? privacyPreference(replyPrivacy, sideArmBasePrivacy) : null;
+  const sideArmRestrictedPrivacy = replyPrivacy && sideArmBasePrivacy !== 'none' ? privacyPreference(replyPrivacy, sideArmBasePrivacy) : null;
   let sideArmPrivacy = null;
   switch (state.getIn(['local_settings', 'side_arm_reply_mode'])) {
   case 'copy':
@@ -58,7 +59,7 @@ const mapStateToProps = state => ({
   maxChars: state.getIn(['server', 'server', 'configuration', 'statuses', 'max_characters'], 500),
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, props) => ({
 
   onChange (text) {
     dispatch(changeCompose(text));
@@ -71,7 +72,11 @@ const mapDispatchToProps = (dispatch) => ({
         modalProps: { overridePrivacy },
       }));
     } else {
-      dispatch(submitCompose(overridePrivacy));
+      dispatch(submitCompose(overridePrivacy, (status) => {
+        if (props.redirectOnSuccess) {
+          window.location.assign(status.url);
+        }
+      }));
     }
   },
 
@@ -91,8 +96,21 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeComposeSpoilerText(checked));
   },
 
-  onPaste (files) {
-    dispatch(uploadCompose(files));
+  onPaste (e) {
+    if (e.clipboardData && e.clipboardData.files.length === 1) {
+      dispatch(uploadCompose(e.clipboardData.files));
+      e.preventDefault();
+    } else if (e.clipboardData && e.clipboardData.files.length === 0) {
+      const data = e.clipboardData.getData('text/plain');
+      if (!data.match(urlLikeRegex)) return;
+
+      try {
+        const url = new URL(data);
+        dispatch(pasteLinkCompose({ url }));
+      } catch {
+        return;
+      }
+    }
   },
 
   onPickEmoji (position, data, needsSpace) {
@@ -101,4 +119,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 });
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ComposeForm));
+export default connect(mapStateToProps, mapDispatchToProps)(ComposeForm);

@@ -11,10 +11,15 @@ import { connect } from 'react-redux';
 
 import ChevronRightIcon from '@/material-icons/400-24px/chevron_right.svg?react';
 import { Icon } from 'flavours/glitch/components/icon';
-import PollContainer from 'flavours/glitch/containers/poll_container';
+import { Poll } from 'flavours/glitch/components/poll';
 import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
-import { autoPlayGif, languages as preloadedLanguages } from 'flavours/glitch/initial_state';
+import { languages as preloadedLanguages } from 'flavours/glitch/initial_state';
 import { decode as decodeIDNA } from 'flavours/glitch/utils/idna';
+
+import { isModernEmojiEnabled } from '../utils/environment';
+
+import { EmojiHTML } from './emoji/html';
+import { HandledLink } from './status/handled_link';
 
 const MAX_HEIGHT = 706; // 22px * 32 (+ 2px padding at the top)
 
@@ -99,13 +104,13 @@ class TranslateButton extends PureComponent {
 
       return (
         <div className='translate-button'>
-          <div className='translate-button__meta'>
-            <FormattedMessage id='status.translated_from_with' defaultMessage='Translated from {lang} using {provider}' values={{ lang: languageName, provider }} />
-          </div>
-
           <button className='link-button' onClick={onClick}>
             <FormattedMessage id='status.show_original' defaultMessage='Show original' />
           </button>
+
+          <div className='translate-button__meta'>
+            <FormattedMessage id='status.translated_from_with' defaultMessage='Translated from {lang} using {provider}' values={{ lang: languageName, provider }} />
+          </div>
         </div>
       );
     }
@@ -156,6 +161,23 @@ class StatusContent extends PureComponent {
     }
 
     const { status, onCollapsedToggle } = this.props;
+    if (status.get('collapsed', null) === null && onCollapsedToggle) {
+      const { collapsible, onClick } = this.props;
+
+      const collapsed =
+          collapsible
+          && onClick
+          && node.clientHeight > MAX_HEIGHT
+          && status.get('spoiler_text').length === 0;
+
+      onCollapsedToggle(collapsed);
+    }
+
+    // Exit if modern emoji is enabled, as it handles links using the HandledLink component.
+    if (isModernEmojiEnabled()) {
+      return;
+    }
+
     const links = node.querySelectorAll('a');
 
     let link, mention;
@@ -184,12 +206,13 @@ class StatusContent extends PureComponent {
         }
       } else if (link.textContent[0] === '#' || (link.previousSibling && link.previousSibling.textContent && link.previousSibling.textContent[link.previousSibling.textContent.length - 1] === '#')) {
         link.addEventListener('click', this.onHashtagClick.bind(this, link.text), false);
+        link.setAttribute('data-menu-hashtag', this.props.status.getIn(['account', 'id']));
       } else {
         link.setAttribute('title', link.href);
         link.classList.add('unhandled-link');
 
         link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noopener nofollow noreferrer');
+        link.setAttribute('rel', 'noopener nofollow');
 
         try {
           if (tagLinks && isLinkMisleading(link)) {
@@ -217,45 +240,7 @@ class StatusContent extends PureComponent {
         }
       }
     }
-
-    if (status.get('collapsed', null) === null && onCollapsedToggle) {
-      const { collapsible, onClick } = this.props;
-
-      const collapsed =
-          collapsible
-          && onClick
-          && node.clientHeight > MAX_HEIGHT
-          && status.get('spoiler_text').length === 0;
-
-      onCollapsedToggle(collapsed);
-    }
   }
-
-  handleMouseEnter = ({ currentTarget }) => {
-    if (autoPlayGif) {
-      return;
-    }
-
-    const emojis = currentTarget.querySelectorAll('.custom-emoji');
-
-    for (var i = 0; i < emojis.length; i++) {
-      let emoji = emojis[i];
-      emoji.src = emoji.getAttribute('data-original');
-    }
-  };
-
-  handleMouseLeave = ({ currentTarget }) => {
-    if (autoPlayGif) {
-      return;
-    }
-
-    const emojis = currentTarget.querySelectorAll('.custom-emoji');
-
-    for (var i = 0; i < emojis.length; i++) {
-      let emoji = emojis[i];
-      emoji.src = emoji.getAttribute('data-static');
-    }
-  };
 
   componentDidMount () {
     this._updateStatusLinks();
@@ -316,6 +301,27 @@ class StatusContent extends PureComponent {
     this.node = c;
   };
 
+  handleElement = (element, { key, ...props }, children) => {
+    if (element instanceof HTMLAnchorElement) {
+      const mention = this.props.status.get('mentions').find(item => element.href === item.get('url'));
+      return (
+        <HandledLink
+          {...props}
+          href={element.href}
+          text={element.innerText}
+          hashtagAccountId={this.props.status.getIn(['account', 'id'])}
+          mention={mention?.toJSON()}
+          key={key}
+        >
+          {children}
+        </HandledLink>
+      );
+    } else if (element instanceof HTMLParagraphElement && element.classList.contains('quote-inline')) {
+      return null;
+    }
+    return undefined;
+  }
+
   render () {
     const { status, intl, statusContent } = this.props;
 
@@ -324,7 +330,7 @@ class StatusContent extends PureComponent {
     const targetLanguages = this.props.languages?.get(status.get('language') || 'und');
     const renderTranslate = this.props.onTranslate && this.props.identity.signedIn && ['public', 'unlisted'].includes(status.get('visibility')) && status.get('search_index').trim().length > 0 && targetLanguages?.includes(contentLocale);
 
-    const content = { __html: statusContent ?? getStatusContent(status) };
+    const content = statusContent ?? getStatusContent(status);
     const language = status.getIn(['translation', 'language']) || status.get('language');
     const classNames = classnames('status__content', {
       'status__content--with-action': this.props.onClick && this.props.history,
@@ -342,14 +348,26 @@ class StatusContent extends PureComponent {
     );
 
     const poll = !!status.get('poll') && (
-      <PollContainer pollId={status.get('poll')} status={status} lang={language} />
+      <Poll pollId={status.get('poll')} status={status} lang={language} />
     );
 
     if (this.props.onClick) {
       return (
         <>
-          <div className={classNames} ref={this.setRef} onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp} tabIndex={0} key='status-content' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-            <div className='status__content__text status__content__text--visible translate' lang={language} dangerouslySetInnerHTML={content} />
+          <div
+            className={classNames}
+            ref={this.setRef}
+            onMouseDown={this.handleMouseDown}
+            onMouseUp={this.handleMouseUp}
+            key='status-content'
+          >
+            <EmojiHTML
+              className='status__content__text status__content__text--visible translate'
+              lang={language}
+              htmlString={content}
+              extraEmojis={status.get('emojis')}
+              onElement={this.handleElement.bind(this)}
+            />
 
             {poll}
             {translateButton}
@@ -360,8 +378,14 @@ class StatusContent extends PureComponent {
       );
     } else {
       return (
-        <div className={classNames} ref={this.setRef} tabIndex={0} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-          <div className='status__content__text status__content__text--visible translate' lang={language} dangerouslySetInnerHTML={content} />
+        <div className={classNames} ref={this.setRef}>
+          <EmojiHTML
+            className='status__content__text status__content__text--visible translate'
+            lang={language}
+            htmlString={content}
+            extraEmojis={status.get('emojis')}
+            onElement={this.handleElement.bind(this)}
+          />
 
           {poll}
           {translateButton}

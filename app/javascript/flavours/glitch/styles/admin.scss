@@ -1,4 +1,7 @@
+@use 'sass:color';
 @use 'sass:math';
+@use 'functions' as *;
+@use 'variables' as *;
 
 $no-columns-breakpoint: 890px;
 $sidebar-width: 300px;
@@ -7,8 +10,12 @@ $content-width: 840px;
 .admin-wrapper {
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
 
   .icon {
     width: 16px;
@@ -19,6 +26,7 @@ $content-width: 840px;
 
   .sidebar-wrapper {
     min-height: 100vh;
+    min-height: 100dvh;
     overflow: hidden;
     pointer-events: none;
     flex: 1 1 auto;
@@ -112,15 +120,14 @@ $content-width: 840px;
 
       a {
         font-size: 14px;
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: 6px;
         padding: 15px;
         color: $darker-text-color;
         text-decoration: none;
         transition: all 200ms linear;
         transition-property: color, background-color;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
 
         &:hover {
           color: $primary-text-color;
@@ -158,7 +165,7 @@ $content-width: 840px;
     flex: 1 1 auto;
   }
 
-  @media screen and (max-width: $content-width + $sidebar-width) {
+  @media screen and (max-width: ($content-width + $sidebar-width)) {
     .sidebar-wrapper--empty {
       display: none;
     }
@@ -293,9 +300,9 @@ $content-width: 840px;
       font-size: 13px;
       font-weight: 700;
       color: $darker-text-color;
-      padding-bottom: 8px;
+      padding-top: 24px;
       margin-bottom: 8px;
-      border-bottom: 1px solid var(--background-border-color);
+      border-top: 1px solid var(--background-border-color);
     }
 
     h6 {
@@ -481,6 +488,14 @@ body,
   }
 }
 
+kbd {
+  font-family: Courier, monospace;
+  background-color: color.change($ui-secondary-color, $alpha: 0.1);
+  padding: 4px;
+  padding-bottom: 2px;
+  border-radius: 5px;
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -603,16 +618,6 @@ body,
 .account-status {
   display: flex;
   margin-bottom: 10px;
-
-  .activity-stream {
-    flex: 2 0 0;
-    margin-inline-end: 20px;
-    max-width: calc(100% - 60px);
-
-    .entry {
-      border-radius: 4px;
-    }
-  }
 }
 
 .report-status__actions,
@@ -720,7 +725,7 @@ body,
   }
 
   &__title {
-    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   &__timestamp {
@@ -771,7 +776,7 @@ body,
   }
 
   &__title {
-    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   &__timestamp {
@@ -1091,6 +1096,17 @@ a.name-tag,
       }
     }
 
+    &__action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+
+      &:not(.no-wrap) {
+        flex-wrap: wrap;
+      }
+    }
+
     &__meta {
       padding: 0 15px;
       color: $dark-text-color;
@@ -1107,10 +1123,8 @@ a.name-tag,
       }
     }
 
-    &__action-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    &__actions {
+      margin-inline-start: auto;
     }
 
     &__permissions {
@@ -1124,7 +1138,7 @@ a.name-tag,
     display: flex;
     justify-content: space-between;
     margin-bottom: 0;
-    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   &__permissions {
@@ -1144,6 +1158,15 @@ a.name-tag,
     .permissions-list__item__icon {
       color: $dark-text-color;
     }
+  }
+}
+
+.rule-actions {
+  display: flex;
+  flex-direction: column;
+
+  a.table-action-link {
+    padding-inline-start: 0;
   }
 }
 
@@ -1273,7 +1296,7 @@ a.name-tag,
     }
 
     path:first-child {
-      fill: rgba($highlight-text-color, 0.25) !important;
+      fill: color.change($highlight-text-color, $alpha: 0.25) !important;
       fill-opacity: 1 !important;
     }
 
@@ -1403,7 +1426,7 @@ a.sparkline {
 
 .report-header {
   display: grid;
-  grid-gap: 15px;
+  gap: 15px;
   grid-template-columns: minmax(0, 1fr) 300px;
 
   &__details {
@@ -1449,8 +1472,8 @@ a.sparkline {
     inset-inline-start: 10px;
     border-radius: 4px;
     background:
-      url('~images/warning-stripes.svg') repeat-y left,
-      url('~images/warning-stripes.svg') repeat-y right,
+      url('@/images/warning-stripes.svg') repeat-y left,
+      url('@/images/warning-stripes.svg') repeat-y right,
       var(--background-color);
   }
 
@@ -1513,7 +1536,7 @@ a.sparkline {
     margin: 8px 0;
     overflow: hidden;
     text-overflow: ellipsis;
-    word-wrap: break-word;
+    overflow-wrap: break-word;
     max-height: 21px * 2;
     position: relative;
     font-size: 15px;
@@ -1650,6 +1673,17 @@ a.sparkline {
         }
       }
 
+      a.timestamp {
+        color: $darker-text-color;
+        text-decoration: none;
+
+        &:hover,
+        &:focus,
+        &:active {
+          text-decoration: underline;
+        }
+      }
+
       time {
         margin-inline-start: 5px;
         vertical-align: baseline;
@@ -1659,7 +1693,7 @@ a.sparkline {
     &__content {
       font-size: 15px;
       line-height: 20px;
-      word-wrap: break-word;
+      overflow-wrap: break-word;
       font-weight: 400;
       color: $primary-text-color;
 
@@ -1761,7 +1795,7 @@ a.sparkline {
   padding: 15px;
   font-size: 15px;
   line-height: 20px;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   font-weight: 400;
   color: $primary-text-color;
   box-sizing: border-box;
@@ -1879,7 +1913,7 @@ a.sparkline {
   font-size: 15px;
   line-height: 22px;
 
-  li {
+  > li {
     counter-increment: step 1;
     padding-inline-start: 2.5rem;
     padding-bottom: 8px;
@@ -1941,15 +1975,35 @@ a.sparkline {
 .status__card {
   padding: 15px;
   border-radius: 4px;
-  background: $ui-base-color;
   font-size: 15px;
   line-height: 20px;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   font-weight: 400;
   border: 1px solid lighten($ui-base-color, 4%);
   color: $primary-text-color;
   box-sizing: border-box;
   min-height: 100%;
+
+  &.status--has-quote {
+    .quote-inline {
+      display: none;
+    }
+  }
+
+  .status__quote & {
+    // Remove the border from the .status__card within .status__quote
+    border: none;
+
+    .display-name__account {
+      line-height: inherit;
+    }
+
+    .status__avatar,
+    .status__avatar .account__avatar {
+      width: 32px;
+      height: 32px;
+    }
+  }
 
   .status__prepend {
     padding: 0 0 15px;
@@ -1957,11 +2011,112 @@ a.sparkline {
     align-items: center;
   }
 
-  .status__content {
-    padding-top: 0;
-
+  > details {
     summary {
-      display: list-item;
+      display: block;
+      box-sizing: border-box;
+      background: var(--nested-card-background);
+      color: var(--nested-card-text);
+      border: var(--nested-card-border);
+      border-radius: 8px;
+      padding: 8px 13px;
+      position: relative;
+      font-size: 15px;
+      line-height: 22px;
+      cursor: pointer;
+
+      &::after {
+        content: attr(data-show, 'Show more');
+        margin-top: 8px;
+        display: block;
+        font-size: 15px;
+        line-height: 20px;
+        color: $highlight-text-color;
+        cursor: pointer;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      &:hover,
+      &:focus-visible {
+        &::after {
+          text-decoration: underline !important;
+        }
+      }
+    }
+
+    &[open] summary {
+      margin-bottom: 16px;
+
+      &::after {
+        content: attr(data-hide, 'Hide post');
+      }
+    }
+  }
+
+  .preview-card {
+    position: relative;
+    max-width: 566px;
+
+    .status-card__image {
+      &--video {
+        aspect-ratio: 16 / 9;
+      }
+
+      &--large {
+        aspect-ratio: 1.91 / 1;
+      }
+
+      aspect-ratio: 1;
+    }
+
+    .spoiler-button__overlay__label {
+      outline: 1px solid var(--media-outline-color);
+    }
+
+    .hide-button {
+      // Toggled to appear when the preview-card is unblurred:
+      display: none;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      color: $white;
+      border: 0;
+      outline: 1px solid var(--media-outline-color);
+      background-color: color.change($black, $alpha: 0.45);
+      backdrop-filter: $backdrop-blur-filter;
+      padding: 3px 12px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 20px;
+
+      &:hover,
+      &:focus {
+        background-color: color.change($black, $alpha: 0.9);
+      }
+    }
+
+    &.preview-card--image-visible {
+      .hide-button {
+        display: block;
+      }
+
+      .spoiler-button__overlay,
+      .status-card__image-preview {
+        display: none;
+      }
+    }
+  }
+
+  .detailed-status__meta {
+    .detailed-status__application,
+    .detailed-status__datetime,
+    .detailed-status__link {
+      color: inherit;
     }
   }
 }

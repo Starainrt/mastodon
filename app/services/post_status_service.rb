@@ -18,6 +18,8 @@ class PostStatusService < BaseService
   # @param [Hash] options
   # @option [String] :text Message
   # @option [Status] :thread Optional status to reply to
+  # @option [Status] :quoted_status Optional status to quote
+  # @option [String] :quote_approval_policy Approval policy for quotes, one of `public`, `followers` or `nobody`
   # @option [Boolean] :sensitive
   # @option [String] :visibility
   # @option [String] :spoiler_text
@@ -35,8 +37,7 @@ class PostStatusService < BaseService
     @options     = options
     @text        = @options[:text] || ''
     @in_reply_to = @options[:thread]
-
-    @antispam = Antispam.new
+    @quoted_status = @options[:quoted_status]
 
     return idempotency_duplicate if idempotency_given? && idempotency_duplicate?
 
@@ -64,7 +65,7 @@ class PostStatusService < BaseService
   private
 
   def fill_blank_text!
-    return unless @text.blank? && @options[:spoiler_text].present?
+    return unless @text.blank? && @options[:spoiler_text].present? && @quoted_status.blank?
 
     @text = begin
       if @media&.any?(&:video?) || @media&.any?(&:gifv?)
@@ -84,6 +85,7 @@ class PostStatusService < BaseService
     @sensitive    = (@options[:sensitive].nil? ? @account.user&.setting_default_sensitive : @options[:sensitive]) || @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
     @visibility   = :unlisted if @visibility&.to_sym == :public && @account.silenced?
+    @visibility   = :private if @quoted_status&.private_visibility? && %i(public unlisted).include?(@visibility&.to_sym)
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
   rescue ArgumentError
@@ -94,13 +96,25 @@ class PostStatusService < BaseService
     @status = @account.statuses.new(status_attributes)
     process_mentions_service.call(@status, save_records: false)
     safeguard_mentions!(@status)
-    @antispam.local_preflight_check!(@status)
+    attach_quote!(@status)
+
+    antispam = Antispam.new(@status)
+    antispam.local_preflight_check!
 
     # The following transaction block is needed to wrap the UPDATEs to
     # the media attachments when the status is created
     ApplicationRecord.transaction do
       @status.save!
     end
+  end
+
+  def attach_quote!(status)
+    return if @quoted_status.nil?
+
+    status.quote = Quote.create(quoted_status: @quoted_status, status: status)
+    status.quote.ensure_quoted_access
+
+    status.quote.accept! if @quoted_status.local? && StatusPolicy.new(@status.account, @quoted_status).quote?
   end
 
   def safeguard_mentions!(status)
@@ -116,7 +130,9 @@ class PostStatusService < BaseService
 
   def schedule_status!
     status_for_validation = @account.statuses.build(status_attributes)
-    @antispam.local_preflight_check!(status_for_validation)
+
+    antispam = Antispam.new(status_for_validation)
+    antispam.local_preflight_check!
 
     if status_for_validation.valid?
       # Marking the status as destroyed is necessary to prevent the status from being
@@ -144,6 +160,7 @@ class PostStatusService < BaseService
     DistributionWorker.perform_async(@status.id)
     ActivityPub::DistributionWorker.perform_async(@status.id) unless @status.local_only?
     PollExpirationNotifyWorker.perform_at(@status.poll.expires_at, @status.poll.id) if @status.poll
+    ActivityPub::QuoteRequestWorker.perform_async(@status.quote.id) if @status.quote&.quoted_status.present? && !@status.quote&.quoted_status&.local?
   end
 
   def validate_media!
@@ -219,6 +236,7 @@ class PostStatusService < BaseService
       application: @options[:application],
       content_type: @options[:content_type] || @account.user&.setting_default_content_type,
       rate_limit: @options[:with_rate_limit],
+      quote_approval_policy: @options[:quote_approval_policy],
     }.compact
   end
 
@@ -240,6 +258,7 @@ class PostStatusService < BaseService
     @options.dup.tap do |options_hash|
       options_hash[:in_reply_to_id]  = options_hash.delete(:thread)&.id
       options_hash[:application_id]  = options_hash.delete(:application)&.id
+      options_hash[:quoted_status_id] = options_hash.delete(:quoted_status)&.id
       options_hash[:scheduled_at]    = nil
       options_hash[:idempotency]     = nil
       options_hash[:with_rate_limit] = false

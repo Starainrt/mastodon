@@ -6,7 +6,10 @@ import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 import { NavLink } from 'react-router-dom';
 
-import CheckIcon from '@/material-icons/400-24px/check.svg?react';
+import { AccountBio } from '@/flavours/glitch/components/account_bio';
+import { AccountFields } from '@/flavours/glitch/components/account_fields';
+import { DisplayName } from '@/flavours/glitch/components/display_name';
+import { AnimateEmojiProvider } from '@/flavours/glitch/components/emoji/context';
 import LockIcon from '@/material-icons/400-24px/lock.svg?react';
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
 import NotificationsIcon from '@/material-icons/400-24px/notifications.svg?react';
@@ -18,6 +21,7 @@ import {
   unmuteAccount,
   pinAccount,
   unpinAccount,
+  removeAccountFromFollowers,
 } from 'flavours/glitch/actions/accounts';
 import { initBlockModal } from 'flavours/glitch/actions/blocks';
 import { mentionCompose, directCompose } from 'flavours/glitch/actions/compose';
@@ -34,14 +38,14 @@ import {
   AutomatedBadge,
   GroupBadge,
 } from 'flavours/glitch/components/badge';
-import { Button } from 'flavours/glitch/components/button';
 import { CopyIconButton } from 'flavours/glitch/components/copy_icon_button';
+import { Dropdown } from 'flavours/glitch/components/dropdown_menu';
+import { FollowButton } from 'flavours/glitch/components/follow_button';
+import { FormattedDateWrapper } from 'flavours/glitch/components/formatted_date';
 import { Icon } from 'flavours/glitch/components/icon';
 import { IconButton } from 'flavours/glitch/components/icon_button';
-import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';
-import DropdownMenuContainer from 'flavours/glitch/containers/dropdown_menu_container';
+import { AccountNote } from 'flavours/glitch/features/account/components/account_note';
 import { DomainPill } from 'flavours/glitch/features/account/components/domain_pill';
-import AccountNoteContainer from 'flavours/glitch/features/account/containers/account_note_container';
 import FollowRequestNoteContainer from 'flavours/glitch/features/account/containers/follow_request_note_container';
 import { useLinks } from 'flavours/glitch/hooks/useLinks';
 import { useIdentity } from 'flavours/glitch/identity_context';
@@ -51,8 +55,7 @@ import {
   domain as localDomain,
 } from 'flavours/glitch/initial_state';
 import type { Account } from 'flavours/glitch/models/account';
-import type { DropdownMenu } from 'flavours/glitch/models/dropdown_menu';
-import type { Relationship } from 'flavours/glitch/models/relationship';
+import type { MenuItem } from 'flavours/glitch/models/dropdown_menu';
 import {
   PERMISSION_MANAGE_USERS,
   PERMISSION_MANAGE_FEDERATION,
@@ -62,22 +65,11 @@ import { useAppSelector, useAppDispatch } from 'flavours/glitch/store';
 
 import { ActionBar } from '../../account/components/action_bar';
 
+import { FamiliarFollowers } from './familiar_followers';
 import { MemorialNote } from './memorial_note';
 import { MovedNote } from './moved_note';
 
 const messages = defineMessages({
-  unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
-  follow: { id: 'account.follow', defaultMessage: 'Follow' },
-  followBack: { id: 'account.follow_back', defaultMessage: 'Follow back' },
-  mutual: { id: 'account.mutual', defaultMessage: 'Mutual' },
-  cancel_follow_request: {
-    id: 'account.cancel_follow_request',
-    defaultMessage: 'Withdraw follow request',
-  },
-  requested: {
-    id: 'account.requested',
-    defaultMessage: 'Awaiting approval. Click to cancel follow request',
-  },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
   linkVerifiedOn: {
@@ -122,7 +114,6 @@ const messages = defineMessages({
     id: 'account.disable_notifications',
     defaultMessage: 'Stop notifying me when @{name} posts',
   },
-  pins: { id: 'navigation_bar.pins', defaultMessage: 'Pinned posts' },
   preferences: {
     id: 'navigation_bar.preferences',
     defaultMessage: 'Preferences',
@@ -168,6 +159,23 @@ const messages = defineMessages({
     id: 'account.open_original_page',
     defaultMessage: 'Open original page',
   },
+  removeFromFollowers: {
+    id: 'account.remove_from_followers',
+    defaultMessage: 'Remove {name} from followers',
+  },
+  confirmRemoveFromFollowersTitle: {
+    id: 'confirmations.remove_from_followers.title',
+    defaultMessage: 'Remove follower?',
+  },
+  confirmRemoveFromFollowersMessage: {
+    id: 'confirmations.remove_from_followers.message',
+    defaultMessage:
+      '{name} will stop following you. Are you sure you want to proceed?',
+  },
+  confirmRemoveFromFollowersButton: {
+    id: 'confirmations.remove_from_followers.confirm',
+    defaultMessage: 'Remove follower',
+  },
 });
 
 const titleFromAccount = (account: Account) => {
@@ -180,28 +188,6 @@ const titleFromAccount = (account: Account) => {
     displayName.trim().length === 0 ? account.username : displayName;
 
   return `${prefix} (@${acct})`;
-};
-
-const messageForFollowButton = (relationship?: Relationship) => {
-  if (!relationship) return messages.follow;
-
-  if (relationship.get('requested')) {
-    return messages.cancel_follow_request;
-  } else if (relationship.get('following')) {
-    return messages.unfollow;
-  } else if (relationship.get('followed_by')) {
-    return messages.followBack;
-  } else {
-    return messages.follow;
-  }
-};
-
-const dateFormatOptions: Intl.DateTimeFormatOptions = {
-  month: 'short',
-  day: 'numeric',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
 };
 
 export const AccountHeader: React.FC<{
@@ -217,20 +203,6 @@ export const AccountHeader: React.FC<{
   );
   const hidden = useAppSelector((state) => getAccountHidden(state, accountId));
   const handleLinkClick = useLinks();
-
-  const handleFollow = useCallback(() => {
-    if (!account) {
-      return;
-    }
-
-    if (relationship?.following || relationship?.requested) {
-      dispatch(
-        openModal({ modalType: 'CONFIRM_UNFOLLOW', modalProps: { account } }),
-      );
-    } else {
-      dispatch(followAccount(account.id));
-    }
-  }, [dispatch, account, relationship]);
 
   const handleBlock = useCallback(() => {
     if (!account) {
@@ -368,23 +340,6 @@ export const AccountHeader: React.FC<{
     );
   }, [dispatch, account]);
 
-  const handleInteractionModal = useCallback(() => {
-    if (!account) {
-      return;
-    }
-
-    dispatch(
-      openModal({
-        modalType: 'INTERACTION',
-        modalProps: {
-          type: 'follow',
-          accountId: account.id,
-          url: account.uri,
-        },
-      }),
-    );
-  }, [dispatch, account]);
-
   const handleOpenAvatar = useCallback(
     (e: React.MouseEvent) => {
       if (e.button !== 0 || e.ctrlKey || e.metaKey) {
@@ -420,52 +375,18 @@ export const AccountHeader: React.FC<{
     });
   }, [account]);
 
-  const handleEditProfile = useCallback(() => {
-    window.open('/settings/profile', '_blank');
-  }, []);
-
-  const handleMouseEnter = useCallback(
-    ({ currentTarget }: React.MouseEvent) => {
-      if (autoPlayGif) {
-        return;
-      }
-
-      currentTarget
-        .querySelectorAll<HTMLImageElement>('.custom-emoji')
-        .forEach((emoji) => {
-          emoji.src = emoji.getAttribute('data-original') ?? '';
-        });
-    },
-    [],
-  );
-
-  const handleMouseLeave = useCallback(
-    ({ currentTarget }: React.MouseEvent) => {
-      if (autoPlayGif) {
-        return;
-      }
-
-      currentTarget
-        .querySelectorAll<HTMLImageElement>('.custom-emoji')
-        .forEach((emoji) => {
-          emoji.src = emoji.getAttribute('data-static') ?? '';
-        });
-    },
-    [],
-  );
-
   const suspended = account?.suspended;
   const isRemote = account?.acct !== account?.username;
   const remoteDomain = isRemote ? account?.acct.split('@')[1] : null;
 
-  const menu = useMemo(() => {
-    const arr: DropdownMenu = [];
+  const menuItems = useMemo(() => {
+    const arr: MenuItem[] = [];
 
     if (!account) {
       return arr;
     }
 
-    if (signedIn && account.id !== me && !account.suspended) {
+    if (signedIn && !account.suspended) {
       arr.push({
         text: intl.formatMessage(messages.mention, {
           name: account.username,
@@ -489,38 +410,7 @@ export const AccountHeader: React.FC<{
       arr.push(null);
     }
 
-    if (account.id === me) {
-      arr.push({
-        text: intl.formatMessage(messages.edit_profile),
-        href: '/settings/profile',
-      });
-      arr.push({
-        text: intl.formatMessage(messages.preferences),
-        href: '/settings/preferences',
-      });
-      arr.push({ text: intl.formatMessage(messages.pins), to: '/pinned' });
-      arr.push(null);
-      arr.push({
-        text: intl.formatMessage(messages.follow_requests),
-        to: '/follow_requests',
-      });
-      arr.push({
-        text: intl.formatMessage(messages.favourites),
-        to: '/favourites',
-      });
-      arr.push({ text: intl.formatMessage(messages.lists), to: '/lists' });
-      arr.push({
-        text: intl.formatMessage(messages.followed_tags),
-        to: '/followed_tags',
-      });
-      arr.push(null);
-      arr.push({ text: intl.formatMessage(messages.mutes), to: '/mutes' });
-      arr.push({ text: intl.formatMessage(messages.blocks), to: '/blocks' });
-      arr.push({
-        text: intl.formatMessage(messages.domain_blocks),
-        to: '/domain_blocks',
-      });
-    } else if (signedIn) {
+    if (signedIn) {
       if (relationship?.following) {
         if (!relationship.muting) {
           if (relationship.showing_reblogs) {
@@ -548,9 +438,7 @@ export const AccountHeader: React.FC<{
 
         arr.push({
           text: intl.formatMessage(
-            account.getIn(['relationship', 'endorsed'])
-              ? messages.unendorse
-              : messages.endorse,
+            relationship.endorsed ? messages.unendorse : messages.endorse,
           ),
           action: handleEndorseToggle,
         });
@@ -559,6 +447,39 @@ export const AccountHeader: React.FC<{
           action: handleAddToList,
         });
         arr.push(null);
+      }
+
+      if (relationship?.followed_by) {
+        const handleRemoveFromFollowers = () => {
+          dispatch(
+            openModal({
+              modalType: 'CONFIRM',
+              modalProps: {
+                title: intl.formatMessage(
+                  messages.confirmRemoveFromFollowersTitle,
+                ),
+                message: intl.formatMessage(
+                  messages.confirmRemoveFromFollowersMessage,
+                  { name: <strong>{account.acct}</strong> },
+                ),
+                confirm: intl.formatMessage(
+                  messages.confirmRemoveFromFollowersButton,
+                ),
+                onConfirm: () => {
+                  void dispatch(removeAccountFromFollowers({ accountId }));
+                },
+              },
+            }),
+          );
+        };
+
+        arr.push({
+          text: intl.formatMessage(messages.removeFromFollowers, {
+            name: account.username,
+          }),
+          action: handleRemoveFromFollowers,
+          dangerous: true,
+        });
       }
 
       if (relationship?.muting) {
@@ -628,8 +549,7 @@ export const AccountHeader: React.FC<{
     }
 
     if (
-      (account.id !== me &&
-        (permissions & PERMISSION_MANAGE_USERS) === PERMISSION_MANAGE_USERS) ||
+      (permissions & PERMISSION_MANAGE_USERS) === PERMISSION_MANAGE_USERS ||
       (isRemote &&
         (permissions & PERMISSION_MANAGE_FEDERATION) ===
           PERMISSION_MANAGE_FEDERATION)
@@ -659,6 +579,8 @@ export const AccountHeader: React.FC<{
 
     return arr;
   }, [
+    dispatch,
+    accountId,
     account,
     relationship,
     permissions,
@@ -679,46 +601,85 @@ export const AccountHeader: React.FC<{
     handleUnblockDomain,
   ]);
 
+  const menu = accountId !== me && (
+    <Dropdown
+      disabled={menuItems.length === 0}
+      items={menuItems}
+      icon='ellipsis-v'
+      iconComponent={MoreHorizIcon}
+    />
+  );
+
   if (!account) {
     return null;
   }
 
-  let actionBtn, bellBtn, lockedIcon, shareBtn;
+  let actionBtn: React.ReactNode,
+    bellBtn: React.ReactNode,
+    lockedIcon: React.ReactNode,
+    shareBtn: React.ReactNode;
 
-  const info = [];
+  const info: React.ReactNode[] = [];
 
-  if (me !== account.id && relationship?.followed_by) {
-    info.push(
-      <span key='follows' className='relationship-tag'>
-        <FormattedMessage
-          id='account.follows_you'
-          defaultMessage='Follows you'
-        />
-      </span>,
-    );
-  } else if (me !== account.id && relationship?.blocking) {
-    info.push(
-      <span key='blocked' className='relationship-tag'>
-        <FormattedMessage id='account.blocked' defaultMessage='Blocked' />
-      </span>,
-    );
-  }
+  if (me !== account.id && relationship) {
+    if (
+      relationship.followed_by &&
+      (relationship.following || relationship.requested)
+    ) {
+      info.push(
+        <span key='mutual' className='relationship-tag'>
+          <FormattedMessage
+            id='account.mutual'
+            defaultMessage='You follow each other'
+          />
+        </span>,
+      );
+    } else if (relationship.followed_by) {
+      info.push(
+        <span key='followed_by' className='relationship-tag'>
+          <FormattedMessage
+            id='account.follows_you'
+            defaultMessage='Follows you'
+          />
+        </span>,
+      );
+    } else if (relationship.requested_by) {
+      info.push(
+        <span key='requested_by' className='relationship-tag'>
+          <FormattedMessage
+            id='account.requests_to_follow_you'
+            defaultMessage='Requests to follow you'
+          />
+        </span>,
+      );
+    }
 
-  if (me !== account.id && relationship?.muting) {
-    info.push(
-      <span key='muted' className='relationship-tag'>
-        <FormattedMessage id='account.muted' defaultMessage='Muted' />
-      </span>,
-    );
-  } else if (me !== account.id && relationship?.domain_blocking) {
-    info.push(
-      <span key='domain_blocked' className='relationship-tag'>
-        <FormattedMessage
-          id='account.domain_blocked'
-          defaultMessage='Domain blocked'
-        />
-      </span>,
-    );
+    if (relationship.blocking) {
+      info.push(
+        <span key='blocking' className='relationship-tag'>
+          <FormattedMessage id='account.blocking' defaultMessage='Blocking' />
+        </span>,
+      );
+    }
+
+    if (relationship.muting) {
+      info.push(
+        <span key='muting' className='relationship-tag'>
+          <FormattedMessage id='account.muting' defaultMessage='Muting' />
+        </span>,
+      );
+    }
+
+    if (relationship.domain_blocking) {
+      info.push(
+        <span key='domain_blocking' className='relationship-tag'>
+          <FormattedMessage
+            id='account.domain_blocking'
+            defaultMessage='Blocking domain'
+          />
+        </span>,
+      );
+    }
   }
 
   if (relationship?.requested || relationship?.following) {
@@ -762,47 +723,16 @@ export const AccountHeader: React.FC<{
     );
   }
 
-  if (me !== account.id) {
-    if (signedIn && !relationship) {
-      // Wait until the relationship is loaded
-      actionBtn = (
-        <Button disabled>
-          <LoadingIndicator />
-        </Button>
-      );
-    } else if (!relationship?.blocking) {
-      actionBtn = (
-        <Button
-          disabled={relationship?.blocked_by}
-          className={classNames({
-            'button--destructive':
-              relationship?.following || relationship?.requested,
-          })}
-          text={intl.formatMessage(messageForFollowButton(relationship))}
-          onClick={signedIn ? handleFollow : handleInteractionModal}
-        />
-      );
-    } else {
-      actionBtn = (
-        <Button
-          text={intl.formatMessage(messages.unblock, {
-            name: account.username,
-          })}
-          onClick={handleBlock}
-        />
-      );
-    }
-  } else {
+  const isMovedAndUnfollowedAccount = account.moved && !relationship?.following;
+
+  if (!isMovedAndUnfollowedAccount) {
     actionBtn = (
-      <Button
-        text={intl.formatMessage(messages.edit_profile)}
-        onClick={handleEditProfile}
+      <FollowButton
+        accountId={accountId}
+        className='account__header__follow-button'
+        labelLength='long'
       />
     );
-  }
-
-  if (account.moved && !relationship?.following) {
-    actionBtn = '';
   }
 
   if (account.locked) {
@@ -810,13 +740,11 @@ export const AccountHeader: React.FC<{
       <Icon
         id='lock'
         icon={LockIcon}
-        title={intl.formatMessage(messages.account_locked)}
+        aria-label={intl.formatMessage(messages.account_locked)}
       />
     );
   }
 
-  const content = { __html: account.note_emojified };
-  const displayNameHtml = { __html: account.display_name_html };
   const fields = account.fields;
   const isLocal = !account.acct.includes('@');
   const username = account.acct.split('@')[0];
@@ -831,7 +759,7 @@ export const AccountHeader: React.FC<{
     badges.push(<GroupBadge key='group-badge' />);
   }
 
-  account.get('roles', []).forEach((role) => {
+  account.roles.forEach((role) => {
     badges.push(
       <Badge
         key={`role-badge-${role.get('id')}`}
@@ -849,12 +777,10 @@ export const AccountHeader: React.FC<{
         <MovedNote accountId={account.id} targetAccountId={account.moved} />
       )}
 
-      <div
+      <AnimateEmojiProvider
         className={classNames('account__header', {
           inactive: !!account.moved,
         })}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         {!(suspended || hidden || account.moved) &&
           relationship?.requested_by && (
@@ -884,28 +810,21 @@ export const AccountHeader: React.FC<{
             >
               <Avatar
                 account={suspended || hidden ? undefined : account}
-                size={90}
+                size={92}
               />
             </a>
 
-            <div className='account__header__tabs__buttons'>
+            <div className='account__header__buttons account__header__buttons--desktop'>
+              {!hidden && actionBtn}
               {!hidden && bellBtn}
               {!hidden && shareBtn}
-              <DropdownMenuContainer
-                disabled={menu.length === 0}
-                items={menu}
-                icon='ellipsis-v'
-                iconComponent={MoreHorizIcon}
-                size={24}
-                direction='right'
-              />
-              {!hidden && actionBtn}
+              {menu}
             </div>
           </div>
 
           <div className='account__header__tabs__name'>
             <h1>
-              <span dangerouslySetInnerHTML={displayNameHtml} />
+              <DisplayName account={account} variant='simple' />
               <small>
                 <span>
                   @{username}
@@ -925,6 +844,16 @@ export const AccountHeader: React.FC<{
             <div className='account__header__badges'>{badges}</div>
           )}
 
+          {account.id !== me && signedIn && !(suspended || hidden) && (
+            <FamiliarFollowers accountId={accountId} />
+          )}
+
+          <div className='account__header__buttons account__header__buttons--mobile'>
+            {!hidden && actionBtn}
+            {!hidden && bellBtn}
+            {menu}
+          </div>
+
           {!(suspended || hidden) && (
             <div className='account__header__extra'>
               <div
@@ -932,15 +861,13 @@ export const AccountHeader: React.FC<{
                 onClickCapture={handleLinkClick}
               >
                 {account.id !== me && signedIn && (
-                  <AccountNoteContainer account={account} />
+                  <AccountNote accountId={accountId} />
                 )}
 
-                {account.note.length > 0 && account.note !== '<p></p>' && (
-                  <div
-                    className='account__header__content translate'
-                    dangerouslySetInnerHTML={content}
-                  />
-                )}
+                <AccountBio
+                  accountId={accountId}
+                  className='account__header__content'
+                />
 
                 <div className='account__header__fields'>
                   <dl>
@@ -951,65 +878,30 @@ export const AccountHeader: React.FC<{
                       />
                     </dt>
                     <dd>
-                      {intl.formatDate(account.created_at, {
-                        year: 'numeric',
-                        month: 'short',
-                        day: '2-digit',
-                      })}
+                      <FormattedDateWrapper
+                        value={account.created_at}
+                        year='numeric'
+                        month='short'
+                        day='2-digit'
+                      />
                     </dd>
                   </dl>
 
-                  {fields.map((pair, i) => (
-                    <dl
-                      key={i}
-                      className={classNames({
-                        verified: pair.verified_at,
-                      })}
-                    >
-                      <dt
-                        dangerouslySetInnerHTML={{
-                          __html: pair.name_emojified,
-                        }}
-                        title={pair.name}
-                        className='translate'
-                      />
-
-                      <dd className='translate' title={pair.value_plain ?? ''}>
-                        {pair.verified_at && (
-                          <span
-                            title={intl.formatMessage(messages.linkVerifiedOn, {
-                              date: intl.formatDate(
-                                pair.verified_at,
-                                dateFormatOptions,
-                              ),
-                            })}
-                          >
-                            <Icon
-                              id='check'
-                              icon={CheckIcon}
-                              className='verified__mark'
-                            />
-                          </span>
-                        )}{' '}
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: pair.value_emojified,
-                          }}
-                        />
-                      </dd>
-                    </dl>
-                  ))}
+                  <AccountFields fields={fields} emojis={account.emojis} />
                 </div>
               </div>
             </div>
           )}
         </div>
-      </div>
+      </AnimateEmojiProvider>
 
       <ActionBar account={account} />
 
       {!(hideTabs || hidden) && (
         <div className='account__section-headline'>
+          <NavLink exact to={`/@${account.acct}/featured`}>
+            <FormattedMessage id='account.featured' defaultMessage='Featured' />
+          </NavLink>
           <NavLink exact to={`/@${account.acct}`}>
             <FormattedMessage id='account.posts' defaultMessage='Posts' />
           </NavLink>
