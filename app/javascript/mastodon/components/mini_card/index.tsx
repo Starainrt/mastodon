@@ -3,14 +3,14 @@ import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 import classNames from 'classnames';
 
-import type { OmitUnion } from '@/mastodon/utils/types';
+import type { Merge } from 'type-fest';
 
 import { Icon } from '../icon';
 import type { IconProp } from '../icon';
 
 import classes from './styles.module.css';
 
-export type MiniCardProps = OmitUnion<
+export type MiniCardProps = Merge<
   ComponentPropsWithoutRef<'div'>,
   {
     label: ReactNode;
@@ -23,7 +23,17 @@ export type MiniCardProps = OmitUnion<
 
 export const MiniCard = forwardRef<HTMLDivElement, MiniCardProps>(
   (
-    { label, value, className, hidden, icon, iconId, iconClassName, ...props },
+    {
+      label,
+      value,
+      className,
+      hidden,
+      icon,
+      iconId,
+      iconClassName,
+      children,
+      ...props
+    },
     ref,
   ) => {
     if (!label) {
@@ -50,6 +60,7 @@ export const MiniCard = forwardRef<HTMLDivElement, MiniCardProps>(
         )}
         <dt className={classes.label}>{label}</dt>
         <dd className={classes.value}>{value}</dd>
+        {children}
       </div>
     );
   },

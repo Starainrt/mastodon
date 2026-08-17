@@ -2,11 +2,14 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 
 import { FormattedMessage, useIntl, defineMessages } from 'react-intl';
 
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
+import { Helmet } from '@unhead/react/helmet';
 import { useDebouncedCallback } from 'use-debounce';
 
+import { Column } from '@/flavours/glitch/components/column';
+import { ColumnHeader } from '@/flavours/glitch/components/column/header';
+import { ColumnSearchHeader } from '@/flavours/glitch/components/column/search_header';
 import PersonIcon from '@/material-icons/400-24px/person.svg?react';
 import { fetchRelationships } from 'flavours/glitch/actions/accounts';
 import { importFetchedAccounts } from 'flavours/glitch/actions/importer';
@@ -15,9 +18,6 @@ import { markAsPartial } from 'flavours/glitch/actions/timelines';
 import { apiRequest } from 'flavours/glitch/api';
 import type { ApiAccountJSON } from 'flavours/glitch/api_types/accounts';
 import { Account } from 'flavours/glitch/components/account';
-import { Column } from 'flavours/glitch/components/column';
-import { ColumnHeader } from 'flavours/glitch/components/column_header';
-import { ColumnSearchHeader } from 'flavours/glitch/components/column_search_header';
 import ScrollableList from 'flavours/glitch/components/scrollable_list';
 import { useAppSelector, useAppDispatch } from 'flavours/glitch/store';
 
@@ -61,7 +61,7 @@ export const Follows: React.FC<{
     setIsSearching(false);
   }, [setMode, setIsSearching]);
 
-  const searchRequestRef = useRef<AbortController | null>(null);
+  const searchRequestRef = useRef<AbortController>(null);
 
   const handleSearch = useDebouncedCallback(
     (value: string) => {
@@ -121,7 +121,6 @@ export const Follows: React.FC<{
         icon='person'
         iconComponent={PersonIcon}
         multiColumn={multiColumn}
-        showBackButton
       />
 
       <ColumnSearchHeader
@@ -146,10 +145,10 @@ export const Follows: React.FC<{
             {displayedAccountIds.length > 0 && <div className='spacer' />}
 
             <div className='column-footer'>
-              <Link className='button button--block' to='/home'>
+              <Link className='button button--block' to='/start/profile'>
                 <FormattedMessage
-                  id='onboarding.follows.done'
-                  defaultMessage='Done'
+                  id='onboarding.follows.next'
+                  defaultMessage='Next: Setup your profile'
                 />
               </Link>
             </div>

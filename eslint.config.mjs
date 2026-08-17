@@ -150,7 +150,6 @@ export default tseslint.config([
   reactHooks.configs.flat.recommended,
   jsxA11Y.flatConfigs.recommended,
   importPlugin.flatConfigs.react,
-  // @ts-expect-error -- For some reason the formatjs package exports an empty object?
   formatjs.configs.strict,
   storybook.configs['flat/recommended'],
   {
@@ -387,6 +386,7 @@ export default tseslint.config([
     files: ['**/*.stories.ts', '**/*.stories.tsx', '.storybook/*'],
     rules: {
       'import/no-default-export': 'off',
+      'react-hooks/rules-of-hooks': 'off',
     },
   },
   {

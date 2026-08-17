@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { useRef, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from '@unhead/react/helmet';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,8 +12,8 @@ import { addColumn, removeColumn, moveColumn } from 'flavours/glitch/actions/col
 import { mountConversations, unmountConversations, expandConversations } from 'flavours/glitch/actions/conversations';
 import { connectDirectStream } from 'flavours/glitch/actions/streaming';
 import { expandDirectTimeline } from 'flavours/glitch/actions/timelines';
-import Column from 'flavours/glitch/components/column';
-import ColumnHeader from 'flavours/glitch/components/column_header';
+import { Column } from '@/flavours/glitch/components/column';
+import { ColumnHeader } from '@/flavours/glitch/components/column/header';
 import StatusListContainer from 'flavours/glitch/features/ui/containers/status_list_container';
 
 import { ConversationsList } from './components/conversations_list';
@@ -24,7 +24,6 @@ const messages = defineMessages({
 });
 
 const DirectTimeline = ({ columnId, multiColumn }) => {
-  const columnRef = useRef();
   const intl = useIntl();
   const dispatch = useDispatch();
   const pinned = !!columnId;
@@ -44,10 +43,6 @@ const DirectTimeline = ({ columnId, multiColumn }) => {
   const handleMove = useCallback((dir) => {
     dispatch(moveColumn(columnId, dir));
   }, [dispatch, columnId]);
-
-  const handleHeaderClick = useCallback(() => {
-    columnRef.current.scrollTop();
-  }, [columnRef]);
 
   const handleLoadMoreTimeline = useCallback(maxId => {
     dispatch(expandDirectTimeline({ maxId }));
@@ -71,7 +66,7 @@ const DirectTimeline = ({ columnId, multiColumn }) => {
   }, [dispatch, conversationsMode]);
 
   return (
-    <Column bindToDocument={!multiColumn} ref={columnRef} label={intl.formatMessage(messages.title)}>
+    <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.title)}>
       <ColumnHeader
         icon='envelope'
         iconComponent={MailIcon}
@@ -79,9 +74,9 @@ const DirectTimeline = ({ columnId, multiColumn }) => {
         title={intl.formatMessage(messages.title)}
         onPin={handlePin}
         onMove={handleMove}
-        onClick={handleHeaderClick}
         pinned={pinned}
         multiColumn={multiColumn}
+        scrollTopOnClick
       >
         <ColumnSettingsContainer />
       </ColumnHeader>
@@ -92,7 +87,7 @@ const DirectTimeline = ({ columnId, multiColumn }) => {
           scrollKey={`direct_timeline-${columnId}`}
           emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any private mentions yet. When you send or receive one, it will show up here." />}
           bindToDocument={!multiColumn}
-          prepend={<div className='follow_requests-unlocked_explanation'><span><FormattedMessage id='compose_form.encryption_warning' defaultMessage='Posts on Mastodon are not end-to-end encrypted. Do not share any dangerous information over Mastodon.' /> <a href='/terms' target='_blank'><FormattedMessage id='compose_form.direct_message_warning_learn_more' defaultMessage='Learn more' /></a></span></div>}
+          prepend={<div className='follow_requests-unlocked_explanation'><span><FormattedMessage id='compose_form.encryption_warning' defaultMessage='Posts on Mastodon are not end-to-end encrypted. Do not share any dangerous information over Mastodon.' /> <a href='https://docs.joinmastodon.org/user/posting/#private' rel='noreferrer' target='_blank'><FormattedMessage id='compose_form.direct_message_warning_learn_more' defaultMessage='Learn more' /></a></span></div>}
           alwaysPrepend
         />
       ) : (

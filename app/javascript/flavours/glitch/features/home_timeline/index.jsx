@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
-import { Helmet } from 'react-helmet';
+import { Helmet } from '@unhead/react/helmet';
 
 import { connect } from 'react-redux';
 
 import CampaignIcon from '@/material-icons/400-24px/campaign.svg?react';
 import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
+import { Column } from '@/flavours/glitch/components/column';
+import { ColumnHeader } from '@/flavours/glitch/components/column/header';
+import { injectIntl } from '@/flavours/glitch/components/intl';
 import { SymbolLogo } from 'flavours/glitch/components/logo';
 import { fetchAnnouncements, toggleShowAnnouncements } from 'flavours/glitch/actions/announcements';
 import { IconWithBadge } from 'flavours/glitch/components/icon_with_badge';
@@ -19,8 +22,6 @@ import { withBreakpoint } from 'flavours/glitch/features/ui/hooks/useBreakpoint'
 
 import { addColumn, removeColumn, moveColumn } from '../../actions/columns';
 import { expandHomeTimeline } from '../../actions/timelines';
-import Column from '../../components/column';
-import ColumnHeader from '../../components/column_header';
 import StatusListContainer from '../ui/containers/status_list_container';
 
 import { ColumnSettings } from './components/column_settings';
@@ -72,14 +73,6 @@ class HomeTimeline extends PureComponent {
   handleMove = (dir) => {
     const { columnId, dispatch } = this.props;
     dispatch(moveColumn(columnId, dir));
-  };
-
-  handleHeaderClick = () => {
-    this.column.scrollTop();
-  };
-
-  setRef = c => {
-    this.column = c;
   };
 
   handleLoadMore = maxId => {
@@ -151,7 +144,7 @@ class HomeTimeline extends PureComponent {
     }
 
     return (
-      <Column bindToDocument={!multiColumn} ref={this.setRef} label={intl.formatMessage(messages.title)}>
+      <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.title)}>
         <ColumnHeader
           icon='home'
           iconComponent={matchesBreakpoint ? SymbolLogo : HomeIcon}
@@ -159,11 +152,11 @@ class HomeTimeline extends PureComponent {
           title={intl.formatMessage(messages.title)}
           onPin={this.handlePin}
           onMove={this.handleMove}
-          onClick={this.handleHeaderClick}
           pinned={pinned}
           multiColumn={multiColumn}
           extraButton={announcementsButton}
           appendContent={hasAnnouncements && showAnnouncements && <Announcements />}
+          scrollTopOnClick
         >
           <ColumnSettings />
         </ColumnHeader>
