@@ -13,7 +13,7 @@ import { changeSetting } from 'flavours/glitch/actions/settings';
 import { connectPublicStream, connectCommunityStream } from 'flavours/glitch/actions/streaming';
 import { expandPublicTimeline, expandCommunityTimeline } from 'flavours/glitch/actions/timelines';
 import { Column } from '@/flavours/glitch/components/column';
-import { ColumnHeader } from '@/flavours/glitch/components/column/header';
+import { ColumnHeader as LegacyColumnHeader } from '@/flavours/glitch/components/column/header';
 import { DismissableBanner } from 'flavours/glitch/components/dismissable_banner';
 import SettingText from 'flavours/glitch/components/setting_text';
 import { localLiveFeedAccess, remoteLiveFeedAccess, domain } from 'flavours/glitch/initial_state';
@@ -22,6 +22,9 @@ import { useAppDispatch, useAppSelector } from 'flavours/glitch/store';
 
 import SettingToggle from '../notifications/components/setting_toggle';
 import StatusListContainer from '../ui/containers/status_list_container';
+import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
+import { ColumnHeader, ColumnSettingsMenu } from '@/flavours/glitch/components/column_header';
+import { MultiColumnMenuItems } from '@/flavours/glitch/components/column_header/multicolumn_settings';
 
 const messages = defineMessages({
   title: { id: 'column.firehose', defaultMessage: 'Live feeds' },
@@ -33,6 +36,8 @@ const messages = defineMessages({
     id: 'column.firehose_singular',
     defaultMessage: 'Live feed',
   },
+  title_redesign: { id: 'tabs_bar.public_feeds', defaultMessage: 'Public Feeds' },
+  title_singular_redesign: { id: 'tabs_bar.public_feed', defaultMessage: 'Public Feed' },
   filter_regex: { id: 'home.column_settings.filter_regex', defaultMessage: 'Filter out by regular expressions' },
 });
 
@@ -192,29 +197,52 @@ const Firehose = ({ feedType, multiColumn }) => {
     />
   );
 
-  let title;
+  const canViewLocalFeed = canViewFeed(signedIn, permissions, localLiveFeedAccess);
+  const canViewRemoteFeed = canViewFeed(signedIn, permissions, remoteLiveFeedAccess);
 
-  if (canViewFeed(signedIn, permissions, localLiveFeedAccess) && canViewFeed(signedIn, permissions, remoteLiveFeedAccess)) {
+  let title;
+  if (canViewLocalFeed && canViewRemoteFeed) {
     title = messages.title;
-  } else if (canViewFeed(signedIn, permissions, localLiveFeedAccess)) {
+  } else if (canViewLocalFeed) {
     title = messages.title_local;
   } else {
     title = messages.title_singular;
   }
 
+  if (isRedesignEnabled()) {
+    const canOnlyViewSingleFeed = canViewLocalFeed !== canViewRemoteFeed;
+
+    title = canOnlyViewSingleFeed
+      ? intl.formatMessage(messages.title_singular_redesign)
+      : intl.formatMessage(messages.title_redesign);
+  }
+
   return (
     <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.title)}>
-      <ColumnHeader
-        icon='globe'
-        iconComponent={PublicIcon}
-        active={hasUnread}
-        title={intl.formatMessage(title)}
-        onPin={handlePin}
-        multiColumn={multiColumn}
-        scrollTopOnClick
-      >
-        <ColumnSettings />
-      </ColumnHeader>
+      {isRedesignEnabled() ? (
+        <ColumnHeader
+          title={title}
+          withBackButton={multiColumn && 'auto'}
+          withUnreadMarker={hasUnread}
+          extraButtons={multiColumn &&
+            <ColumnSettingsMenu labelPrefix={intl.formatMessage(messages.title_redesign)}>
+              <MultiColumnMenuItems onPin={handlePin} />
+            </ColumnSettingsMenu>
+          }
+        />
+      ) : (
+        <LegacyColumnHeader
+          icon='globe'
+          iconComponent={PublicIcon}
+          active={hasUnread}
+          title={intl.formatMessage(title)}
+          onPin={handlePin}
+          multiColumn={multiColumn}
+          scrollTopOnClick
+        >
+          <ColumnSettings />
+        </LegacyColumnHeader>
+      )}
 
       {(canViewFeed(signedIn, permissions, localLiveFeedAccess) && canViewFeed(signedIn, permissions, remoteLiveFeedAccess)) && (
         <div className='account__section-headline'>
